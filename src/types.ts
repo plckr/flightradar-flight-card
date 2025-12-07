@@ -29,5 +29,3 @@ export interface FlightEntityState {
   last_changed: string;
   last_updated: string;
 }
-
-

@@ -7,7 +7,6 @@ import { cardStyles } from './styles';
 import { CARD_NAME, CARD_DESCRIPTION, CARD_VERSION, DEFAULT_CONFIG } from './const';
 import { registerCustomCard } from './utils/register-card';
 
-// Log card info to console
 console.info(
   `%c ${CARD_NAME.toUpperCase()} %c v${CARD_VERSION} `,
   'color: white; background: #3498db; font-weight: 700;',
@@ -139,7 +138,6 @@ export class FlightradarFlightCard extends LitElement {
   }
 }
 
-// Declare the custom element for TypeScript
 declare global {
   interface HTMLElementTagNameMap {
     [CARD_NAME]: FlightradarFlightCard;

@@ -38,4 +38,3 @@ jobs:
           name: flightradar-flight-card
           path: dist/flightradar-flight-card.js
           retention-days: 30
-

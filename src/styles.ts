@@ -87,5 +87,3 @@ export const cardStyles = css`
     border-radius: 8px;
   }
 `;
-
-

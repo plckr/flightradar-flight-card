@@ -14,7 +14,7 @@ views:
           # Main test card with all options
           - type: custom:flightradar-flight-card
             entity: sensor.test_flight
-            name: "Custom Name Test"
+            name: 'Custom Name Test'
             show_header: true
             show_state: true
 
@@ -52,22 +52,22 @@ views:
           # En route flight
           - type: custom:flightradar-flight-card
             entity: sensor.test_flight
-            name: "En Route Flight"
+            name: 'En Route Flight'
 
           # Arrived flight
           - type: custom:flightradar-flight-card
             entity: sensor.test_flight_2
-            name: "Arrived Flight"
+            name: 'Arrived Flight'
 
           # Unavailable flight
           - type: custom:flightradar-flight-card
             entity: sensor.test_flight_3
-            name: "Unavailable Flight"
+            name: 'Unavailable Flight'
 
           # Non-existent entity
           - type: custom:flightradar-flight-card
             entity: sensor.non_existent_flight
-            name: "Missing Entity"
+            name: 'Missing Entity'
 
   - title: Controls
     path: controls
@@ -91,5 +91,4 @@ views:
 
           - type: custom:flightradar-flight-card
             entity: sensor.test_flight
-            name: "Live Preview"
-
+            name: 'Live Preview'

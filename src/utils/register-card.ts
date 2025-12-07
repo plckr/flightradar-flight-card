@@ -1,4 +1,10 @@
-type RegisterCustomCardParams = {
+declare global {
+  interface Window {
+    customCards?: WindowCustomCard[];
+  }
+}
+
+type WindowCustomCard = {
   /** Custom card type. E.g.: content-card-example */
   type: string;
   /** Friendly name for the card */
@@ -10,11 +16,7 @@ type RegisterCustomCardParams = {
   documentationURL?: string;
 };
 
-export function registerCustomCard(params: RegisterCustomCardParams) {
-  const windowWithCards = window as unknown as Window & {
-    customCards: unknown[];
-  };
-  windowWithCards.customCards = windowWithCards.customCards || [];
-
-  windowWithCards.customCards.push(params);
+export function registerCustomCard(params: WindowCustomCard) {
+  window.customCards = window.customCards || [];
+  window.customCards.push(params);
 }
