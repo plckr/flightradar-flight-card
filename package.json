@@ -13,6 +13,7 @@
     "start:hass-dev": "docker run --rm -p8123:8123 -v ./.hass_dev:/config homeassistant/home-assistant:dev",
     "stop:hass": "docker compose down",
     "logs:hass": "docker compose logs -f",
+    "update-flightradar24-integration": "bash scripts/update-flightradar24-integration.sh",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write .",

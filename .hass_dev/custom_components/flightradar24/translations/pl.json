@@ -1,0 +1,34 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Parametry śledzonej lokalizacji.",
+        "data": {
+          "radius": "Promień (w metrach)",
+          "latitude": "Szerokość geograficzna",
+          "longitude": "Długość geograficzna",
+          "scan_interval": "Interwał odświeżania (w sekundach)"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "description": "Parametry śledzonej lokalizacji.",
+        "data": {
+          "radius": "Promień (w metrach)",
+          "latitude": "Szerokość geograficzna",
+          "longitude": "Długość geograficzna",
+          "scan_interval": "Interwał odświeżania (w sekundach)",
+          "min_altitude": "Wysokość, powyżej której samoloty będą śledzone (w stopach)",
+          "max_altitude": "Wysokość, poniżej której samoloty będą śledzone (w stopach)",
+          "most_tracked": "Włącz listę najczęściej śledzonych samolotów",
+          "enable_tracker": "Włącz device_tracker, aby dodatkowo śledzić loty",
+          "username": "OPCJONALNE! Login do Flightradar24",
+          "password": "OPCJONALNE! Hasło do Flightradar24"
+        }
+      }
+    }
+  }
+}

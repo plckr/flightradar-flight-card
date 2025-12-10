@@ -1,0 +1,34 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Trage den Standort ein, der überwacht werden soll.",
+        "data": {
+          "radius": "Radius in Metern",
+          "latitude": "Breitengrad",
+          "longitude": "Längengrad",
+          "scan_interval": "Aktualisierungsintervall in Sekunden"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "description": "Bearbeite die Parameter für den zu verfolgenden Standort.",
+        "data": {
+          "radius": "Radius in Metern",
+          "latitude": "Breitengrad",
+          "longitude": "Längengrad",
+          "scan_interval": "Aktualisierungsintervall in Sekunden",
+          "min_altitude": "Die minimale Höhe in Fuß über dem Flugzeuge verfolgt werden.",
+          "max_altitude": "Die maximale Höhe in Fuß unter dem Flugzeug verfolgt werden.",
+          "most_tracked": "Aktiviere die Liste der am häufigsten verfolgten Flüge",
+          "enable_tracker": "Aktivieren Sie device_tracker für zusätzliche Tracking-Flüge",
+          "username": "OPTIONAL! Flightradar24 Benutzername",
+          "password": "OPTIONAL! Flightradar24 Passwort"
+        }
+      }
+    }
+  }
+}

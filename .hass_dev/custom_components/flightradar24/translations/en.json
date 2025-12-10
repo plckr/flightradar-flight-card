@@ -1,0 +1,34 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Fill in the location to track.",
+        "data": {
+          "radius": "Radius in meters",
+          "latitude": "Latitude",
+          "longitude": "Longitude",
+          "scan_interval": "Scan interval for updates in seconds"
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "description": "Edit parameters for the location to track.",
+        "data": {
+          "radius": "Radius in meters",
+          "latitude": "Latitude",
+          "longitude": "Longitude",
+          "scan_interval": "Scan interval for updates in seconds",
+          "min_altitude": "The minimum altitude in feet above which all aircraft will be tracked.",
+          "max_altitude": "The maximum altitude in feet below which all aircraft will be tracked.",
+          "most_tracked": "Enable most tracked flights list",
+          "enable_tracker": "Enable device_tracker for additional tracking flights",
+          "username": "OPTIONAL! Flightradar24 username",
+          "password": "OPTIONAL! Flightradar24 password"
+        }
+      }
+    }
+  }
+}
