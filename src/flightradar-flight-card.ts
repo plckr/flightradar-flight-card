@@ -20,6 +20,7 @@ export class FlightradarFlightCard extends LitElement {
   @state()
   private _flight!: {
     id: string;
+    aircraftRegistration: string | null;
     aircraftPhoto: string | null;
     aircraftModel: string;
     airlineIcao: string | null;
@@ -93,10 +94,6 @@ export class FlightradarFlightCard extends LitElement {
       },
     });
 
-    if (f.on_ground === 1) {
-      throw new Error('Unhandled ground vehicle state');
-    }
-
     this._flight = {
       id: f.id,
       flightNumber: f.flight_number,
@@ -111,6 +108,7 @@ export class FlightradarFlightCard extends LitElement {
 
         return airline ?? 'Desconhecido';
       },
+      aircraftRegistration: f.aircraft_registration,
       aircraftPhoto: f.aircraft_photo_small,
       aircraftModel: f.aircraft_model,
       origin: f.airport_origin_city || 'Desconhecido',
@@ -134,23 +132,42 @@ export class FlightradarFlightCard extends LitElement {
   }
 
   protected renderFlightTitle() {
-    if (!this._flight.flightNumber && !this._flight.callsign) {
-      return html`<p>${this._flight.callsign}</p>`;
+    if (
+      !this._flight.flightNumber &&
+      !this._flight.callsign &&
+      !this._flight.aircraftRegistration
+    ) {
+      return html`<p>${this._flight.aircraftModel}</p>`;
     }
 
-    let href = `https://www.flightradar24.com/data/flights/${this._flight.flightNumber}`;
-    if (this._flight.isLive) {
-      href = `https://www.flightradar24.com/${[this._flight.callsign, this._flight.id].join('/')}`;
+    const url = new URL(`https://www.flightradar24.com`);
+    url.pathname = `/data/aircraft/${this._flight.aircraftRegistration}`;
+
+    if (this._flight.flightNumber) {
+      url.pathname = `/data/flights/${this._flight.flightNumber}`;
     }
+
+    if (this._flight.isLive) {
+      const urlPath = [this._flight.id];
+
+      if (this._flight.callsign) {
+        urlPath.unshift(this._flight.callsign);
+      }
+
+      url.pathname = `/${urlPath.join('/')}`;
+    }
+
+    const label =
+      this._flight.flightNumber ?? this._flight.callsign ?? this._flight.aircraftRegistration;
 
     return html`
       <a
-        href=${href}
+        href=${url}
         rel="noopener noreferrer"
         target="_blank"
         style="color:var(--primary-text-color);"
       >
-        ${this._flight.flightNumber || this._flight.callsign}
+        ${label}
         <ha-icon
           icon="mdi:open-in-new"
           style="
