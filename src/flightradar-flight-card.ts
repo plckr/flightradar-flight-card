@@ -17,6 +17,8 @@ export class FlightradarFlightCard extends LitElement {
   @state()
   private _config!: CardConfig;
 
+  private _invalid!: boolean;
+
   @state()
   private _flight!: {
     id: string;
@@ -80,6 +82,8 @@ export class FlightradarFlightCard extends LitElement {
   }
 
   protected willUpdate() {
+    this._invalid = false;
+
     const entityId = this._config.entity;
     const stateObj = this.hass.states[entityId];
 
@@ -89,8 +93,9 @@ export class FlightradarFlightCard extends LitElement {
 
     const data = stateObj.attributes.flights[0];
     const f = v.parse(areaFlightSchema, data, {
-      message(issue) {
+      message: (issue) => {
         console.error(issue);
+        this._invalid = true;
         return issue.message;
       },
     });
@@ -184,8 +189,8 @@ export class FlightradarFlightCard extends LitElement {
   }
 
   protected render() {
-    if (!this._config || !this.hass) {
-      return nothing;
+    if (!this._config || !this.hass || this._invalid) {
+      return html`<hui-error-card>Something went wrong: check console for errors</hui-error-card>`;
     }
 
     return html`
