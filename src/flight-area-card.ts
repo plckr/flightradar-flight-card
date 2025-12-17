@@ -84,19 +84,22 @@ export class FlightradarFlightCard extends LitElement {
           <div class="main-content">
             <div class="main-content-left">
               ${this.renderFlightTitle()}
+              ${this.flight.callsign
+                ? html`
+                    <div class="callsign-info">
+                      <p>${this.flight.callsign}</p>
 
-              <div class="callsign-info">
-                <p>${this.flight.callsign}</p>
-
-                ${this.flight.isLive
-                  ? html`
-                      <div class="live-indicator">
-                        Live
-                        <div class="pulse"></div>
-                      </div>
-                    `
-                  : nothing}
-              </div>
+                      ${this.flight.isLive
+                        ? html`
+                            <div class="live-indicator">
+                              Live
+                              <div class="pulse"></div>
+                            </div>
+                          `
+                        : nothing}
+                    </div>
+                  `
+                : nothing}
 
               <div class="flight-locations">
                 ${this.flight.origin}

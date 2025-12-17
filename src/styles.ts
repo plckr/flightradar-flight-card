@@ -34,7 +34,7 @@ export const cardStyles = css`
     display: grid;
     grid-template-columns: 1.5fr 0.5fr;
     gap: var(--ha-space-4);
-    align-items: center;
+    align-items: flex-start;
   }
 
   .main-content-left {
@@ -106,6 +106,8 @@ export const cardStyles = css`
     flex-direction: column;
     align-items: center;
     gap: 6px;
+
+    align-self: center;
     text-align: center;
   }
 
