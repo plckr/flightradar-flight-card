@@ -4,6 +4,7 @@ import * as v from 'valibot';
 
 import { CARD_NAME, CardConfig, DEFAULT_CONFIG } from './const';
 import { AreaFlight } from './flight-area-card';
+import { KeyString, localize } from './localize/localize';
 import { cardStyles, resetStyles } from './styles';
 import { ChangedProps, HomeAssistant } from './types/homeassistant';
 import { computeAirlineIcao, getAirlineName } from './utils/airline-icao';
@@ -45,6 +46,10 @@ export class FlightradarFlightCard extends LitElement {
   }
 
   protected render() {
+    const t = (key: KeyString, params?: Record<string, string>) => {
+      return localize(key, this.hass.locale.language, params);
+    };
+
     const entityId = this._config.entity;
     const stateObj = this.hass.states[entityId];
 
@@ -87,7 +92,7 @@ export class FlightradarFlightCard extends LitElement {
           const airline = f.airline_short || f.airline;
 
           if (airline === 'Private owner') {
-            return 'Aeronave privada';
+            return t('airline.private');
           }
 
           return airline;
