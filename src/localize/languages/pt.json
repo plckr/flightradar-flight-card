@@ -1,0 +1,18 @@
+{
+  "altitude": "Altitude",
+  "ground_speed": "Velocidade de solo",
+  "distance": "Distância",
+
+  "airline": {
+    "private": "Aeronave privada",
+    "unknown": "Desconhecido"
+  },
+
+  "origin_unknown": "Desconhecido",
+  "destination_unknown": "Desconhecido",
+
+  "flight": {
+    "live": "Live",
+    "time_remaining": "Restam {time} para chegar a {destination}"
+  }
+}

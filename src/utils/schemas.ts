@@ -2,16 +2,19 @@ import * as v from 'valibot';
 
 export type MostTrackedFlight = v.InferOutput<typeof areaFlightSchema>;
 
-const callsignSchema = v.pipe(
-  v.string(),
-  v.transform((value) => value.replace(/\u0004/, ''))
+const callsignSchema = v.nullable(
+  v.pipe(
+    v.string(),
+    v.transform((value) => value.replace(/\u0004/, '')),
+    v.transform((value) => (value === 'Blocked' ? null : value))
+  )
 );
 
 export const mostTrackedFlightSchema = v.object({
   _type: v.optional(v.literal('tracked'), 'tracked'),
   id: v.string(),
   flight_number: v.nullable(v.string()),
-  callsign: v.nullable(callsignSchema),
+  callsign: callsignSchema,
   squawk: v.nullable(v.string()),
   clicks: v.number(),
   airport_origin_code_iata: v.nullable(v.string()),
@@ -30,7 +33,7 @@ export const areaFlightSchema = v.object({
   _type: v.optional(v.literal('area'), 'area'),
   id: v.string(),
   flight_number: v.nullable(v.string()),
-  callsign: v.nullable(callsignSchema),
+  callsign: callsignSchema,
   aircraft_registration: v.nullable(v.string()),
   aircraft_photo_small: v.nullable(v.string()),
   aircraft_photo_medium: v.nullable(v.string()),

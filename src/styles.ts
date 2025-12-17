@@ -28,6 +28,7 @@ export const cardStyles = css`
     opacity: 0.7;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    margin-bottom: 12px;
   }
 
   .main-content {
@@ -38,7 +39,6 @@ export const cardStyles = css`
   }
 
   .main-content-left {
-    margin-top: 12px;
     font-size: 26px;
     line-height: 1.15;
     font-weight: var(--ha-font-weight-bold, 600);

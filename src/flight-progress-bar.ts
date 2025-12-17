@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
+import { KeyString, localize } from './localize/localize';
 import { resetStyles } from './styles';
 import { HomeAssistant } from './types/homeassistant';
 import { formatRelativeTime } from './utils/date';
@@ -82,6 +83,10 @@ export class FlightProgressBar extends LitElement {
     `,
   ];
 
+  private t(key: KeyString, params?: Record<string, string>) {
+    return localize(key, this.hass.locale.language, params);
+  }
+
   public render() {
     const relativeTime = formatRelativeTime(
       this._now,
@@ -105,7 +110,12 @@ export class FlightProgressBar extends LitElement {
         <ha-icon icon="mdi:airplane" />
       </div>
 
-      <p class="text">Restam ${relativeTime} para chegar a ${this.destination}</p>
+      <p class="text">
+        ${this.t('flight.time_remaining', {
+          time: relativeTime,
+          destination: this.destination,
+        })}
+      </p>
     `;
   }
 }

@@ -90,14 +90,14 @@ export class FlightradarFlightCard extends LitElement {
             return 'Aeronave privada';
           }
 
-          return airline ?? 'Desconhecido';
+          return airline;
         },
         aircraftRegistration: f.aircraft_registration,
         aircraftPhoto: f.aircraft_photo_small,
         aircraftCode: f.aircraft_code,
         aircraftModel: f.aircraft_model,
-        origin: f.airport_origin_city || 'Desconhecido',
-        destination: f.airport_destination_city || 'Desconhecido',
+        origin: f.airport_origin_city,
+        destination: f.airport_destination_city,
         distance,
         altitude: f.altitude,
         groundSpeed: f.ground_speed,
@@ -127,13 +127,13 @@ export class FlightradarFlightCard extends LitElement {
         flightNumber: f.flight_number,
         callsign: f.callsign,
         airlineIcao,
-        airlineLabel: airlineLabel ?? 'Desconhecido',
+        airlineLabel,
         aircraftRegistration: null,
         aircraftPhoto: null,
         aircraftCode: f.aircraft_code,
         aircraftModel: f.aircraft_model,
-        origin: f.airport_origin_city || 'Desconhecido',
-        destination: f.airport_destination_city || 'Desconhecido',
+        origin: f.airport_origin_city,
+        destination: f.airport_destination_city,
         distance: 0,
         altitude: 0,
         groundSpeed: 0,

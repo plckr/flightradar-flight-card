@@ -1,0 +1,18 @@
+{
+  "altitude": "Altitude",
+  "ground_speed": "Ground speed",
+  "distance": "Distance",
+
+  "airline": {
+    "private": "Private owner",
+    "unknown": "Unknown"
+  },
+
+  "origin_unknown": "Unknown",
+  "destination_unknown": "Unknown",
+
+  "flight": {
+    "live": "Live",
+    "time_remaining": "Remaining {time} to reach {destination}"
+  }
+}

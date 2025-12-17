@@ -1,6 +1,7 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
+import { KeyString, localize } from './localize/localize';
 import { cardStyles, resetStyles } from './styles';
 import { HomeAssistant } from './types/homeassistant';
 import { isValidAirlineLogo } from './utils/airline-icao';
@@ -9,7 +10,7 @@ import { round } from './utils/math';
 
 export type AreaFlight = {
   id: string;
-  title: string;
+  title?: string;
   aircraftRegistration: string | null;
   aircraftPhoto: string | null;
   aircraftCode: string | null;
@@ -17,11 +18,11 @@ export type AreaFlight = {
   airlineIcao: string | null;
   flightNumber: string | null;
   callsign: string | null;
-  airlineLabel: string;
+  airlineLabel: string | null;
   /** Origin airport */
-  origin: string;
+  origin: string | null;
   /** Destination airport */
-  destination: string;
+  destination: string | null;
   /** Distance to tracked area
    * @unit kilometers
    */
@@ -75,11 +76,15 @@ export class FlightradarFlightCard extends LitElement {
     </a>`;
   }
 
+  private t(key: KeyString, params?: Record<string, string>) {
+    return localize(key, this.hass.locale.language, params);
+  }
+
   protected render() {
     return html`
       <ha-card>
         <div>
-          <div class="title">${this.flight.title}</div>
+          ${this.flight.title ? html` <div class="title">${this.flight.title}</div> ` : nothing}
 
           <div class="main-content">
             <div class="main-content-left">
@@ -92,7 +97,7 @@ export class FlightradarFlightCard extends LitElement {
                       ${this.flight.isLive
                         ? html`
                             <div class="live-indicator">
-                              Live
+                              ${this.t('flight.live')}
                               <div class="pulse"></div>
                             </div>
                           `
@@ -100,28 +105,29 @@ export class FlightradarFlightCard extends LitElement {
                     </div>
                   `
                 : nothing}
-
-              <div class="flight-locations">
-                ${this.flight.origin}
-                <ha-icon icon="mdi:arrow-right"></ha-icon>
-                ${this.flight.destination}
-              </div>
+              ${this.flight.origin || this.flight.destination
+                ? html` <div class="flight-locations">
+                    ${this.flight.origin ?? this.t('origin_unknown')}
+                    <ha-icon icon="mdi:arrow-right"></ha-icon>
+                    ${this.flight.destination ?? this.t('destination_unknown')}
+                  </div>`
+                : nothing}
 
               <div class="flight-speed-info-container">
                 <div>
-                  <p class="label">Altitude</p>
+                  <p class="label">${this.t('altitude')}</p>
                   <p class="value">${this.flight.altitude} ft</p>
                 </div>
 
                 <div>
-                  <p class="label">Velocidade de solo</p>
+                  <p class="label">${this.t('ground_speed')}</p>
                   <p class="value">${this.flight.groundSpeed} kts</p>
                 </div>
 
                 ${this.flight.distance
                   ? html`
                       <div>
-                        <p class="label">Distância</p>
+                        <p class="label">${this.t('distance')}</p>
                         <p class="value">${round(this.flight.distance, 1)} km</p>
                       </div>
                     `
@@ -140,7 +146,7 @@ export class FlightradarFlightCard extends LitElement {
                     `
                   : nothing}
 
-                <p>${this.flight.airlineLabel}</p>
+                <p>${this.flight.airlineLabel ?? this.t('airline.unknown')}</p>
               </div>
 
               ${this.flight.aircraftPhoto
