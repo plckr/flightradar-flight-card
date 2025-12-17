@@ -5,9 +5,11 @@ import { cardStyles, resetStyles } from './styles';
 import { HomeAssistant } from './types/homeassistant';
 import { isValidAirlineLogo } from './utils/airline-icao';
 import { getFlightLabel } from './utils/flight';
+import { round } from './utils/math';
 
 export type AreaFlight = {
   id: string;
+  title: string;
   aircraftRegistration: string | null;
   aircraftPhoto: string | null;
   aircraftCode: string | null;
@@ -23,7 +25,7 @@ export type AreaFlight = {
   /** Distance to tracked area
    * @unit kilometers
    */
-  distance: number;
+  distance?: number;
   /** Barometric pressure altitude above mean sea level (AMSL)
    * @unit feet
    */
@@ -77,9 +79,7 @@ export class FlightradarFlightCard extends LitElement {
     return html`
       <ha-card>
         <div>
-          <div class="title">
-            Último avião a sobrevoar (a ${this.flight.distance.toFixed(1)} km)
-          </div>
+          <div class="title">${this.flight.title}</div>
 
           <div class="main-content">
             <div class="main-content-left">
@@ -117,6 +117,15 @@ export class FlightradarFlightCard extends LitElement {
                   <p class="label">Velocidade de solo</p>
                   <p class="value">${this.flight.groundSpeed} kts</p>
                 </div>
+
+                ${this.flight.distance
+                  ? html`
+                      <div>
+                        <p class="label">Distância</p>
+                        <p class="value">${round(this.flight.distance, 1)} km</p>
+                      </div>
+                    `
+                  : nothing}
               </div>
             </div>
 

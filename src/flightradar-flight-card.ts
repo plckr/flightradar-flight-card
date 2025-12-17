@@ -70,8 +70,11 @@ export class FlightradarFlightCard extends LitElement {
     }
 
     if (f._type === 'area') {
+      const distance = f.closest_distance ?? f.distance;
+
       const flight: AreaFlight = {
         id: f.id,
+        title: `Último avião a sobrevoar (a ${distance.toFixed(1)} km)`,
         flightNumber: f.flight_number,
         callsign: f.callsign,
         airlineIcao:
@@ -95,7 +98,7 @@ export class FlightradarFlightCard extends LitElement {
         aircraftModel: f.aircraft_model,
         origin: f.airport_origin_city || 'Desconhecido',
         destination: f.airport_destination_city || 'Desconhecido',
-        distance: f.closest_distance ?? f.distance,
+        distance,
         altitude: f.altitude,
         groundSpeed: f.ground_speed,
         departureTime: f.time_real_departure ?? undefined,
@@ -120,6 +123,7 @@ export class FlightradarFlightCard extends LitElement {
 
       const flight: AreaFlight = {
         id: f.id,
+        title: 'Most tracked flights from FlightRadar24',
         flightNumber: f.flight_number,
         callsign: f.callsign,
         airlineIcao,

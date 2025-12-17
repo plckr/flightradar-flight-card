@@ -49,7 +49,6 @@ export const cardStyles = css`
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 4px;
   }
 
   .callsign-info > p {
@@ -77,16 +76,18 @@ export const cardStyles = css`
   }
 
   .flight-locations {
-    margin-top: 6px;
+    margin-top: 8px;
     font-size: 17px;
     opacity: 0.9;
     --mdc-icon-size: 14px;
   }
 
   .flight-speed-info-container {
-    margin-top: 8px;
+    margin-top: 12px;
     display: flex;
-    gap: 24px;
+    flex-wrap: wrap;
+    column-gap: 24px;
+    row-gap: 6px;
   }
 
   .flight-speed-info-container .label {
