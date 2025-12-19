@@ -23,7 +23,7 @@ export class FlightProgressBar extends LitElement {
   @state()
   private _now: Date = new Date();
 
-  private _timerInterval?: number;
+  private _timerInterval?: NodeJS.Timeout;
 
   connectedCallback() {
     super.connectedCallback();
