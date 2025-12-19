@@ -84,10 +84,10 @@ export class FlightradarFlightCard extends LitElement {
   protected render() {
     const flightInfos = (
       [
-        [this.t('altitude'), this.flight.altitude],
-        [this.t('ground_speed'), this.flight.groundSpeed],
-        [this.t('distance'), this.flight.distance, (v) => round(v, 1)],
-      ] satisfies Array<[string, number | undefined, ((v: number) => number)?]>
+        [this.t('altitude'), this.flight.altitude, (v) => `${v} ft`],
+        [this.t('ground_speed'), this.flight.groundSpeed, (v) => `${v} kts`],
+        [this.t('distance'), this.flight.distance, (v) => `${round(v, 1)} km`],
+      ] satisfies Array<[string, number | undefined, ((v: number) => number | string)?]>
     ).flatMap(([label, value, formatter]) => {
       if (defined(value)) {
         return { label, value: formatter?.(value) ?? value };
@@ -134,7 +134,7 @@ export class FlightradarFlightCard extends LitElement {
                         ({ label, value }) => html`
                           <div>
                             <p class="label">${label}</p>
-                            <p class="value">${value} ft</p>
+                            <p class="value">${value}</p>
                           </div>
                         `
                       )}
