@@ -13,7 +13,7 @@
     "publish": false
   },
   "hooks": {
-    "before:init": ["npm run lint", "npm run build"],
+    "before:init": ["npm run format:check", "npm run build"],
     "after:bump": "npm run build"
   },
   "plugins": {
