@@ -1,4 +1,4 @@
-import { version } from '../package.json';
+import { repository, version } from '../package.json';
 
 export const CARD_VERSION = version;
 
@@ -14,3 +14,6 @@ export type CardConfig = {
 };
 
 export const DEFAULT_CONFIG: Partial<CardConfig> = {};
+
+export const GITHUB_REPOSITORY_URL = repository.url;
+export const GITHUB_REPOSITORY = repository.url.split('/').slice(-2).join('/');

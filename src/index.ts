@@ -2,7 +2,7 @@ import './flight-area-card';
 import './flightradar-flight-card';
 import './flight-progress-bar';
 
-import { CARD_DESCRIPTION, CARD_NAME, CARD_VERSION } from './const';
+import { CARD_DESCRIPTION, CARD_NAME, CARD_VERSION, GITHUB_REPOSITORY_URL } from './const';
 import { registerCustomCard } from './utils/register-card';
 
 console.info(
@@ -15,4 +15,5 @@ registerCustomCard({
   type: CARD_NAME,
   name: 'Flightradar Flight Card',
   description: CARD_DESCRIPTION,
+  documentationURL: GITHUB_REPOSITORY_URL,
 });

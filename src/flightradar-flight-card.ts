@@ -4,6 +4,7 @@ import * as v from 'valibot';
 
 import { CARD_NAME, CardConfig, DEFAULT_CONFIG } from './const';
 import { AreaFlight } from './flight-area-card';
+import { EDITOR_NAME } from './flightradar-flight-card-editor';
 import { KeyString, localize } from './localize/localize';
 import { resetStyles } from './styles';
 import { ChangedProps, HomeAssistant } from './types/homeassistant';
@@ -46,6 +47,24 @@ export class FlightradarFlightCard extends LitElement {
 
   public getCardSize(): number {
     return 3;
+  }
+
+  public static getStubConfig(
+    _hass: HomeAssistant,
+    _entities: string[],
+    _entitiesFallback: string[]
+  ): CardConfig {
+    return {
+      entities: [
+        { entity_id: 'sensor.flightradar24_current_in_area', title: 'Currently in area' },
+        { entity_id: 'sensor.flightradar24_most_tracked' },
+      ],
+    };
+  }
+
+  public static async getConfigElement() {
+    await import('./flightradar-flight-card-editor');
+    return document.createElement(EDITOR_NAME);
   }
 
   protected shouldUpdate(changedProps: ChangedProps): boolean {
