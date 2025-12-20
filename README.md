@@ -65,6 +65,10 @@ entities:
     title: Most Tracked
 ```
 
+## Credits
+
+Huge thanks for [potseeslc](https://github.com/potseeslc/flight24-airline-card) that inspired me to create this custom card. The design is heavily inspired by his version.
+
 ## Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
