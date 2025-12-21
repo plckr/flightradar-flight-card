@@ -1,11 +1,20 @@
-name: Upload Release Asset
+name: Create Release
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -25,7 +34,5 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload Release Asset
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/flightradar-flight-card.js
+      - name: Create Github Release
+        run: npm run release -- --ci ${{ inputs.version }}
