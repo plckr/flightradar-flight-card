@@ -16,6 +16,8 @@
     "update-flightradar24-integration": "bash scripts/update-flightradar24-integration.sh",
     "format": "prettier --write ./src",
     "format:check": "prettier --check src/**/*.ts",
+    "check-types": "tsc --noEmit",
+    "validate": "npm run format:check && npm run check-types",
     "release": "release-it"
   },
   "keywords": [

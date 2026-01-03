@@ -8,12 +8,13 @@
     "release": true,
     "releaseName": "v${version}",
     "autoGenerate": true,
-    "assets": ["dist/flightradar-flight-card.js"]
+    "assets": ["dist/flightradar-flight-card.js"],
+    "draft": true
   },
   "npm": {
     "publish": false
   },
   "hooks": {
-    "before:init": ["npm run format:check", "npm run build"]
+    "before:init": ["npm run validate", "npm run build"]
   }
 }
