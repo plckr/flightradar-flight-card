@@ -2,7 +2,7 @@
 
 A custom Home Assistant card for displaying Flightradar flight information.
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 [![GitHub Release](https://img.shields.io/github/release/plckr/flightradar-flight-card.svg)](https://github.com/plckr/flightradar-flight-card/releases)
 
 <picture>
@@ -23,13 +23,12 @@ This card requires the [Flightradar24 integration](https://github.com/AlexandrEr
 
 ### HACS (Recommended)
 
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=plckr&repository=flightradar-flight-card&category=plugin)
+
 1. Open [HACS](https://www.hacs.xyz/) in your Home Assistant instance
-2. Click on the three dots menu in the top right corner
-3. Select **Custom repositories**
-4. Add `https://github.com/plckr/flightradar-flight-card` as a **Dashboard** repository
-5. Search for "Flightradar Flight Card"
-6. Click "Install"
-7. Refresh your browser
+2. Search for "Flightradar Flight Card"
+3. Click "Install"
+4. Refresh your browser
 
 ### Manual Installation
 
