@@ -1,7 +1,5 @@
 import * as v from 'valibot';
 
-export type MostTrackedFlight = v.InferOutput<typeof areaFlightSchema>;
-
 const callsignSchema = v.nullable(
   v.pipe(
     v.string(),
@@ -9,6 +7,8 @@ const callsignSchema = v.nullable(
     v.transform((value) => (value === 'Blocked' ? null : value))
   )
 );
+
+export type FRMostTrackedFlight = v.InferOutput<typeof mostTrackedFlightSchema>;
 
 export const mostTrackedFlightSchema = v.object({
   _type: v.optional(v.literal('tracked'), 'tracked'),
@@ -27,7 +27,7 @@ export const mostTrackedFlightSchema = v.object({
   tracked_by_device: v.optional(v.string()),
 });
 
-export type AreaFlight = v.InferOutput<typeof areaFlightSchema>;
+export type FRAreaFlight = v.InferOutput<typeof areaFlightSchema>;
 
 export const areaFlightSchema = v.object({
   _type: v.optional(v.literal('area'), 'area'),
@@ -85,3 +85,19 @@ export const areaFlightSchema = v.object({
   /** Additional tracked doesn't have this property */
   tracked_by_device: v.optional(v.string()),
 });
+
+export function parseFlight(
+  data: unknown
+): FRMostTrackedFlight | FRAreaFlight | { _type: 'unknown' } {
+  return v.parse(
+    v.fallback(
+      v.union([
+        mostTrackedFlightSchema,
+        areaFlightSchema,
+        v.object({ _type: v.literal('unknown') }),
+      ]),
+      { _type: 'unknown' }
+    ),
+    data
+  );
+}

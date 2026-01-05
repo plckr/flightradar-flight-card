@@ -1,16 +1,15 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import * as v from 'valibot';
 
 import { CARD_NAME, CardConfig, DEFAULT_CONFIG } from './const';
-import { AreaFlight } from './flight-area-card';
+import { FlightData } from './flight-area-card';
 import { EDITOR_NAME } from './flightradar-flight-card-editor';
 import { getTFunc } from './localize/localize';
 import { resetStyles } from './styles';
 import { ChangedProps, HomeAssistant } from './types/homeassistant';
 import { computeAirlineIcao, getAirlineName } from './utils/airline-icao';
 import { hasConfigChanged, hasEntityChanged } from './utils/has-changed';
-import { areaFlightSchema, mostTrackedFlightSchema } from './utils/schemas';
+import { FRAreaFlight, FRMostTrackedFlight, parseFlight } from './utils/schemas';
 import { defined } from './utils/type-guards';
 
 @customElement(CARD_NAME)
@@ -110,17 +109,7 @@ export class FlightradarFlightCard extends LitElement {
 
         return {
           title: entity.title,
-          flight: v.parse(
-            v.fallback(
-              v.union([
-                mostTrackedFlightSchema,
-                areaFlightSchema,
-                v.object({ _type: v.literal('unknown') }),
-              ]),
-              { _type: 'unknown' }
-            ),
-            data
-          ),
+          flight: parseFlight(data),
         };
       })
       .filter(defined)
@@ -133,22 +122,48 @@ export class FlightradarFlightCard extends LitElement {
 
     const { flight: f, title: cardTitle } = entries[0];
 
-    if (f._type === 'area') {
-      const distance = f.closest_distance ?? f.distance;
+    if (f._type === 'unknown' || !entries.length) {
+      return html`<ha-card>
+        <ha-icon icon="mdi:airplane"></ha-icon>
+        <span>${t('no_flights')}</span>
+      </ha-card>`;
+    }
 
-      const flight: AreaFlight = {
-        id: f.id,
-        title: cardTitle || t('title.default_area'),
-        flightNumber: f.flight_number,
-        callsign: f.callsign,
+    const flightData = getFlightCardData(f, {
+      customTitle: cardTitle,
+      locale: this.hass.locale.language,
+    });
+
+    return html`<flight-area-card .hass=${this.hass} .flight=${flightData}></flight-area-card>`;
+  }
+}
+
+function getFlightCardData(
+  flight: FRMostTrackedFlight | FRAreaFlight,
+  options: {
+    customTitle?: string;
+    locale: string;
+  }
+): FlightData {
+  const { t } = getTFunc(options.locale);
+
+  switch (flight._type) {
+    case 'area': {
+      const distance = flight.closest_distance ?? flight.distance;
+
+      return {
+        id: flight.id,
+        title: options.customTitle || t('title.default_area'),
+        flightNumber: flight.flight_number,
+        callsign: flight.callsign,
         airlineIcao:
-          f.airline_icao ??
+          flight.airline_icao ??
           computeAirlineIcao({
-            flightNumber: f.flight_number,
-            callsign: f.callsign,
+            flightNumber: flight.flight_number,
+            callsign: flight.callsign,
           }),
         get airlineLabel() {
-          const airline = f.airline_short || f.airline;
+          const airline = flight.airline_short || flight.airline;
 
           if (airline === 'Private owner') {
             return t('airline.private');
@@ -156,61 +171,52 @@ export class FlightradarFlightCard extends LitElement {
 
           return airline;
         },
-        aircraftRegistration: f.aircraft_registration,
-        aircraftPhoto: f.aircraft_photo_small,
-        aircraftCode: f.aircraft_code,
-        aircraftModel: f.aircraft_model,
-        origin: f.airport_origin_city,
-        destination: f.airport_destination_city,
+        aircraftRegistration: flight.aircraft_registration,
+        aircraftPhoto: flight.aircraft_photo_small,
+        aircraftCode: flight.aircraft_code,
+        aircraftModel: flight.aircraft_model,
+        origin: flight.airport_origin_city,
+        destination: flight.airport_destination_city,
         distance,
-        altitude: f.altitude,
-        groundSpeed: f.ground_speed,
+        altitude: flight.altitude,
+        groundSpeed: flight.ground_speed,
         departureTime:
-          f.time_real_departure ??
-          f.time_estimated_departure ??
-          f.time_scheduled_departure ??
+          flight.time_real_departure ??
+          flight.time_estimated_departure ??
+          flight.time_scheduled_departure ??
           undefined,
-        arrivalTime: f.time_estimated_arrival ?? f.time_scheduled_arrival ?? undefined,
+        arrivalTime: flight.time_estimated_arrival ?? flight.time_scheduled_arrival ?? undefined,
         get isLive() {
           if (!this.arrivalTime) return false;
 
           return this.arrivalTime > Date.now() / 1000;
         },
       };
-
-      return html`<flight-area-card .hass=${this.hass} .flight=${flight}></flight-area-card>`;
     }
 
-    if (f._type === 'tracked') {
+    case 'tracked': {
       const airlineIcao = computeAirlineIcao({
-        flightNumber: f.flight_number,
-        callsign: f.callsign,
+        flightNumber: flight.flight_number,
+        callsign: flight.callsign,
       });
 
       const airlineLabel = airlineIcao ? getAirlineName(airlineIcao) : null;
 
-      const flight: AreaFlight = {
-        id: f.id,
-        title: cardTitle || t('title.default_mosttracked'),
-        flightNumber: f.flight_number,
-        callsign: f.callsign,
+      return {
+        id: flight.id,
+        title: options.customTitle || t('title.default_mosttracked'),
+        flightNumber: flight.flight_number,
+        callsign: flight.callsign,
         airlineIcao,
         airlineLabel,
         aircraftRegistration: null,
         aircraftPhoto: null,
-        aircraftCode: f.aircraft_code,
-        aircraftModel: f.aircraft_model,
-        origin: f.airport_origin_city,
-        destination: f.airport_destination_city,
+        aircraftCode: flight.aircraft_code,
+        aircraftModel: flight.aircraft_model,
+        origin: flight.airport_origin_city,
+        destination: flight.airport_destination_city,
         isLive: true,
       };
-
-      return html`<flight-area-card .hass=${this.hass} .flight=${flight}></flight-area-card>`;
     }
-
-    return html`<ha-card>
-      <ha-icon icon="mdi:airplane"></ha-icon>
-      <span>${t('no_flights')}</span>
-    </ha-card>`;
   }
 }

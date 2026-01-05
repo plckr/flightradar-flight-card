@@ -9,7 +9,7 @@ import { getFlightLabel } from './utils/flight';
 import { round } from './utils/math';
 import { defined } from './utils/type-guards';
 
-export type AreaFlight = {
+export type FlightData = {
   id: string;
   title?: string;
   aircraftRegistration: string | null;
@@ -49,7 +49,7 @@ export class FlightradarFlightCard extends LitElement {
   public hass!: HomeAssistant;
 
   @property({ type: Object })
-  public flight!: AreaFlight;
+  public flight!: FlightData;
 
   static styles = [resetStyles, cardStyles];
 
