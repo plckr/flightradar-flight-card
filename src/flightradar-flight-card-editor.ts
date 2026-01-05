@@ -2,7 +2,7 @@ import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { CARD_NAME, CardConfig, GITHUB_REPOSITORY, GITHUB_REPOSITORY_URL } from './const';
-import { KeyString, localize } from './localize/localize';
+import { getTFunc } from './localize/localize';
 import { HomeAssistant } from './types/homeassistant';
 
 export const EDITOR_NAME = `${CARD_NAME}-editor`;
@@ -64,9 +64,7 @@ export class FlightradarFlightCardEditor extends LitElement {
       return nothing;
     }
 
-    const t = (key: KeyString, params?: Record<string, string>) => {
-      return localize(key, this.hass.locale.language, params);
-    };
+    const { t } = getTFunc(this.hass.locale.language);
 
     const entities = this._config.entities || [];
 

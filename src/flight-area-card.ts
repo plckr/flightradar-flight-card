@@ -1,7 +1,7 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import { KeyString, localize } from './localize/localize';
+import { getTFunc } from './localize/localize';
 import { cardStyles, resetStyles } from './styles';
 import { HomeAssistant } from './types/homeassistant';
 import { isValidAirlineLogo } from './utils/airline-icao';
@@ -77,16 +77,14 @@ export class FlightradarFlightCard extends LitElement {
     </a>`;
   }
 
-  private t(key: KeyString, params?: Record<string, string>) {
-    return localize(key, this.hass.locale.language, params);
-  }
-
   protected render() {
+    const { t } = getTFunc(this.hass.locale.language);
+
     const flightInfos = (
       [
-        [this.t('altitude'), this.flight.altitude, (v) => `${v} ft`],
-        [this.t('ground_speed'), this.flight.groundSpeed, (v) => `${v} kts`],
-        [this.t('distance'), this.flight.distance, (v) => `${round(v, 1)} km`],
+        [t('altitude'), this.flight.altitude, (v) => `${v} ft`],
+        [t('ground_speed'), this.flight.groundSpeed, (v) => `${v} kts`],
+        [t('distance'), this.flight.distance, (v) => `${round(v, 1)} km`],
       ] satisfies Array<[string, number | undefined, ((v: number) => number | string)?]>
     ).flatMap(([label, value, formatter]) => {
       if (defined(value)) {
@@ -112,7 +110,7 @@ export class FlightradarFlightCard extends LitElement {
                       ${this.flight.isLive
                         ? html`
                             <div class="live-indicator">
-                              ${this.t('flight.live')}
+                              ${t('flight.live')}
                               <div class="pulse"></div>
                             </div>
                           `
@@ -122,9 +120,9 @@ export class FlightradarFlightCard extends LitElement {
                 : nothing}
               ${defined(this.flight.origin) || defined(this.flight.destination)
                 ? html` <div class="flight-locations">
-                    ${this.flight.origin ?? this.t('origin_unknown')}
+                    ${this.flight.origin ?? t('origin_unknown')}
                     <ha-icon icon="mdi:arrow-right"></ha-icon>
-                    ${this.flight.destination ?? this.t('destination_unknown')}
+                    ${this.flight.destination ?? t('destination_unknown')}
                   </div>`
                 : nothing}
               ${flightInfos.length
@@ -154,7 +152,7 @@ export class FlightradarFlightCard extends LitElement {
                     `
                   : nothing}
 
-                <p>${this.flight.airlineLabel ?? this.t('airline.unknown')}</p>
+                <p>${this.flight.airlineLabel ?? t('airline.unknown')}</p>
               </div>
 
               ${this.flight.aircraftPhoto

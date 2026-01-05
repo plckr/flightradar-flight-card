@@ -53,3 +53,11 @@ function getKeyString(key: string, translations: DeepObject): string | undefined
 
   return undefined;
 }
+
+export function getTFunc(locale: string) {
+  const t = (key: KeyString, params?: Record<string, string>) => {
+    return localize(key, locale, params);
+  };
+
+  return { t };
+}

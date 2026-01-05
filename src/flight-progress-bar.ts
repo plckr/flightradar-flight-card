@@ -1,7 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { KeyString, localize } from './localize/localize';
+import { getTFunc } from './localize/localize';
 import { resetStyles } from './styles';
 import { HomeAssistant } from './types/homeassistant';
 import { formatTimeLeft } from './utils/date';
@@ -83,11 +83,9 @@ export class FlightProgressBar extends LitElement {
     `,
   ];
 
-  private t(key: KeyString, params?: Record<string, string>) {
-    return localize(key, this.hass.locale.language, params);
-  }
-
   public render() {
+    const { t } = getTFunc(this.hass.locale.language);
+
     const nowSeconds = this._now.getTime() / 1000;
     const timeLeft = formatTimeLeft(this.arrivalTime - nowSeconds, this.hass.locale.language);
     const percent = (nowSeconds - this.departureTime) / (this.arrivalTime - this.departureTime);
@@ -105,7 +103,7 @@ export class FlightProgressBar extends LitElement {
       </div>
 
       <p class="text">
-        ${this.t('flight.time_remaining', {
+        ${t('flight.time_remaining', {
           time: timeLeft,
           destination: this.destination,
         })}

@@ -5,7 +5,7 @@ import * as v from 'valibot';
 import { CARD_NAME, CardConfig, DEFAULT_CONFIG } from './const';
 import { AreaFlight } from './flight-area-card';
 import { EDITOR_NAME } from './flightradar-flight-card-editor';
-import { KeyString, localize } from './localize/localize';
+import { getTFunc } from './localize/localize';
 import { resetStyles } from './styles';
 import { ChangedProps, HomeAssistant } from './types/homeassistant';
 import { computeAirlineIcao, getAirlineName } from './utils/airline-icao';
@@ -96,9 +96,7 @@ export class FlightradarFlightCard extends LitElement {
       return html`<hui-error-card>Something went wrong: check console for errors</hui-error-card>`;
     }
 
-    const t = (key: KeyString, params?: Record<string, string>) => {
-      return localize(key, this.hass.locale.language, params);
-    };
+    const { t } = getTFunc(this.hass.locale.language);
 
     const entries = this._config.entities
       .map((entity) => {
