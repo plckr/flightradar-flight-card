@@ -29,6 +29,19 @@
     "remove_entity_button": "Remove",
     "add_entity_button": "Add Entity",
     "usage_description": "Adding more entities will be used as fallback in case flights were not found on previous entities.",
-    "more_info_link": "More info on"
+    "more_info_link": "More info on",
+    "units_section": "Display Units",
+    "altitude_unit": "Altitude",
+    "distance_unit": "Distance",
+    "ground_speed_unit": "Ground Speed",
+    "unit_ft": "Feet (ft)",
+    "unit_fl": "Flight Level (FL)",
+    "unit_m": "Meters (m)",
+    "unit_km": "Kilometers (km)",
+    "unit_nm": "Nautical Miles (NM)",
+    "unit_kts": "Knots (kts)",
+    "unit_kmh": "Kilometers per hour (km/h)",
+    "unit_mph": "Miles per hour (mph)",
+    "unit_mach": "Mach (M)"
   }
 }

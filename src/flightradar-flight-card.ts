@@ -11,6 +11,7 @@ import { computeAirlineIcao, getAirlineName } from './utils/airline-icao';
 import { hasConfigChanged, hasEntityChanged } from './utils/has-changed';
 import { FRAreaFlight, FRMostTrackedFlight, parseFlight } from './utils/schemas';
 import { defined } from './utils/type-guards';
+import { DEFAULT_UNITS } from './utils/units';
 
 @customElement(CARD_NAME)
 export class FlightradarFlightCard extends LitElement {
@@ -134,7 +135,13 @@ export class FlightradarFlightCard extends LitElement {
       locale: this.hass.locale.language,
     });
 
-    return html`<flight-area-card .hass=${this.hass} .flight=${flightData}></flight-area-card>`;
+    const unitOptions = { ...DEFAULT_UNITS, ...this._config.units };
+
+    return html`<flight-area-card
+      .hass=${this.hass}
+      .flight=${flightData}
+      .units=${unitOptions}
+    ></flight-area-card>`;
   }
 }
 

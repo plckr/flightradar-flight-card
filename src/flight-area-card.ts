@@ -6,8 +6,9 @@ import { cardStyles, resetStyles } from './styles';
 import { HomeAssistant } from './types/homeassistant';
 import { isValidAirlineLogo } from './utils/airline-icao';
 import { getFlightLabel } from './utils/flight';
-import { round } from './utils/math';
 import { defined } from './utils/type-guards';
+import { DEFAULT_UNITS, UnitOptions } from './utils/units';
+import { formatAltitude, formatDistance, formatGroundSpeed } from './utils/units';
 
 export type FlightData = {
   id: string;
@@ -51,6 +52,9 @@ export class FlightradarFlightCard extends LitElement {
   @property({ type: Object })
   public flight!: FlightData;
 
+  @property({ type: Object })
+  public units: UnitOptions = DEFAULT_UNITS;
+
   static styles = [resetStyles, cardStyles];
 
   protected renderFlightTitle() {
@@ -79,12 +83,17 @@ export class FlightradarFlightCard extends LitElement {
 
   protected render() {
     const { t } = getTFunc(this.hass.locale.language);
+    const units = { ...DEFAULT_UNITS, ...this.units };
 
     const flightInfos = (
       [
-        [t('altitude'), this.flight.altitude, (v) => `${v} ft`],
-        [t('ground_speed'), this.flight.groundSpeed, (v) => `${v} kts`],
-        [t('distance'), this.flight.distance, (v) => `${round(v, 1)} km`],
+        [t('altitude'), this.flight.altitude, (v) => formatAltitude(v, units.altitude)],
+        [
+          t('ground_speed'),
+          this.flight.groundSpeed,
+          (v) => formatGroundSpeed(v, units.ground_speed),
+        ],
+        [t('distance'), this.flight.distance, (v) => formatDistance(v, units.distance)],
       ] satisfies Array<[string, number | undefined, ((v: number) => number | string)?]>
     ).flatMap(([label, value, formatter]) => {
       if (defined(value)) {

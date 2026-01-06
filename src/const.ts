@@ -1,4 +1,5 @@
 import { repository, version } from '../package.json';
+import { DEFAULT_UNITS, UnitOptions } from './utils/units';
 
 export const CARD_VERSION = version;
 
@@ -11,9 +12,12 @@ export type CardConfig = {
     entity_id: string;
     title?: string;
   }>;
+  units?: Partial<UnitOptions>;
 };
 
-export const DEFAULT_CONFIG: Partial<CardConfig> = {};
+export const DEFAULT_CONFIG: Partial<CardConfig> = {
+  units: DEFAULT_UNITS,
+};
 
 export const GITHUB_REPOSITORY_URL = repository.url;
 export const GITHUB_REPOSITORY = repository.url.split('/').slice(-2).join('/');

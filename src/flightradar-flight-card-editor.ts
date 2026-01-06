@@ -4,6 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { CARD_NAME, CardConfig, GITHUB_REPOSITORY, GITHUB_REPOSITORY_URL } from './const';
 import { getTFunc } from './localize/localize';
 import { HomeAssistant } from './types/homeassistant';
+import { DEFAULT_UNITS, UnitOptions } from './utils/units';
 
 export const EDITOR_NAME = `${CARD_NAME}-editor`;
 
@@ -53,6 +54,19 @@ export class FlightradarFlightCardEditor extends LitElement {
     .add-entity {
       margin-top: 12px;
     }
+
+    .units-section {
+      margin-top: 16px;
+    }
+    .units-section-title {
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .units-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
   `;
 
   public setConfig(config: CardConfig): void {
@@ -67,6 +81,7 @@ export class FlightradarFlightCardEditor extends LitElement {
     const { t } = getTFunc(this.hass.locale.language);
 
     const entities = this._config.entities || [];
+    const units = { ...DEFAULT_UNITS, ...this._config.units };
 
     return html`
       <ha-sortable handle-selector=".handle" @item-moved=${this._entityMoved}>
@@ -136,7 +151,65 @@ export class FlightradarFlightCardEditor extends LitElement {
         ${t('editor.more_info_link')}:
         <a href=${GITHUB_REPOSITORY_URL} target="_blank">${GITHUB_REPOSITORY}</a>
       </p>
+
+      <div class="units-section">
+        <div class="units-section-title">${t('editor.units_section')}</div>
+        <div class="units-grid">
+          <ha-select
+            .label=${t('editor.altitude_unit')}
+            .value=${units.altitude}
+            @selected=${(ev: CustomEvent) => {
+              this._unitChanged(
+                'altitude',
+                (ev.target as HTMLSelectElement).value as UnitOptions['altitude']
+              );
+            }}
+            @closed=${(ev: Event) => ev.stopPropagation()}
+          >
+            <mwc-list-item value="ft">${t('editor.unit_ft')}</mwc-list-item>
+            <mwc-list-item value="FL">${t('editor.unit_fl')}</mwc-list-item>
+            <mwc-list-item value="m">${t('editor.unit_m')}</mwc-list-item>
+          </ha-select>
+
+          <ha-select
+            .label=${t('editor.distance_unit')}
+            .value=${units.distance}
+            @selected=${(ev: CustomEvent) => {
+              this._unitChanged(
+                'distance',
+                (ev.target as HTMLSelectElement).value as UnitOptions['distance']
+              );
+            }}
+            @closed=${(ev: Event) => ev.stopPropagation()}
+          >
+            <mwc-list-item value="km">${t('editor.unit_km')}</mwc-list-item>
+            <mwc-list-item value="NM">${t('editor.unit_nm')}</mwc-list-item>
+          </ha-select>
+
+          <ha-select
+            .label=${t('editor.ground_speed_unit')}
+            .value=${units.ground_speed}
+            @selected=${(ev: CustomEvent) => {
+              this._unitChanged(
+                'ground_speed',
+                (ev.target as HTMLSelectElement).value as UnitOptions['ground_speed']
+              );
+            }}
+            @closed=${(ev: Event) => ev.stopPropagation()}
+          >
+            <mwc-list-item value="kts">${t('editor.unit_kts')}</mwc-list-item>
+            <mwc-list-item value="kmh">${t('editor.unit_kmh')}</mwc-list-item>
+            <mwc-list-item value="mph">${t('editor.unit_mph')}</mwc-list-item>
+            <mwc-list-item value="M">${t('editor.unit_mach')}</mwc-list-item>
+          </ha-select>
+        </div>
+      </div>
     `;
+  }
+
+  private _unitChanged<K extends keyof UnitOptions>(key: K, value: UnitOptions[K]): void {
+    const units = { ...DEFAULT_UNITS, ...this._config.units, [key]: value };
+    this._updateConfig({ ...this._config, units });
   }
 
   private _entityChanged(index: number, value: string): void {

@@ -29,6 +29,19 @@
     "remove_entity_button": "Remover",
     "add_entity_button": "Adicionar Entidade",
     "usage_description": "Adicionar mais entidades irá ser usado como fallback caso os voos não sejam encontrados nas entidades anteriores.",
-    "more_info_link": "Mais informações em"
+    "more_info_link": "Mais informações em",
+    "units_section": "Unidades de Exibição",
+    "altitude_unit": "Altitude",
+    "distance_unit": "Distância",
+    "ground_speed_unit": "Velocidade de Solo",
+    "unit_ft": "Pés (ft)",
+    "unit_fl": "Nível de Voo (FL)",
+    "unit_m": "Metros (m)",
+    "unit_km": "Quilómetros (km)",
+    "unit_nm": "Milhas Náuticas (NM)",
+    "unit_kts": "Nós (kts)",
+    "unit_kmh": "Quilómetros por hora (km/h)",
+    "unit_mph": "Milhas por hora (mph)",
+    "unit_mach": "Mach (M)"
   }
 }
