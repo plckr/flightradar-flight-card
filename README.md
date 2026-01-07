@@ -54,12 +54,19 @@ entities:
 
 Card will look for a `flights` attribute in the entity provided, in case it doesn't find, it'll try the next entity. This is useful for cases where you maintain a list of current in area, and no flight is actually in the area at that moment, so the card will pick the next entity so that the card can always have something to render.
 
-| Option        | Type   | Required | Description                               |
-| ------------- | ------ | -------- | ----------------------------------------- |
-| `entities`    | array  | Yes      | List of flight sensor entities to display |
-| `- entity_id` | string | Yes      | The entity ID of your flight sensor       |
-| `- title`     | string | No       | Custom title for this flight card         |
-| `units`       | object | No       | Unit display preferences (see below)      |
+| Option     | Type   | Required | Description                                |
+| ---------- | ------ | -------- | ------------------------------------------ |
+| `entities` | array  | Yes      | List of flight sensor entities (see below) |
+| `units`    | object | No       | Unit display preferences (see below)       |
+
+### Entity Options
+
+Each entity in the `entities` array supports the following options:
+
+| Option      | Type   | Required | Description                         |
+| ----------- | ------ | -------- | ----------------------------------- |
+| `entity_id` | string | Yes      | The entity ID of your flight sensor |
+| `title`     | string | No       | Custom title for this flight card   |
 
 ### Unit Options
 
