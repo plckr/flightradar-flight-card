@@ -59,6 +59,23 @@ Card will look for a `flights` attribute in the entity provided, in case it does
 | `entities`    | array  | Yes      | List of flight sensor entities to display |
 | `- entity_id` | string | Yes      | The entity ID of your flight sensor       |
 | `- title`     | string | No       | Custom title for this flight card         |
+| `units`       | object | No       | Unit display preferences (see below)      |
+
+### Unit Options
+
+You can customize the display units for altitude, distance, and ground speed:
+
+| Option         | Type   | Default | Options                  | Description           |
+| -------------- | ------ | ------- | ------------------------ | --------------------- |
+| `altitude`     | string | `ft`    | `ft`, `FL`, `m`          | Altitude display unit |
+| `distance`     | string | `km`    | `km`, `NM`               | Distance display unit |
+| `ground_speed` | string | `kts`   | `kts`, `kmh`, `mph`, `M` | Ground speed unit     |
+
+**Unit descriptions:**
+
+- **Altitude**: `ft` (Feet), `FL` (Flight Level), `m` (Meters)
+- **Distance**: `km` (Kilometers), `NM` (Nautical Miles)
+- **Ground Speed**: `kts` (Knots), `kmh` (Kilometers per hour), `mph` (Miles per hour), `M` (Mach)
 
 ### Example Configuration
 
@@ -69,6 +86,10 @@ entities:
     title: Flights Nearby
   - entity_id: sensor.flightradar24_most_tracked
     title: Most Tracked
+units:
+  altitude: ft
+  distance: km
+  ground_speed: kts
 ```
 
 ## Use case example
