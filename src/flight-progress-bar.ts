@@ -80,7 +80,7 @@ export class FlightProgressBar extends LitElement {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%) rotate(45deg);
+        transform: translate(calc(-50% - 0.5px), -50%) rotate(45deg);
         --mdc-icon-size: var(--ha-space-4);
         color: var(--accent-color);
       }
