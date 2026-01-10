@@ -65,13 +65,23 @@ export class FlightProgressBar extends LitElement {
         border-radius: 999px;
       }
 
-      .bar > ha-icon {
+      .bar-icon {
         position: absolute;
-        top: 0px;
+        top: 50%;
         left: calc(var(--progress-percent) * 1%);
-        transform: translate(-50%, -50%);
+        width: var(--ha-space-5);
+        height: var(--ha-space-5);
+        transform: translate(-50%, calc((50% + 1px) * -1));
+        background: var(--ha-card-background, var(--card-background-color, #fff));
+        border-radius: 999px;
+      }
+
+      .bar-icon ha-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(45deg);
         --mdc-icon-size: var(--ha-space-4);
-        background: var(--card-background-color, #fff);
         color: var(--accent-color);
       }
 
@@ -99,7 +109,9 @@ export class FlightProgressBar extends LitElement {
         class="bar"
         style="--progress-percent: ${Math.round(percent * 100)};"
       >
-        <ha-icon icon="mdi:airplane" />
+        <div class="bar-icon">
+          <ha-icon icon="mdi:airplane" />
+        </div>
       </div>
 
       <p class="text">
