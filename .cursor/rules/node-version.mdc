@@ -1,0 +1,62 @@
+---
+description: Enforce using the correct Node.js version for this project
+globs:
+alwaysApply: true
+---
+
+# Node.js Version Requirement
+
+This project requires **Node.js version 22** as specified in `package.json` under the `engines` field.
+
+## Before Running Any Commands
+
+Before executing any npm, node, or build commands, you MUST:
+
+1. **Check the current Node version** by running `node --version`
+2. **If the version is not 22.x**, instruct the user to switch to the correct version using:
+   - `nvm use 22` (if using nvm)
+   - `fnm use 22` (if using fnm)
+   - Or any other version manager they prefer
+
+## Sandbox Permissions
+
+**IMPORTANT**: npm commands require special permissions to run correctly. The sandbox blocks npm from accessing node_modules and other required files.
+
+When running ANY npm command, you MUST request the `network` permission:
+
+- `npm install` - requires `network` permission (downloads packages from registry)
+- `npm run build` - requires `network` permission (npm needs to access its own modules)
+- `npm run watch` - requires `network` permission
+- Any other `npm` command - requires `network` permission
+
+**Never run npm commands without requesting permissions first**, as they will fail with EPERM errors.
+
+## When Installing Dependencies or Running Scripts
+
+Always remind the user to ensure they're using Node 22 before:
+
+- Running `npm install`
+- Running `npm run build`
+- Running `npm run watch`
+- Running any other npm scripts
+
+## Example Workflow
+
+```bash
+# First, ensure correct Node version
+nvm use 22  # or: fnm use 22
+
+# Then proceed with commands (with network permission)
+npm install
+npm run build
+```
+
+## Reference
+
+The Node version requirement is defined in `package.json`:
+
+```json
+"engines": {
+  "node": "22"
+}
+```

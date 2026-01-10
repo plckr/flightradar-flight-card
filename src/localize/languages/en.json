@@ -42,6 +42,7 @@
     "unit_kts": "Knots (kts)",
     "unit_kmh": "Kilometers per hour (km/h)",
     "unit_mph": "Miles per hour (mph)",
-    "unit_mach": "Mach (M)"
+    "unit_mach": "Mach (M)",
+    "carousel_toggle": "Enable carousel (cycle through multiple flights)"
   }
 }

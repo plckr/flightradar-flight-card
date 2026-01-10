@@ -11,6 +11,7 @@ export type CardConfig = {
   entities: Array<{
     entity_id: string;
     title?: string;
+    carousel?: boolean;
   }>;
   units?: Partial<UnitOptions>;
 };

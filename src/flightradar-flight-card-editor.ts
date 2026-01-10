@@ -47,8 +47,11 @@ export class FlightradarFlightCardEditor extends LitElement {
       flex-direction: column;
       gap: 8px;
     }
-    .remove-entity {
+    .form-field-carousel {
       margin-top: 8px;
+    }
+    .remove-entity {
+      margin-top: 16px;
     }
 
     .add-entity {
@@ -118,6 +121,15 @@ export class FlightradarFlightCardEditor extends LitElement {
                         this._titleChanged(index, (ev.target as HTMLInputElement).value);
                       }}
                     ></ha-textfield>
+
+                    <ha-formfield class="form-field-carousel" .label=${t('editor.carousel_toggle')}>
+                      <ha-switch
+                        .checked=${entity.carousel || false}
+                        @change=${(ev: Event) => {
+                          this._carouselChanged(index, (ev.target as HTMLInputElement).checked);
+                        }}
+                      ></ha-switch>
+                    </ha-formfield>
                   </div>
 
                   ${index > 0
@@ -225,6 +237,17 @@ export class FlightradarFlightCardEditor extends LitElement {
       entities[index] = { ...entities[index], title: value };
     } else {
       const { title, ...rest } = entities[index];
+      entities[index] = rest as CardConfig['entities'][number];
+    }
+    this._updateConfig({ ...this._config, entities });
+  }
+
+  private _carouselChanged(index: number, value: boolean): void {
+    const entities = [...this._config.entities];
+    if (value) {
+      entities[index] = { ...entities[index], carousel: value };
+    } else {
+      const { carousel, ...rest } = entities[index];
       entities[index] = rest as CardConfig['entities'][number];
     }
     this._updateConfig({ ...this._config, entities });

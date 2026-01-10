@@ -42,6 +42,7 @@
     "unit_kts": "Nós (kts)",
     "unit_kmh": "Quilómetros por hora (km/h)",
     "unit_mph": "Milhas por hora (mph)",
-    "unit_mach": "Mach (M)"
+    "unit_mach": "Mach (M)",
+    "carousel_toggle": "Ativar carrossel (navegar entre múltiplos voos)"
   }
 }

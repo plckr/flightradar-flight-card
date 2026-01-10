@@ -98,44 +98,57 @@ export class FlightradarFlightCard extends LitElement {
 
     const { t } = getTFunc(this.hass.locale.language);
 
-    const entries = this._config.entities
-      .map((entity) => {
-        const stateObj = this.hass.states[entity.entity_id];
-        if (!stateObj) {
-          console.error(`Entity not found: ${entity.entity_id}`);
-          return undefined;
-        }
+    const entities: {
+      flights: FlightData[];
+      carousel: boolean;
+    }[] = [];
 
-        const data = stateObj.attributes.flights[0];
+    for (const entity of this._config.entities) {
+      const stateObj = this.hass.states[entity.entity_id];
+      if (!stateObj) {
+        console.error(`Entity not found: ${entity.entity_id}`);
+        continue;
+      }
 
-        return {
-          title: entity.title,
-          flight: parseFlight(data),
-        };
-      })
-      .filter(defined)
-      .sort((a, b) => {
-        // Put not passed schema objects at the end
-        if (a.flight._type === 'unknown') return 1;
-        if (b.flight._type === 'unknown') return -1;
-        return 0;
-      });
+      const entityFlights = (stateObj.attributes.flights as unknown[])
+        .map(parseFlight)
+        .filter((flight) => {
+          return flight._type !== 'unknown';
+        })
+        .map((flight) => {
+          return getFlightCardData(flight, {
+            customTitle: entity.title,
+            locale: this.hass.locale.language,
+          });
+        });
 
-    const { flight: f, title: cardTitle } = entries[0];
+      if (entityFlights.length) {
+        entities.push({
+          carousel: entity.carousel ?? false,
+          flights: entityFlights,
+        });
+      }
+    }
 
-    if (f._type === 'unknown' || !entries.length) {
+    if (!entities.length) {
       return html`<ha-card>
         <ha-icon icon="mdi:airplane"></ha-icon>
         <span>${t('no_flights')}</span>
       </ha-card>`;
     }
 
-    const flightData = getFlightCardData(f, {
-      customTitle: cardTitle,
-      locale: this.hass.locale.language,
-    });
-
     const unitOptions = { ...DEFAULT_UNITS, ...this._config.units };
+    const selectedEntity = entities[0];
+
+    if (selectedEntity.flights.length > 1 && selectedEntity.carousel) {
+      return html`<flight-carousel
+        .hass=${this.hass}
+        .flights=${selectedEntity.flights}
+        .units=${unitOptions}
+      ></flight-carousel>`;
+    }
+
+    const flightData = selectedEntity.flights[0];
 
     return html`<flight-area-card
       .hass=${this.hass}
