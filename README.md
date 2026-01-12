@@ -55,16 +55,16 @@ entities:
 
 Card will look for a `flights` attribute in the entity provided, in case it doesn't find, it'll try the next entity. This is useful for cases where you maintain a list of current in area, and no flight is actually in the area at that moment, so the card will pick the next entity so that the card can always have something to render.
 
-| Option                     | Type    | Required | Default | Description                                             |
-| -------------------------- | ------- | -------- | ------- | ------------------------------------------------------- |
-| `entities`                 | array   | Yes      | -       | List of flight sensor entities (see below)              |
-| `units`                    | object  | No       | -       | Unit display preferences (see below)                    |
-| `show_flightradar_link`    | boolean | No       | `true`  | Show link to Flightradar24 flight page                  |
-| `show_airline_info_column` | boolean | No       | `true`  | Show airline information column                         |
-| `show_airline_logo`        | boolean | No       | `true`  | Show airline logo                                       |
-| `show_aircraft_photo`      | boolean | No       | `true`  | Show aircraft photo                                     |
-| `show_progress_bar`        | boolean | No       | `true`  | Show flight progress bar                                |
-| `airline_logo_url`         | string  | No       | -       | Custom airline logo URL template (see Templating below) |
+| Option                      | Type    | Required | Default | Description                                             |
+| --------------------------- | ------- | -------- | ------- | ------------------------------------------------------- |
+| `entities`                  | array   | Yes      | -       | List of flight sensor entities (see below)              |
+| `units`                     | object  | No       | -       | Unit display preferences (see below)                    |
+| `show_flightradar_link`     | boolean | No       | `true`  | Show link to Flightradar24 flight page                  |
+| `show_airline_info_column`  | boolean | No       | `true`  | Show airline information column                         |
+| `show_airline_logo`         | boolean | No       | `true`  | Show airline logo                                       |
+| `show_aircraft_photo`       | boolean | No       | `true`  | Show aircraft photo                                     |
+| `show_progress_bar`         | boolean | No       | `true`  | Show flight progress bar                                |
+| `template_airline_logo_url` | string  | No       | -       | Custom airline logo URL template (see Templating below) |
 
 ### Entity Options
 
@@ -113,7 +113,7 @@ show_progress_bar: true
 
 ### Templating
 
-The `airline_logo_url` option allows you to use a custom URL template for airline logos. The following variables are available for replacement:
+The `template_airline_logo_url` option allows you to use a custom URL template for airline logos. The following variables are available for replacement:
 
 | Variable | Description                              |
 | -------- | ---------------------------------------- |
@@ -125,7 +125,7 @@ Example usage:
 type: custom:flightradar-flight-card
 entities:
   - entity_id: sensor.flightradar24_current_in_area
-airline_logo_url: 'https://example.com/logos/{ICAO}.png'
+template_airline_logo_url: 'https://example.com/logos/{ICAO}.png'
 ```
 
 ## Use case example
@@ -147,13 +147,13 @@ entities:
 
 ## Alternative Tail Airline Logos
 
-If you prefer different airline logos, you can use [AirHex](https://airhex.com/) tail logos by setting the `airline_logo_url` option:
+If you prefer different airline logos, you can use [AirHex](https://airhex.com/) tail logos by setting the `template_airline_logo_url` option:
 
 ```yaml
 type: custom:flightradar-flight-card
 entities:
   - entity_id: sensor.flightradar24_current_in_area
-airline_logo_url: 'https://content.airhex.com/content/logos/airlines_{ICAO}_40_40_f.png'
+template_airline_logo_url: 'https://content.airhex.com/content/logos/airlines_{ICAO}_40_40_f.png'
 ```
 
 ## Credits
