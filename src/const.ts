@@ -39,6 +39,7 @@ const configSchema = v.object({
   show_airline_logo: v.fallback(v.boolean(), DEFAULT_CONFIG.show_airline_logo),
   show_aircraft_photo: v.fallback(v.boolean(), DEFAULT_CONFIG.show_aircraft_photo),
   show_progress_bar: v.fallback(v.boolean(), DEFAULT_CONFIG.show_progress_bar),
+  template_airline_logo_url: v.optional(v.string()),
 });
 
 export function validateConfig(config: unknown): CardConfig {

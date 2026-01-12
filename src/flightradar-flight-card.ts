@@ -10,6 +10,7 @@ import { ChangedProps, HomeAssistant } from './types/homeassistant';
 import { computeAirlineIcao, getAirlineName } from './utils/airline-icao';
 import { hasConfigChanged, hasEntityChanged } from './utils/has-changed';
 import { FRAreaFlight, FRMostTrackedFlight, parseFlight } from './utils/schemas';
+import { parseAirlineLogoUrl } from './utils/templating/airline-logo';
 import { defined } from './utils/type-guards';
 
 @customElement(CARD_NAME)
@@ -122,6 +123,13 @@ export class FlightradarFlightCard extends LitElement {
       locale: this.hass.locale.language,
     });
 
+    const customAirlineLogoUrl =
+      flightData.airlineIcao && defined(this._config.template_airline_logo_url)
+        ? parseAirlineLogoUrl(this._config.template_airline_logo_url, {
+            airlineIcao: flightData.airlineIcao,
+          })
+        : undefined;
+
     return html`<flight-area-card
       .hass=${this.hass}
       .flight=${flightData}
@@ -132,6 +140,7 @@ export class FlightradarFlightCard extends LitElement {
         showAirlineLogo: this._config.show_airline_logo,
         showAircraftPhoto: this._config.show_aircraft_photo,
         showProgressBar: this._config.show_progress_bar,
+        customAirlineLogoUrl,
       }}
     ></flight-area-card>`;
   }

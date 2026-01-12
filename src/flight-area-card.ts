@@ -52,6 +52,7 @@ export type AreaCardOptions = {
   showAircraftPhoto: boolean;
   /** Whether to show the flight progress bar */
   showProgressBar: boolean;
+  customAirlineLogoUrl?: string;
 };
 
 @customElement('flight-area-card')
@@ -89,6 +90,25 @@ export class FlightradarFlightCard extends LitElement {
         ;
       />
     </a>`;
+  }
+
+  protected renderAirlineLogo() {
+    if (!this.options.showAirlineLogo) return nothing;
+
+    const imgElement = document.createElement('img');
+    imgElement.alt = `Airline ICAO Logo '${this.flight.airlineIcao}'`;
+
+    if (this.options.customAirlineLogoUrl) {
+      imgElement.src = this.options.customAirlineLogoUrl;
+      return imgElement;
+    }
+
+    if (isValidAirlineLogo(this.flight.airlineIcao)) {
+      imgElement.src = `__LOGOS_URL__/${this.flight.airlineIcao}.png`;
+      return imgElement;
+    }
+
+    return nothing;
   }
 
   protected render() {
@@ -163,15 +183,7 @@ export class FlightradarFlightCard extends LitElement {
             ${this.options.showAirlineInfoColumn
               ? html` <div class="main-content-right">
                   <div class="airline-container">
-                    ${isValidAirlineLogo(this.flight.airlineIcao) && this.options.showAirlineLogo
-                      ? html`
-                          <img
-                            src="__LOGOS_URL__/${this.flight.airlineIcao}.png"
-                            alt="Airline ICAO Logo '${this.flight.airlineIcao}'"
-                          />
-                        `
-                      : nothing}
-
+                    ${this.renderAirlineLogo()}
                     <p>${this.flight.airlineLabel ?? t('airline.unknown')}</p>
                   </div>
 

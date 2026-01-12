@@ -86,6 +86,10 @@ export class FlightradarFlightCardEditor extends LitElement {
       flex-wrap: wrap;
       gap: 8px;
     }
+
+    .template-textfield {
+      width: 100%;
+    }
   `;
 
   public setConfig(config: CardConfig): void {
@@ -290,6 +294,21 @@ export class FlightradarFlightCardEditor extends LitElement {
             <mwc-list-item value="mph">${t('editor.unit_mph')}</mwc-list-item>
             <mwc-list-item value="M">${t('editor.unit_mach')}</mwc-list-item>
           </ha-select>
+        </div>
+
+        <div class="section">
+          <div class="section-title">${t('editor.templating_section')}</div>
+          <ha-textfield
+            class="template-textfield"
+            .value=${this._config.template_airline_logo_url || ''}
+            .label=${t('editor.template_airline_logo_url')}
+            @input=${(ev: Event) => {
+              this._updateConfig({
+                ...this._config,
+                template_airline_logo_url: (ev.target as HTMLInputElement).value,
+              });
+            }}
+          ></ha-textfield>
         </div>
 
         <p>

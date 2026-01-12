@@ -37,6 +37,8 @@
     "show_aircraft_photo": "Mostrar Foto da Aeronave",
     "show_progress_bar": "Mostrar Barra de Progresso",
     "units_section": "Unidades de Exibição",
+    "templating_section": "Templates",
+    "template_airline_logo_url": "URL do Logótipo da Companhia Aérea",
     "altitude_unit": "Altitude",
     "distance_unit": "Distância",
     "ground_speed_unit": "Velocidade de Solo",
