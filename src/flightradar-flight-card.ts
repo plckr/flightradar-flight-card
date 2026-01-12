@@ -1,7 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { CARD_NAME, CardConfig, DEFAULT_CONFIG } from './const';
+import { CARD_NAME, CardConfig, validateConfig } from './const';
 import { FlightData } from './flight-area-card';
 import { EDITOR_NAME } from './flightradar-flight-card-editor';
 import { getTFunc } from './localize/localize';
@@ -11,7 +11,6 @@ import { computeAirlineIcao, getAirlineName } from './utils/airline-icao';
 import { hasConfigChanged, hasEntityChanged } from './utils/has-changed';
 import { FRAreaFlight, FRMostTrackedFlight, parseFlight } from './utils/schemas';
 import { defined } from './utils/type-guards';
-import { DEFAULT_UNITS } from './utils/units';
 
 @customElement(CARD_NAME)
 export class FlightradarFlightCard extends LitElement {
@@ -34,19 +33,7 @@ export class FlightradarFlightCard extends LitElement {
   ];
 
   public setConfig(config: Partial<CardConfig>): void {
-    if (!config.entities || config.entities.length === 0) {
-      throw new Error('Please define at least one entity');
-    }
-
-    if (!config.entities.every((entity) => entity.entity_id)) {
-      throw new Error('All entities must have an entity defined');
-    }
-
-    this._config = {
-      ...DEFAULT_CONFIG,
-      ...config,
-      entities: config.entities,
-    };
+    this._config = validateConfig(config);
   }
 
   public getCardSize(): number {
@@ -63,11 +50,11 @@ export class FlightradarFlightCard extends LitElement {
       { entity_id: 'sensor.flightradar24_most_tracked' },
     ];
 
-    return {
+    return validateConfig({
       entities: defaultEntities.filter((entity) => {
         return hass.states[entity.entity_id] !== undefined;
       }),
-    };
+    });
   }
 
   public static async getConfigElement() {
@@ -135,12 +122,17 @@ export class FlightradarFlightCard extends LitElement {
       locale: this.hass.locale.language,
     });
 
-    const unitOptions = { ...DEFAULT_UNITS, ...this._config.units };
-
     return html`<flight-area-card
       .hass=${this.hass}
       .flight=${flightData}
-      .units=${unitOptions}
+      .options=${{
+        units: this._config.units,
+        showFlightradarLink: this._config.show_flightradar_link,
+        showAirlineInfoColumn: this._config.show_airline_info_column,
+        showAirlineLogo: this._config.show_airline_logo,
+        showAircraftPhoto: this._config.show_aircraft_photo,
+        showProgressBar: this._config.show_progress_bar,
+      }}
     ></flight-area-card>`;
   }
 }

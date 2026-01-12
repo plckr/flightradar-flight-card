@@ -55,10 +55,15 @@ entities:
 
 Card will look for a `flights` attribute in the entity provided, in case it doesn't find, it'll try the next entity. This is useful for cases where you maintain a list of current in area, and no flight is actually in the area at that moment, so the card will pick the next entity so that the card can always have something to render.
 
-| Option     | Type   | Required | Description                                |
-| ---------- | ------ | -------- | ------------------------------------------ |
-| `entities` | array  | Yes      | List of flight sensor entities (see below) |
-| `units`    | object | No       | Unit display preferences (see below)       |
+| Option                     | Type    | Required | Default | Description                                |
+| -------------------------- | ------- | -------- | ------- | ------------------------------------------ |
+| `entities`                 | array   | Yes      | -       | List of flight sensor entities (see below) |
+| `units`                    | object  | No       | -       | Unit display preferences (see below)       |
+| `show_flightradar_link`    | boolean | No       | `true`  | Show link to Flightradar24 flight page     |
+| `show_airline_info_column` | boolean | No       | `true`  | Show airline information column            |
+| `show_airline_logo`        | boolean | No       | `true`  | Show airline logo                          |
+| `show_aircraft_photo`      | boolean | No       | `true`  | Show aircraft photo                        |
+| `show_progress_bar`        | boolean | No       | `true`  | Show flight progress bar                   |
 
 ### Entity Options
 
@@ -98,6 +103,11 @@ units:
   altitude: ft
   distance: km
   ground_speed: kts
+show_flightradar_link: true
+show_airline_info_column: true
+show_airline_logo: true
+show_aircraft_photo: true
+show_progress_bar: true
 ```
 
 ## Use case example

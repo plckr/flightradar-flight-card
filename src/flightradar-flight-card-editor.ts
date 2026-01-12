@@ -1,7 +1,13 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { CARD_NAME, CardConfig, GITHUB_REPOSITORY, GITHUB_REPOSITORY_URL } from './const';
+import {
+  CARD_NAME,
+  CardConfig,
+  DEFAULT_CONFIG,
+  GITHUB_REPOSITORY,
+  GITHUB_REPOSITORY_URL,
+} from './const';
 import { getTFunc } from './localize/localize';
 import { HomeAssistant } from './types/homeassistant';
 import { DEFAULT_UNITS, UnitOptions } from './utils/units';
@@ -17,6 +23,23 @@ export class FlightradarFlightCardEditor extends LitElement {
   private _config!: CardConfig;
 
   static styles = css`
+    .section {
+      margin-top: var(--ha-space-4);
+    }
+
+    .section:first-child {
+      margin-top: 0;
+    }
+
+    .section-title {
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    ha-formfield {
+      padding: 8px 0;
+    }
+
     .entities {
       display: flex;
       flex-direction: column;
@@ -58,10 +81,6 @@ export class FlightradarFlightCardEditor extends LitElement {
     .units-section {
       margin-top: 16px;
     }
-    .units-section-title {
-      font-weight: 500;
-      margin-bottom: 8px;
-    }
     .units-grid {
       display: flex;
       flex-wrap: wrap;
@@ -83,77 +102,146 @@ export class FlightradarFlightCardEditor extends LitElement {
     const entities = this._config.entities || [];
     const units = { ...DEFAULT_UNITS, ...this._config.units };
 
-    return html`
-      <ha-sortable handle-selector=".handle" @item-moved=${this._entityMoved}>
-        <div class="entities">
-          ${entities.map(
-            (entity, index) => html`
-              <div class="entity-row">
-                <div class="handle">
-                  <ha-icon icon="mdi:drag"></ha-icon>
-                </div>
+    const showFlightradarLink =
+      this._config.show_flightradar_link ?? DEFAULT_CONFIG.show_flightradar_link;
+    const showAirlineInfoColumn =
+      this._config.show_airline_info_column ?? DEFAULT_CONFIG.show_airline_info_column;
+    const showAirlineLogo = this._config.show_airline_logo ?? DEFAULT_CONFIG.show_airline_logo;
+    const showAircraftPhoto =
+      this._config.show_aircraft_photo ?? DEFAULT_CONFIG.show_aircraft_photo;
+    const showProgressBar = this._config.show_progress_bar ?? DEFAULT_CONFIG.show_progress_bar;
 
-                <div class="entity-row-content">
-                  <div class="entity-row-form-fields">
-                    <ha-selector
-                      .hass=${this.hass}
-                      .selector=${{
-                        entity: {
-                          filter: {
-                            domain: 'sensor',
-                            integration: 'flightradar24',
-                          },
-                        },
-                      }}
-                      .value=${entity.entity_id}
-                      @required=${true}
-                      @value-changed=${(ev: CustomEvent) => {
-                        this._entityChanged(index, ev.detail.value);
-                      }}
-                    ></ha-selector>
-                    <ha-textfield
-                      .label=${`${t('editor.title')} (${t('editor.optional_field')})`}
-                      .value=${entity.title || ''}
-                      @input=${(ev: Event) => {
-                        this._titleChanged(index, (ev.target as HTMLInputElement).value);
-                      }}
-                    ></ha-textfield>
+    return html`
+      <div class="section">
+        <ha-sortable handle-selector=".handle" @item-moved=${this._entityMoved}>
+          <div class="entities">
+            ${entities.map(
+              (entity, index) => html`
+                <div class="entity-row">
+                  <div class="handle">
+                    <ha-icon icon="mdi:drag"></ha-icon>
                   </div>
 
-                  ${index > 0
-                    ? html`
-                        <ha-button
-                          class="remove-entity"
-                          size="small"
-                          appearance="plain"
-                          variant="danger"
-                          @click=${() => this._removeEntity(index)}
-                        >
-                          <ha-icon icon="mdi:delete" slot="start"></ha-icon>
-                          ${t('editor.remove_entity_button')}
-                        </ha-button>
-                      `
-                    : nothing}
+                  <div class="entity-row-content">
+                    <div class="entity-row-form-fields">
+                      <ha-selector
+                        .hass=${this.hass}
+                        .selector=${{
+                          entity: {
+                            filter: {
+                              domain: 'sensor',
+                              integration: 'flightradar24',
+                            },
+                          },
+                        }}
+                        .value=${entity.entity_id}
+                        @required=${true}
+                        @value-changed=${(ev: CustomEvent) => {
+                          this._entityChanged(index, ev.detail.value);
+                        }}
+                      ></ha-selector>
+                      <ha-textfield
+                        .label=${`${t('editor.title')} (${t('editor.optional_field')})`}
+                        .value=${entity.title || ''}
+                        @input=${(ev: Event) => {
+                          this._titleChanged(index, (ev.target as HTMLInputElement).value);
+                        }}
+                      ></ha-textfield>
+                    </div>
+
+                    ${index > 0
+                      ? html`
+                          <ha-button
+                            class="remove-entity"
+                            size="small"
+                            appearance="plain"
+                            variant="danger"
+                            @click=${() => this._removeEntity(index)}
+                          >
+                            <ha-icon icon="mdi:delete" slot="start"></ha-icon>
+                            ${t('editor.remove_entity_button')}
+                          </ha-button>
+                        `
+                      : nothing}
+                  </div>
                 </div>
-              </div>
-            `
-          )}
-        </div>
-      </ha-sortable>
+              `
+            )}
+          </div>
+        </ha-sortable>
 
-      <ha-button size="small" appearance="filled" class="add-entity" @click=${this._addEntity}>
-        <ha-icon icon="mdi:playlist-plus" slot="start"></ha-icon>
-        ${t('editor.add_entity_button')}
-      </ha-button>
+        <ha-button size="small" appearance="filled" class="add-entity" @click=${this._addEntity}>
+          <ha-icon icon="mdi:playlist-plus" slot="start"></ha-icon>
+          ${t('editor.add_entity_button')}
+        </ha-button>
 
-      <p>${t('editor.usage_description')}</p>
-      <p>
-        ${t('editor.more_info_link')}:
-        <a href=${GITHUB_REPOSITORY_URL} target="_blank">${GITHUB_REPOSITORY}</a>
-      </p>
+        <p>${t('editor.usage_description')}</p>
+      </div>
+
+      <div class="section">
+        <div class="section-title">${t('editor.appearance_section')}</div>
+
+        <ha-formfield .label=${t('editor.show_flightradar_link')}>
+          <ha-switch
+            .checked=${showFlightradarLink}
+            @change=${(ev: Event) => {
+              const value = (ev.target as HTMLInputElement).checked;
+              this._updateConfig({ ...this._config, show_flightradar_link: value });
+            }}
+          ></ha-switch>
+        </ha-formfield>
+      </div>
+
+      <div class="section">
+        <ha-formfield .label=${t('editor.show_airline_info_column')}>
+          <ha-switch
+            .checked=${showAirlineInfoColumn}
+            @change=${(ev: Event) => {
+              const value = (ev.target as HTMLInputElement).checked;
+              this._updateConfig({ ...this._config, show_airline_info_column: value });
+            }}
+          ></ha-switch>
+        </ha-formfield>
+      </div>
+
+      <div class="section">
+        <ha-formfield .label=${t('editor.show_airline_logo')}>
+          <ha-switch
+            .checked=${showAirlineLogo}
+            .disabled=${!showAirlineInfoColumn}
+            @change=${(ev: Event) => {
+              const value = (ev.target as HTMLInputElement).checked;
+              this._updateConfig({ ...this._config, show_airline_logo: value });
+            }}
+          ></ha-switch>
+        </ha-formfield>
+
+        <ha-formfield .label=${t('editor.show_aircraft_photo')}>
+          <ha-switch
+            .checked=${showAircraftPhoto}
+            .disabled=${!showAirlineInfoColumn}
+            @change=${(ev: Event) => {
+              const value = (ev.target as HTMLInputElement).checked;
+              this._updateConfig({ ...this._config, show_aircraft_photo: value });
+            }}
+          ></ha-switch>
+        </ha-formfield>
+      </div>
+
+      <div class="section">
+        <ha-formfield .label=${t('editor.show_progress_bar')}>
+          <ha-switch
+            .checked=${showProgressBar}
+            @change=${(ev: Event) => {
+              const value = (ev.target as HTMLInputElement).checked;
+              this._updateConfig({ ...this._config, show_progress_bar: value });
+            }}
+          ></ha-switch>
+        </ha-formfield>
+      </div>
 
       <div class="units-section">
-        <div class="units-section-title">${t('editor.units_section')}</div>
+        <div class="section-title">${t('editor.units_section')}</div>
         <div class="units-grid">
           <ha-select
             .label=${t('editor.altitude_unit')}
@@ -203,6 +291,11 @@ export class FlightradarFlightCardEditor extends LitElement {
             <mwc-list-item value="M">${t('editor.unit_mach')}</mwc-list-item>
           </ha-select>
         </div>
+
+        <p>
+          ${t('editor.more_info_link')}:
+          <a href=${GITHUB_REPOSITORY_URL} target="_blank">${GITHUB_REPOSITORY}</a>
+        </p>
       </div>
     `;
   }
