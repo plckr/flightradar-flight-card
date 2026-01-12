@@ -179,9 +179,9 @@ export class FlightradarFlightCardEditor extends LitElement {
       </div>
 
       <div class="section">
-        <div class="section-title">Appearance & Layout</div>
+        <div class="section-title">${t('editor.appearance_section')}</div>
 
-        <ha-formfield class="form-field-carousel" label="Show Flightradar24 Link">
+        <ha-formfield .label=${t('editor.show_flightradar_link')}>
           <ha-switch
             .checked=${showFlightradarLink}
             @change=${(ev: Event) => {
@@ -193,7 +193,7 @@ export class FlightradarFlightCardEditor extends LitElement {
       </div>
 
       <div class="section">
-        <ha-formfield label="Show Airline Info Column">
+        <ha-formfield .label=${t('editor.show_airline_info_column')}>
           <ha-switch
             .checked=${showAirlineInfoColumn}
             @change=${(ev: Event) => {
@@ -205,7 +205,7 @@ export class FlightradarFlightCardEditor extends LitElement {
       </div>
 
       <div class="section">
-        <ha-formfield label="Show Airline Logo">
+        <ha-formfield .label=${t('editor.show_airline_logo')}>
           <ha-switch
             .checked=${showAirlineLogo}
             .disabled=${!showAirlineInfoColumn}
@@ -216,7 +216,7 @@ export class FlightradarFlightCardEditor extends LitElement {
           ></ha-switch>
         </ha-formfield>
 
-        <ha-formfield label="Show Aircraft Photo">
+        <ha-formfield .label=${t('editor.show_aircraft_photo')}>
           <ha-switch
             .checked=${showAircraftPhoto}
             .disabled=${!showAirlineInfoColumn}
@@ -229,7 +229,7 @@ export class FlightradarFlightCardEditor extends LitElement {
       </div>
 
       <div class="section">
-        <ha-formfield label="Show Progress Bar">
+        <ha-formfield .label=${t('editor.show_progress_bar')}>
           <ha-switch
             .checked=${showProgressBar}
             @change=${(ev: Event) => {
