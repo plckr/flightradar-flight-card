@@ -32,13 +32,14 @@ export const cardStyles = css`
   }
 
   .main-content {
-    display: grid;
-    grid-template-columns: 1.5fr 0.5fr;
-    gap: var(--ha-space-4);
+    display: flex;
+    justify-content: space-between;
     align-items: flex-start;
+    gap: var(--ha-space-4);
   }
 
   .main-content-left {
+    flex-basis: 1.5fr;
     font-size: 26px;
     line-height: 1.15;
     font-weight: var(--ha-font-weight-bold, 600);
@@ -103,6 +104,7 @@ export const cardStyles = css`
   }
 
   .main-content-right {
+    flex-basis: 0.5fr;
     display: flex;
     flex-direction: column;
     align-items: center;
