@@ -149,7 +149,9 @@ entities:
 
 ### Tail Airline Logos
 
-If you prefer different airline logos, you can use [AirHex](https://airhex.com/) tail logos by setting the `template_airline_logo_url` option:
+![Airhex Tail Logos](https://airhex.com/images/photos/airline-tail-logos.png)
+
+If you prefer different airline logos, you can use [Airhex](https://airhex.com/) tail logos by setting the `template_airline_logo_url` option:
 
 ```yaml
 template_airline_logo_url: 'https://content.airhex.com/content/logos/airlines_{ICAO}_40_40_f.png'
