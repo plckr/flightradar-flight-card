@@ -8,12 +8,12 @@ A custom Home Assistant card for displaying Flightradar flight information.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/plckr/flightradar-flight-card/refs/heads/main/card-examples/area-card-dark.png">
-  <img alt="Area card example" src="https://raw.githubusercontent.com/plckr/flightradar-flight-card/refs/heads/main/card-examples/area-card-light.png">
+  <img alt="Area card example" src="https://raw.githubusercontent.com/plckr/flightradar-flight-card/refs/heads/main/card-examples/area-card-light.png" width="48%">
 </picture>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/plckr/flightradar-flight-card/refs/heads/main/card-examples/tracked-card-dark.png">
-  <img alt="Area card example" src="https://raw.githubusercontent.com/plckr/flightradar-flight-card/refs/heads/main/card-examples/tracked-card-light.png">
+  <img alt="Area card example" src="https://raw.githubusercontent.com/plckr/flightradar-flight-card/refs/heads/main/card-examples/tracked-card-light.png" width="48%">
 </picture>
 
 ## Prerequisites
@@ -149,7 +149,7 @@ entities:
 
 ### Tail Airline Logos
 
-![Airhex Tail Logos](https://airhex.com/images/photos/airline-tail-logos.png)
+<img src="https://airhex.com/images/photos/airline-tail-logos.png" alt="Airhex Tail Logos" width="48%" />
 
 If you prefer different airline logos, you can use [Airhex](https://airhex.com/) tail logos by setting the `template_airline_logo_url` option:
 
