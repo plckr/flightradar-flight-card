@@ -55,18 +55,18 @@ entities:
 
 Card will look for a `flights` attribute in the entity provided, in case it doesn't find, it'll try the next entity. This is useful for cases where you maintain a list of current in area, and no flight is actually in the area at that moment, so the card will pick the next entity so that the card can always have something to render.
 
-| Option                      | Type    | Required | Default | Description                                             |
-| --------------------------- | ------- | -------- | ------- | ------------------------------------------------------- |
-| `entities`                  | array   | Yes      | -       | List of flight sensor entities (see below)              |
-| `units`                     | object  | No       | -       | Unit display preferences (see below)                    |
-| `show_flightradar_link`     | boolean | No       | `true`  | Show link to Flightradar24 flight page                  |
-| `show_airline_info_column`  | boolean | No       | `true`  | Show airline information column                         |
-| `show_airline_logo`         | boolean | No       | `true`  | Show airline logo                                       |
-| `show_aircraft_photo`       | boolean | No       | `true`  | Show aircraft photo                                     |
-| `show_progress_bar`         | boolean | No       | `true`  | Show flight progress bar                                |
-| `template_airline_logo_url` | string  | No       | -       | Custom airline logo URL template (see Templating below) |
+| Option                      | Type    | Required | Default | Description                                                            |
+| --------------------------- | ------- | -------- | ------- | ---------------------------------------------------------------------- |
+| `entities`                  | array   | Yes      | -       | List of flight sensor entities ([see below](#entity-options))          |
+| `units`                     | object  | No       | -       | Unit display preferences ([see below](#unit-options))                  |
+| `show_flightradar_link`     | boolean | No       | `true`  | Show link to Flightradar24 flight page                                 |
+| `show_airline_info_column`  | boolean | No       | `true`  | Show airline information column                                        |
+| `show_airline_logo`         | boolean | No       | `true`  | Show airline logo                                                      |
+| `show_aircraft_photo`       | boolean | No       | `true`  | Show aircraft photo                                                    |
+| `show_progress_bar`         | boolean | No       | `true`  | Show flight progress bar                                               |
+| `template_airline_logo_url` | string  | No       | -       | Custom airline logo URL template ([see Templating below](#templating)) |
 
-### Entity Options
+### <a id="entity-options">Entity Options</a>
 
 Each entity in the `entities` array supports the following options:
 
@@ -75,7 +75,7 @@ Each entity in the `entities` array supports the following options:
 | `entity_id` | string | Yes      | The entity ID of your flight sensor |
 | `title`     | string | No       | Custom title for this flight card   |
 
-### Unit Options
+### <a id="unit-options">Unit Options</a>
 
 You can customize the display units for altitude, distance, and ground speed:
 
@@ -111,7 +111,7 @@ show_aircraft_photo: true
 show_progress_bar: true
 ```
 
-### Templating
+### <a id="templating">Templating</a>
 
 The `template_airline_logo_url` option allows you to use a custom URL template for airline logos. The following variables are available for replacement:
 
