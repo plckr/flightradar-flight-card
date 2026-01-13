@@ -151,7 +151,7 @@ entities:
 
 <img src="https://airhex.com/images/photos/airline-tail-logos.png" alt="Airhex Tail Logos" width="48%" />
 
-If you prefer different airline logos, you can use [Airhex](https://airhex.com/) tail logos by setting the `template_airline_logo_url` option:
+If you prefer different airline logos, you can use [Airhex](https://airhex.com/api/logos/) tail logos by setting the `template_airline_logo_url` option:
 
 ```yaml
 template_airline_logo_url: 'https://content.airhex.com/content/logos/airlines_{ICAO}_40_40_f.png'
