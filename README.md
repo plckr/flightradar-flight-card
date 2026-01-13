@@ -145,16 +145,31 @@ entities:
     title: Last Flight
 ```
 
-## Alternative Tail Airline Logos
+## Alternative use of Airline Logos
+
+### Tail Airline Logos
 
 If you prefer different airline logos, you can use [AirHex](https://airhex.com/) tail logos by setting the `template_airline_logo_url` option:
 
 ```yaml
-type: custom:flightradar-flight-card
-entities:
-  - entity_id: sensor.flightradar24_current_in_area
 template_airline_logo_url: 'https://content.airhex.com/content/logos/airlines_{ICAO}_40_40_f.png'
 ```
+
+### Serving Airline Logos Offline
+
+If you have devices (like wall-mounted tablets) that don't have internet access but still need to display airline logos, you can host the logos locally on your Home Assistant instance.
+
+#### Setup
+
+1. Download the airline logos from this repository's [`public/flightaware_logos`](https://github.com/plckr/flightradar-flight-card/tree/main/public/flightaware_logos) folder
+2. Copy the logos to your Home Assistant `config/www/flightaware_logos/` folder
+3. Configure the card to use the local path by setting the `template_airline_logo_url`:
+
+```yaml
+template_airline_logo_url: '/local/flightaware_logos/{ICAO}.png'
+```
+
+This way, all airline logos will be served directly from your Home Assistant instance, ensuring they display correctly even on devices without internet access.
 
 ## Credits
 
