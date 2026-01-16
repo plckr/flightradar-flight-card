@@ -1,0 +1,55 @@
+{
+  "no_flights": "Nessun volo da mostrare al momento",
+
+  "title": {
+    "default_area": "Voli nell'area",
+    "default_mosttracked": "Volo più seguito su FlightRadar24"
+  },
+
+  "altitude": "Altitudine",
+  "ground_speed": "Velocità al suolo",
+  "distance": "Distanza",
+
+  "airline": {
+    "private": "Proprietario privato",
+    "unknown": "Sconosciuta"
+  },
+
+  "origin_unknown": "Sconosciuta",
+  "destination_unknown": "Sconosciuta",
+
+  "flight": {
+    "live": "Dal vivo",
+    "time_remaining": "Mancano {time} per raggiungere {destination}"
+  },
+
+  "editor": {
+    "optional_field": "Opzionale",
+    "title": "Titolo",
+    "remove_entity_button": "Rimuovi",
+    "add_entity_button": "Aggiungi entità",
+    "usage_description": "L'aggiunta di più entità verrà utilizzata come fallback nel caso in cui non vengano trovati voli nelle entità precedenti.",
+    "more_info_link": "Maggiori informazioni su",
+    "appearance_section": "Aspetto e Layout",
+    "show_flightradar_link": "Mostra link Flightradar24",
+    "show_airline_info_column": "Mostra colonna informazioni compagnia",
+    "show_airline_logo": "Mostra logo compagnia",
+    "show_aircraft_photo": "Mostra foto aeromobile",
+    "show_progress_bar": "Mostra barra di avanzamento",
+    "units_section": "Unità di misura",
+    "templating_section": "Template",
+    "template_airline_logo_url": "Template URL logo compagnia",
+    "altitude_unit": "Altitudine",
+    "distance_unit": "Distanza",
+    "ground_speed_unit": "Velocità al suolo",
+    "unit_ft": "Piedi (ft)",
+    "unit_fl": "Livello di volo (FL)",
+    "unit_m": "Metri (m)",
+    "unit_km": "Chilometri (km)",
+    "unit_nm": "Miglia nautiche (NM)",
+    "unit_kts": "Nodi (kts)",
+    "unit_kmh": "Chilometri orari (km/h)",
+    "unit_mph": "Miglia orarie (mph)",
+    "unit_mach": "Mach (M)"
+  }
+}

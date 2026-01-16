@@ -1,8 +1,8 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { CARD_NAME, CardConfig, DEFAULT_CONFIG } from './const';
-import { FlightData } from './flight-area-card';
+import { CARD_NAME, CardConfig, validateConfig } from './const';
+import { AreaCardOptions, FlightData } from './flight-area-card';
 import { EDITOR_NAME } from './flightradar-flight-card-editor';
 import { getTFunc } from './localize/localize';
 import { resetStyles } from './styles';
@@ -10,8 +10,8 @@ import { ChangedProps, HomeAssistant } from './types/homeassistant';
 import { computeAirlineIcao, getAirlineName } from './utils/airline-icao';
 import { hasConfigChanged, hasEntityChanged } from './utils/has-changed';
 import { FRAreaFlight, FRMostTrackedFlight, parseFlight } from './utils/schemas';
+import { parseAirlineLogoUrl } from './utils/templating/airline-logo';
 import { defined } from './utils/type-guards';
-import { DEFAULT_UNITS } from './utils/units';
 
 @customElement(CARD_NAME)
 export class FlightradarFlightCard extends LitElement {
@@ -34,19 +34,7 @@ export class FlightradarFlightCard extends LitElement {
   ];
 
   public setConfig(config: Partial<CardConfig>): void {
-    if (!config.entities || config.entities.length === 0) {
-      throw new Error('Please define at least one entity');
-    }
-
-    if (!config.entities.every((entity) => entity.entity_id)) {
-      throw new Error('All entities must have an entity defined');
-    }
-
-    this._config = {
-      ...DEFAULT_CONFIG,
-      ...config,
-      entities: config.entities,
-    };
+    this._config = validateConfig(config);
   }
 
   public getCardSize(): number {
@@ -63,11 +51,11 @@ export class FlightradarFlightCard extends LitElement {
       { entity_id: 'sensor.flightradar24_most_tracked' },
     ];
 
-    return {
+    return validateConfig({
       entities: defaultEntities.filter((entity) => {
         return hass.states[entity.entity_id] !== undefined;
       }),
-    };
+    });
   }
 
   public static async getConfigElement() {
@@ -99,7 +87,7 @@ export class FlightradarFlightCard extends LitElement {
     const { t } = getTFunc(this.hass.locale.language);
 
     const entities: {
-      flights: FlightData[];
+      flights: { options: AreaCardOptions; flightData: FlightData }[];
       carousel: boolean;
     }[] = [];
 
@@ -116,10 +104,29 @@ export class FlightradarFlightCard extends LitElement {
           return flight._type !== 'unknown';
         })
         .map((flight) => {
-          return getFlightCardData(flight, {
+          const flightData = getFlightCardData(flight, {
             customTitle: entity.title,
             locale: this.hass.locale.language,
           });
+
+          const customAirlineLogoUrl =
+            flightData.airlineIcao && defined(this._config.template_airline_logo_url)
+              ? parseAirlineLogoUrl(this._config.template_airline_logo_url, {
+                  airlineIcao: flightData.airlineIcao,
+                })
+              : undefined;
+
+          const options = {
+            units: this._config.units,
+            showFlightradarLink: this._config.show_flightradar_link,
+            showAirlineInfoColumn: this._config.show_airline_info_column,
+            showAirlineLogo: this._config.show_airline_logo,
+            showAircraftPhoto: this._config.show_aircraft_photo,
+            showProgressBar: this._config.show_progress_bar,
+            customAirlineLogoUrl,
+          };
+
+          return { options, flightData };
         });
 
       if (entityFlights.length) {
@@ -137,23 +144,21 @@ export class FlightradarFlightCard extends LitElement {
       </ha-card>`;
     }
 
-    const unitOptions = { ...DEFAULT_UNITS, ...this._config.units };
     const selectedEntity = entities[0];
 
     if (selectedEntity.flights.length > 1 && selectedEntity.carousel) {
       return html`<flight-carousel
         .hass=${this.hass}
         .flights=${selectedEntity.flights}
-        .units=${unitOptions}
       ></flight-carousel>`;
     }
 
-    const flightData = selectedEntity.flights[0];
+    const selectedFlight = selectedEntity.flights[0];
 
     return html`<flight-area-card
       .hass=${this.hass}
-      .flight=${flightData}
-      .units=${unitOptions}
+      .flight=${selectedFlight.flightData}
+      .options=${selectedFlight.options}
     ></flight-area-card>`;
   }
 }

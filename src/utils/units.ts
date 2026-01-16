@@ -1,9 +1,13 @@
 import { round } from './math';
 
+const ALTITUDE_UNITS = ['ft', 'FL', 'm'] as const;
+const DISTANCE_UNITS = ['km', 'NM'] as const;
+const GROUND_SPEED_UNITS = ['kts', 'M', 'kmh', 'mph'] as const;
+
 export type UnitOptions = {
-  altitude: 'ft' | 'FL' | 'm';
-  distance: 'km' | 'NM';
-  ground_speed: 'kts' | 'M' | 'kmh' | 'mph';
+  altitude: (typeof ALTITUDE_UNITS)[number];
+  distance: (typeof DISTANCE_UNITS)[number];
+  ground_speed: (typeof GROUND_SPEED_UNITS)[number];
 };
 
 export const DEFAULT_UNITS: UnitOptions = {
@@ -11,6 +15,10 @@ export const DEFAULT_UNITS: UnitOptions = {
   distance: 'km',
   ground_speed: 'kts',
 };
+
+export function isValidAltitudeUnit(unit: unknown): unit is UnitOptions['altitude'] {
+  return ALTITUDE_UNITS.includes(unit as (typeof ALTITUDE_UNITS)[number]);
+}
 
 export function formatAltitude(feetValue: number, unit: UnitOptions['altitude']): string {
   switch (unit) {
@@ -23,6 +31,10 @@ export function formatAltitude(feetValue: number, unit: UnitOptions['altitude'])
   }
 }
 
+export function isValidDistanceUnit(unit: unknown): unit is UnitOptions['distance'] {
+  return DISTANCE_UNITS.includes(unit as (typeof DISTANCE_UNITS)[number]);
+}
+
 export function formatDistance(kmValue: number, unit: UnitOptions['distance']): string {
   switch (unit) {
     case 'NM':
@@ -30,6 +42,10 @@ export function formatDistance(kmValue: number, unit: UnitOptions['distance']): 
     default:
       return `${round(kmValue, 1)} km`;
   }
+}
+
+export function isValidGroundSpeedUnit(unit: unknown): unit is UnitOptions['ground_speed'] {
+  return GROUND_SPEED_UNITS.includes(unit as (typeof GROUND_SPEED_UNITS)[number]);
 }
 
 export function formatGroundSpeed(ktsValue: number, unit: UnitOptions['ground_speed']): string {

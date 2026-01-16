@@ -66,6 +66,43 @@ This project uses [release-it](https://github.com/release-it/release-it) for aut
 npm run release
 ```
 
+## Languages
+
+The card supports multiple languages through localization files located in [`src/localize/languages/`](./src/localize/languages/).
+
+### Adding a New Language
+
+1. **Copy the English translation file** as a starting point:
+
+   ```bash
+   cp src/localize/languages/en.json src/localize/languages/<language_code>.json
+   ```
+
+2. **Use the correct language code** from the [Home Assistant supported languages list](https://developers.home-assistant.io/docs/voice/intent-recognition/supported-languages/) (e.g., `es` for Spanish, `de` for German, `fr` for French).
+
+3. **Translate the values** in your new JSON file. Only translate the values, not the keys:
+
+   ```json
+   {
+     "no_flights": "No hay vuelos para mostrar en este momento",
+     "altitude": "Altitud",
+     ...
+   }
+   ```
+
+4. **Register the new language** in [`src/localize/localize.ts`](./src/localize/localize.ts) by adding an import to the `languages` object:
+   ```typescript
+   const languages: Record<string, DeepObject> = {
+     ...DEFAULT_TRANSLATION,
+     pt: (await import('./languages/pt.json')).default,
+     es: (await import('./languages/es.json')).default, // Add your new language here
+   };
+   ```
+
+### Modifying Existing Translations
+
+To update or add new translation entries to an existing language, simply edit the corresponding JSON file directly (e.g., `src/localize/languages/pt.json`). No changes to `localize.ts` are required.
+
 ## Custom component FlightRadar24
 
 There's no HACS in the Home Assistant docker container, to update the local FlightRadar24 custom component, run:

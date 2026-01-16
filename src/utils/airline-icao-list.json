@@ -1,4 +1,5 @@
 [
+  { "icao": "ADY", "name": "Air Arabia" },
   { "icao": "CSB", "name": "21 Air" },
   { "icao": "EMC", "name": "247 Aviation" },
   { "icao": "BRO", "name": "2Excel Aviation" },

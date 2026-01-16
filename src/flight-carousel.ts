@@ -2,7 +2,7 @@ import EmblaCarousel, { EmblaCarouselType } from 'embla-carousel';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { FlightData } from './flight-area-card';
+import { AreaCardOptions, FlightData } from './flight-area-card';
 import { resetStyles } from './styles';
 import { HomeAssistant } from './types/homeassistant';
 import { UnitOptions } from './utils/units';
@@ -13,7 +13,7 @@ export class FlightCarousel extends LitElement {
   public hass!: HomeAssistant;
 
   @property({ type: Array })
-  public flights: FlightData[] = [];
+  public flights: { options: AreaCardOptions; flightData: FlightData }[] = [];
 
   @property({ type: Object })
   public units!: UnitOptions;
@@ -127,8 +127,8 @@ export class FlightCarousel extends LitElement {
       return html`
         <flight-area-card
           .hass=${this.hass}
-          .flight=${this.flights[0]}
-          .units=${this.units}
+          .flight=${this.flights[0].flightData}
+          .options=${this.flights[0].options}
         ></flight-area-card>
       `;
     }
@@ -142,8 +142,8 @@ export class FlightCarousel extends LitElement {
               <div class="carousel__slide">
                 <flight-area-card
                   .hass=${this.hass}
-                  .flight=${flight}
-                  .units=${this.units}
+                  .flight=${flight.flightData}
+                  .options=${flight.options}
                 ></flight-area-card>
               </div>
             `

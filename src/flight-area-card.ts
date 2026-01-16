@@ -7,7 +7,7 @@ import { HomeAssistant } from './types/homeassistant';
 import { isValidAirlineLogo } from './utils/airline-icao';
 import { getFlightLabel } from './utils/flight';
 import { defined } from './utils/type-guards';
-import { DEFAULT_UNITS, UnitOptions } from './utils/units';
+import { UnitOptions } from './utils/units';
 import { formatAltitude, formatDistance, formatGroundSpeed } from './utils/units';
 
 export type FlightData = {
@@ -44,6 +44,17 @@ export type FlightData = {
   arrivalTime?: number;
 };
 
+export type AreaCardOptions = {
+  units: UnitOptions;
+  showFlightradarLink: boolean;
+  showAirlineInfoColumn: boolean;
+  showAirlineLogo: boolean;
+  showAircraftPhoto: boolean;
+  /** Whether to show the flight progress bar */
+  showProgressBar: boolean;
+  customAirlineLogoUrl?: string;
+};
+
 @customElement('flight-area-card')
 export class FlightradarFlightCard extends LitElement {
   @property({ attribute: false })
@@ -53,14 +64,14 @@ export class FlightradarFlightCard extends LitElement {
   public flight!: FlightData;
 
   @property({ type: Object })
-  public units: UnitOptions = DEFAULT_UNITS;
+  public options!: AreaCardOptions;
 
   static styles = [resetStyles, cardStyles];
 
-  protected renderFlightTitle() {
+  protected renderFlightTitle(options: { renderAnchor: boolean }) {
     const { label, url } = getFlightLabel(this.flight);
 
-    if (!url) {
+    if (!url || !options.renderAnchor) {
       return html`<p>${label}</p>`;
     }
 
@@ -81,9 +92,28 @@ export class FlightradarFlightCard extends LitElement {
     </a>`;
   }
 
+  protected renderAirlineLogo() {
+    if (!this.options.showAirlineLogo) return nothing;
+
+    const imgElement = document.createElement('img');
+    imgElement.alt = `Airline ICAO Logo '${this.flight.airlineIcao}'`;
+
+    if (this.options.customAirlineLogoUrl) {
+      imgElement.src = this.options.customAirlineLogoUrl;
+      return imgElement;
+    }
+
+    if (isValidAirlineLogo(this.flight.airlineIcao)) {
+      imgElement.src = `__LOGOS_URL__/${this.flight.airlineIcao}.png`;
+      return imgElement;
+    }
+
+    return nothing;
+  }
+
   protected render() {
     const { t } = getTFunc(this.hass.locale.language);
-    const units = { ...DEFAULT_UNITS, ...this.units };
+    const { units } = this.options;
 
     const flightInfos = (
       [
@@ -110,7 +140,7 @@ export class FlightradarFlightCard extends LitElement {
 
           <div class="main-content">
             <div class="main-content-left">
-              ${this.renderFlightTitle()}
+              ${this.renderFlightTitle({ renderAnchor: this.options.showFlightradarLink })}
               ${this.flight.callsign
                 ? html`
                     <div class="callsign-info">
@@ -150,38 +180,32 @@ export class FlightradarFlightCard extends LitElement {
                 : nothing}
             </div>
 
-            <div class="main-content-right">
-              <div class="airline-container">
-                ${isValidAirlineLogo(this.flight.airlineIcao)
-                  ? html`
-                      <img
-                        src="__LOGOS_URL__/${this.flight.airlineIcao}.png"
-                        alt="Airline ICAO Logo '${this.flight.airlineIcao}'"
-                      />
-                    `
-                  : nothing}
+            ${this.options.showAirlineInfoColumn
+              ? html` <div class="main-content-right">
+                  <div class="airline-container">
+                    ${this.renderAirlineLogo()}
+                    <p>${this.flight.airlineLabel ?? t('airline.unknown')}</p>
+                  </div>
 
-                <p>${this.flight.airlineLabel ?? t('airline.unknown')}</p>
-              </div>
-
-              ${this.flight.aircraftPhoto
-                ? html`
-                    <img
-                      src="${this.flight.aircraftPhoto}"
-                      .alt=${this.flight.aircraftModel ?? ''}
-                      class="aircraft-photo"
-                    />
-                  `
-                : !!flightInfos.length
-                  ? html`<ha-icon icon="mdi:airplane" class="aircraft-photo"></ha-icon>`
-                  : nothing}
-              ${this.flight.aircraftModel
-                ? html` <p class="aircraft-model">${this.flight.aircraftModel}</p> `
-                : nothing}
-            </div>
+                  ${this.flight.aircraftPhoto && this.options.showAircraftPhoto
+                    ? html`
+                        <img
+                          src="${this.flight.aircraftPhoto}"
+                          .alt=${this.flight.aircraftModel ?? ''}
+                          class="aircraft-photo"
+                        />
+                      `
+                    : !!flightInfos.length
+                      ? html`<ha-icon icon="mdi:airplane" class="aircraft-photo"></ha-icon>`
+                      : nothing}
+                  ${this.flight.aircraftModel
+                    ? html` <p class="aircraft-model">${this.flight.aircraftModel}</p> `
+                    : nothing}
+                </div>`
+              : nothing}
           </div>
 
-          ${this.flight.isLive && this.flight.arrivalTime
+          ${this.options.showProgressBar && this.flight.isLive && this.flight.arrivalTime
             ? html` <flight-progress-bar
                 .hass=${this.hass}
                 .departureTime=${this.flight.departureTime}
@@ -193,5 +217,11 @@ export class FlightradarFlightCard extends LitElement {
         </div>
       </ha-card>
     `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'flight-area-card': FlightradarFlightCard;
   }
 }

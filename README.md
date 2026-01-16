@@ -2,17 +2,18 @@
 
 A custom Home Assistant card for displaying Flightradar flight information.
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 [![GitHub Release](https://img.shields.io/github/release/plckr/flightradar-flight-card.svg)](https://github.com/plckr/flightradar-flight-card/releases)
+[![Community Forum](https://img.shields.io/static/v1.svg?label=Community&message=Forum&color=41bdf5&logo=HomeAssistant&logoColor=white)](https://community.home-assistant.io/t/flightradar24-flight-card/972609)
+[![HACS](https://img.shields.io/badge/HACS-Default-orange.svg?logo=HomeAssistantCommunityStore&logoColor=white)](https://github.com/hacs/integration)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/plckr/flightradar-flight-card/refs/heads/main/card-examples/area-card-dark.png">
-  <img alt="Area card example" src="https://raw.githubusercontent.com/plckr/flightradar-flight-card/refs/heads/main/card-examples/area-card-light.png">
+  <img alt="Area card example" src="https://raw.githubusercontent.com/plckr/flightradar-flight-card/refs/heads/main/card-examples/area-card-light.png" width="60%">
 </picture>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/plckr/flightradar-flight-card/refs/heads/main/card-examples/tracked-card-dark.png">
-  <img alt="Area card example" src="https://raw.githubusercontent.com/plckr/flightradar-flight-card/refs/heads/main/card-examples/tracked-card-light.png">
+  <img alt="Area card example" src="https://raw.githubusercontent.com/plckr/flightradar-flight-card/refs/heads/main/card-examples/tracked-card-light.png" width="60%">
 </picture>
 
 ## Prerequisites
@@ -54,12 +55,18 @@ entities:
 
 Card will look for a `flights` attribute in the entity provided, in case it doesn't find, it'll try the next entity. This is useful for cases where you maintain a list of current in area, and no flight is actually in the area at that moment, so the card will pick the next entity so that the card can always have something to render.
 
-| Option     | Type   | Required | Description                                |
-| ---------- | ------ | -------- | ------------------------------------------ |
-| `entities` | array  | Yes      | List of flight sensor entities (see below) |
-| `units`    | object | No       | Unit display preferences (see below)       |
+| Option                      | Type    | Required | Default | Description                                                            |
+| --------------------------- | ------- | -------- | ------- | ---------------------------------------------------------------------- |
+| `entities`                  | array   | Yes      | -       | List of flight sensor entities ([see below](#entity-options))          |
+| `units`                     | object  | No       | -       | Unit display preferences ([see below](#unit-options))                  |
+| `show_flightradar_link`     | boolean | No       | `true`  | Show link to Flightradar24 flight page                                 |
+| `show_airline_info_column`  | boolean | No       | `true`  | Show airline information column                                        |
+| `show_airline_logo`         | boolean | No       | `true`  | Show airline logo                                                      |
+| `show_aircraft_photo`       | boolean | No       | `true`  | Show aircraft photo                                                    |
+| `show_progress_bar`         | boolean | No       | `true`  | Show flight progress bar                                               |
+| `template_airline_logo_url` | string  | No       | -       | Custom airline logo URL template ([see Templating below](#templating)) |
 
-### Entity Options
+### <a id="entity-options">Entity Options</a>
 
 Each entity in the `entities` array supports the following options:
 
@@ -68,7 +75,7 @@ Each entity in the `entities` array supports the following options:
 | `entity_id` | string | Yes      | The entity ID of your flight sensor |
 | `title`     | string | No       | Custom title for this flight card   |
 
-### Unit Options
+### <a id="unit-options">Unit Options</a>
 
 You can customize the display units for altitude, distance, and ground speed:
 
@@ -97,6 +104,28 @@ units:
   altitude: ft
   distance: km
   ground_speed: kts
+show_flightradar_link: true
+show_airline_info_column: true
+show_airline_logo: true
+show_aircraft_photo: true
+show_progress_bar: true
+```
+
+### <a id="templating">Templating</a>
+
+The `template_airline_logo_url` option allows you to use a custom URL template for airline logos. The following variables are available for replacement:
+
+| Variable | Description                              |
+| -------- | ---------------------------------------- |
+| `{ICAO}` | The airline's ICAO code (e.g., TAP, UAL) |
+
+Example usage:
+
+```yaml
+type: custom:flightradar-flight-card
+entities:
+  - entity_id: sensor.flightradar24_current_in_area
+template_airline_logo_url: 'https://example.com/logos/{ICAO}.png'
 ```
 
 ## Use case example
@@ -115,6 +144,34 @@ entities:
   - entity_id: sensor.flightradar24_area_history
     title: Last Flight
 ```
+
+## Alternative use of Airline Logos
+
+### Tail Airline Logos
+
+<img src="https://airhex.com/images/photos/airline-tail-logos.png" alt="Airhex Tail Logos" width="48%" />
+
+If you prefer different airline logos, you can use [Airhex](https://airhex.com/api/logos/) tail logos by setting the `template_airline_logo_url` option:
+
+```yaml
+template_airline_logo_url: 'https://content.airhex.com/content/logos/airlines_{ICAO}_40_40_f.png'
+```
+
+### Serving Airline Logos Offline
+
+If you have devices (like wall-mounted tablets) that don't have internet access but still need to display airline logos, you can host the logos locally on your Home Assistant instance.
+
+#### Setup
+
+1. Download the airline logos from this repository's [`public/flightaware_logos`](https://github.com/plckr/flightradar-flight-card/tree/main/public/flightaware_logos) folder
+2. Copy the logos to your Home Assistant `config/www/flightaware_logos/` folder
+3. Configure the card to use the local path by setting the `template_airline_logo_url`:
+
+```yaml
+template_airline_logo_url: '/local/flightaware_logos/{ICAO}.png'
+```
+
+This way, all airline logos will be served directly from your Home Assistant instance, ensuring they display correctly even on devices without internet access.
 
 ## Credits
 
