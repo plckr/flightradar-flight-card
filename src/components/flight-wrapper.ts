@@ -1,7 +1,7 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import { resetStyles } from './styles';
+import { resetStyles } from '../styles';
 
 @customElement('flight-wrapper')
 export class FlightWrapper extends LitElement {

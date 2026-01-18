@@ -1,14 +1,16 @@
+import './flight-progress-bar';
+
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import { getTFunc } from './localize/localize';
-import { cardStyles, resetStyles } from './styles';
-import { HomeAssistant } from './types/homeassistant';
-import { isValidAirlineLogo } from './utils/airline-icao';
-import { getFlightLabel } from './utils/flight';
-import { defined } from './utils/type-guards';
-import { UnitOptions } from './utils/units';
-import { formatAltitude, formatDistance, formatGroundSpeed } from './utils/units';
+import { getTFunc } from '../localize/localize';
+import { cardStyles, resetStyles } from '../styles';
+import { HomeAssistant } from '../types/homeassistant';
+import { isValidAirlineLogo } from '../utils/airline-icao';
+import { getFlightLabel } from '../utils/flight';
+import { defined } from '../utils/type-guards';
+import { UnitOptions } from '../utils/units';
+import { formatAltitude, formatDistance, formatGroundSpeed } from '../utils/units';
 
 export type FlightData = {
   id: string;

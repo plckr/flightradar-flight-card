@@ -7,10 +7,10 @@ import {
   DEFAULT_CONFIG,
   GITHUB_REPOSITORY,
   GITHUB_REPOSITORY_URL,
-} from './const';
-import { getTFunc } from './localize/localize';
-import { HomeAssistant } from './types/homeassistant';
-import { DEFAULT_UNITS, UnitOptions } from './utils/units';
+} from '../const';
+import { getTFunc } from '../localize/localize';
+import { HomeAssistant } from '../types/homeassistant';
+import { DEFAULT_UNITS, UnitOptions } from '../utils/units';
 
 export const EDITOR_NAME = `${CARD_NAME}-editor`;
 

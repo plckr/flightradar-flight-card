@@ -3,9 +3,9 @@ import { LitElement, css, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
+import { resetStyles } from '../styles';
+import { HomeAssistant } from '../types/homeassistant';
 import { AreaCardOptions, FlightData } from './flight-area-card';
-import { resetStyles } from './styles';
-import { HomeAssistant } from './types/homeassistant';
 
 @customElement('flight-carousel')
 export class FlightCarousel extends LitElement {

@@ -1,17 +1,21 @@
+import './flight-area-card';
+import './flight-carousel';
+import './flight-wrapper';
+
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { CARD_NAME, CardConfig, validateConfig } from './const';
+import { CARD_NAME, CardConfig, validateConfig } from '../const';
+import { getTFunc } from '../localize/localize';
+import { resetStyles } from '../styles';
+import { ChangedProps, HomeAssistant } from '../types/homeassistant';
+import { computeAirlineIcao, getAirlineName } from '../utils/airline-icao';
+import { hasConfigChanged, hasEntityChanged } from '../utils/has-changed';
+import { FRAreaFlight, FRMostTrackedFlight, parseFlight } from '../utils/schemas';
+import { parseAirlineLogoUrl } from '../utils/templating/airline-logo';
+import { defined } from '../utils/type-guards';
 import { AreaCardOptions, FlightData } from './flight-area-card';
 import { EDITOR_NAME } from './flightradar-flight-card-editor';
-import { getTFunc } from './localize/localize';
-import { resetStyles } from './styles';
-import { ChangedProps, HomeAssistant } from './types/homeassistant';
-import { computeAirlineIcao, getAirlineName } from './utils/airline-icao';
-import { hasConfigChanged, hasEntityChanged } from './utils/has-changed';
-import { FRAreaFlight, FRMostTrackedFlight, parseFlight } from './utils/schemas';
-import { parseAirlineLogoUrl } from './utils/templating/airline-logo';
-import { defined } from './utils/type-guards';
 
 @customElement(CARD_NAME)
 export class FlightradarFlightCard extends LitElement {
