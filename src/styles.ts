@@ -1,6 +1,12 @@
 import { css } from 'lit';
 
 export const resetStyles = css`
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
   p {
     margin: 0;
   }
@@ -21,6 +27,7 @@ export const cardStyles = css`
   ha-card {
     padding: var(--ha-space-4);
     color: var(--primary-text-color);
+    height: 100%;
   }
 
   .title {

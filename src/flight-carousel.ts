@@ -1,74 +1,85 @@
 import EmblaCarousel, { EmblaCarouselType } from 'embla-carousel';
 import { LitElement, css, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
+import { repeat } from 'lit/directives/repeat.js';
 
 import { AreaCardOptions, FlightData } from './flight-area-card';
 import { resetStyles } from './styles';
 import { HomeAssistant } from './types/homeassistant';
-import { UnitOptions } from './utils/units';
 
 @customElement('flight-carousel')
 export class FlightCarousel extends LitElement {
+  @property({ type: String })
+  public cardTitle?: string;
+
   @property({ attribute: false })
   public hass!: HomeAssistant;
 
   @property({ type: Array })
   public flights: { options: AreaCardOptions; flightData: FlightData }[] = [];
 
-  @property({ type: Object })
-  public units!: UnitOptions;
-
   @state()
   private _selectedIndex = 0;
 
   private _embla: EmblaCarouselType | null = null;
 
+  @query('div.carousel')
+  private _viewport!: HTMLElement;
+
   static styles = [
     resetStyles,
     css`
-      :host {
-        display: block;
-      }
-
       .carousel {
+        display: block;
         overflow: hidden;
+        margin-inline: calc(var(--ha-space-4) * -1);
+        padding-inline: var(--ha-space-4);
       }
 
-      .carousel__container {
+      .container {
         display: flex;
+        margin-left: calc(var(--ha-space-4) * -1);
       }
 
-      .carousel__slide {
+      .slide {
+        overflow: hidden;
         flex: 0 0 100%;
         min-width: 0;
+        padding-left: var(--ha-space-4);
       }
 
-      .carousel__dots {
+      .carousel-nav {
         display: flex;
-        justify-content: center;
-        gap: 8px;
-        padding: 12px 16px;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--ha-space-2);
       }
 
-      .carousel__dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--secondary-text-color);
-        opacity: 0.3;
-        border: none;
-        padding: 0;
+      .carousel-controls {
+        display: flex;
+        align-items: center;
+        gap: var(--ha-space-1);
+      }
+
+      .carousel-btn {
+        opacity: 0.7;
+        appearance: none;
+        background-color: transparent;
+        touch-action: manipulation;
+        text-decoration: none;
         cursor: pointer;
-        transition: opacity 0.2s ease;
-      }
-
-      .carousel__dot:hover {
-        opacity: 0.5;
-      }
-
-      .carousel__dot--selected {
-        opacity: 1;
-        background: var(--primary-color);
+        border: 0px;
+        padding: 0px;
+        margin: 0px;
+        box-shadow: inset 0 0 0 1px currentColor;
+        width: var(--ha-space-6);
+        height: var(--ha-space-6);
+        z-index: 1;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        --mdc-icon-size: var(--ha-space-4);
       }
     `,
   ];
@@ -82,23 +93,9 @@ export class FlightCarousel extends LitElement {
     this._destroyCarousel();
   }
 
-  protected updated(changedProperties: Map<string, unknown>): void {
-    if (changedProperties.has('flights')) {
-      // Reinitialize carousel when flights change
-      this._destroyCarousel();
-      this.updateComplete.then(() => {
-        this._initCarousel();
-      });
-    }
-  }
-
   private _initCarousel(): void {
-    const viewport = this.shadowRoot?.querySelector('.carousel') as HTMLElement;
-    if (!viewport || this.flights.length <= 1) return;
-
-    this._embla = EmblaCarousel(viewport, {
+    this._embla = EmblaCarousel(this._viewport, {
       loop: false,
-      align: 'start',
     });
 
     this._embla.on('select', () => {
@@ -113,56 +110,40 @@ export class FlightCarousel extends LitElement {
     }
   }
 
-  private _onDotClick(index: number): void {
-    this._embla?.scrollTo(index);
-  }
-
   protected render() {
-    if (this.flights.length === 0) {
-      return html``;
-    }
-
-    // Single flight - no carousel needed
-    if (this.flights.length === 1) {
-      return html`
-        <flight-area-card
-          .hass=${this.hass}
-          .flight=${this.flights[0].flightData}
-          .options=${this.flights[0].options}
-        ></flight-area-card>
-      `;
-    }
-
-    // Multiple flights - render carousel
     return html`
-      <div class="carousel">
-        <div class="carousel__container">
-          ${this.flights.map(
-            (flight) => html`
-              <div class="carousel__slide">
+      <flight-wrapper .cardTitle=${this.cardTitle}>
+        <div class="carousel-nav" slot="top-right">
+          <div class="carousel-controls">
+            <button class="carousel-btn" @click=${() => this._embla?.scrollPrev()}>
+              <ha-icon icon="mdi:chevron-left"></ha-icon>
+            </button>
+            <button class="carousel-btn" @click=${() => this._embla?.scrollNext()}>
+              <ha-icon icon="mdi:chevron-right"></ha-icon>
+            </button>
+          </div>
+
+          <p class="carousel-counter">${this._selectedIndex + 1} / ${this.flights.length}</p>
+        </div>
+
+        <div class="carousel">
+          <div class="container">
+            ${repeat(
+              this.flights,
+              (flight) => flight.flightData.id,
+              (flight) => html`
                 <flight-area-card
                   .hass=${this.hass}
                   .flight=${flight.flightData}
                   .options=${flight.options}
-                ></flight-area-card>
-              </div>
-            `
-          )}
+                  class="slide"
+                >
+                </flight-area-card>
+              `
+            )}
+          </div>
         </div>
-      </div>
-      <div class="carousel__dots">
-        ${this.flights.map(
-          (_, index) => html`
-            <button
-              class="carousel__dot ${index === this._selectedIndex
-                ? 'carousel__dot--selected'
-                : ''}"
-              @click=${() => this._onDotClick(index)}
-              aria-label="Go to slide ${index + 1}"
-            ></button>
-          `
-        )}
-      </div>
+      </flight-wrapper>
     `;
   }
 }

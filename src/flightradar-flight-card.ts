@@ -87,6 +87,7 @@ export class FlightradarFlightCard extends LitElement {
     const { t } = getTFunc(this.hass.locale.language);
 
     const entities: {
+      title?: string;
       flights: { options: AreaCardOptions; flightData: FlightData }[];
       carousel: boolean;
     }[] = [];
@@ -100,9 +101,7 @@ export class FlightradarFlightCard extends LitElement {
 
       const entityFlights = (stateObj.attributes.flights as unknown[])
         .map(parseFlight)
-        .filter((flight) => {
-          return flight._type !== 'unknown';
-        })
+        .filter((flight) => flight._type !== 'unknown')
         .map((flight) => {
           const flightData = getFlightCardData(flight, {
             customTitle: entity.title,
@@ -131,6 +130,7 @@ export class FlightradarFlightCard extends LitElement {
 
       if (entityFlights.length) {
         entities.push({
+          title: entity.title,
           carousel: entity.carousel ?? false,
           flights: entityFlights,
         });
@@ -147,19 +147,24 @@ export class FlightradarFlightCard extends LitElement {
     const selectedEntity = entities[0];
 
     if (selectedEntity.flights.length > 1 && selectedEntity.carousel) {
-      return html`<flight-carousel
-        .hass=${this.hass}
-        .flights=${selectedEntity.flights}
-      ></flight-carousel>`;
+      return html`
+        <flight-carousel
+          .cardTitle=${selectedEntity.title}
+          .hass=${this.hass}
+          .flights=${selectedEntity.flights}
+        ></flight-carousel>
+      `;
     }
 
     const selectedFlight = selectedEntity.flights[0];
 
-    return html`<flight-area-card
-      .hass=${this.hass}
-      .flight=${selectedFlight.flightData}
-      .options=${selectedFlight.options}
-    ></flight-area-card>`;
+    return html`<flight-wrapper .cardTitle=${selectedEntity.title}>
+      <flight-area-card
+        .hass=${this.hass}
+        .flight=${selectedFlight.flightData}
+        .options=${selectedFlight.options}
+      ></flight-area-card>
+    </flight-wrapper>`;
   }
 }
 
@@ -178,7 +183,6 @@ function getFlightCardData(
 
       return {
         id: flight.id,
-        title: options.customTitle || t('title.default_area'),
         flightNumber: flight.flight_number,
         callsign: flight.callsign,
         airlineIcao:
@@ -229,7 +233,6 @@ function getFlightCardData(
 
       return {
         id: flight.id,
-        title: options.customTitle || t('title.default_mosttracked'),
         flightNumber: flight.flight_number,
         callsign: flight.callsign,
         airlineIcao,

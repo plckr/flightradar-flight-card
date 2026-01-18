@@ -12,7 +12,6 @@ import { formatAltitude, formatDistance, formatGroundSpeed } from './utils/units
 
 export type FlightData = {
   id: string;
-  title?: string;
   aircraftRegistration: string | null;
   aircraftPhoto: string | null;
   aircraftCode: string | null;
@@ -76,7 +75,7 @@ export class FlightradarFlightCard extends LitElement {
     }
 
     return html`<a
-      href=${url}
+      href=${url.toString()}
       rel="noopener noreferrer"
       target="_blank"
       style="color:var(--primary-text-color);"
@@ -85,10 +84,10 @@ export class FlightradarFlightCard extends LitElement {
       <ha-icon
         icon="mdi:open-in-new"
         style="
-        --mdc-icon-size:16px;
-        opacity:0.75"
-        ;
-      />
+        --mdc-icon-size: var(--ha-space-4);
+        opacity: 0.75;
+        "
+      ></ha-icon>
     </a>`;
   }
 
@@ -134,88 +133,86 @@ export class FlightradarFlightCard extends LitElement {
     });
 
     return html`
-      <ha-card>
-        <div>
-          ${this.flight.title ? html` <div class="title">${this.flight.title}</div> ` : nothing}
+      <div class="main-content">
+        <div class="main-content-left">
+          ${this.renderFlightTitle({ renderAnchor: this.options.showFlightradarLink })}
+          ${this.flight.callsign
+            ? html`
+                <div class="callsign-info">
+                  <p>${this.flight.callsign}</p>
 
-          <div class="main-content">
-            <div class="main-content-left">
-              ${this.renderFlightTitle({ renderAnchor: this.options.showFlightradarLink })}
-              ${this.flight.callsign
-                ? html`
-                    <div class="callsign-info">
-                      <p>${this.flight.callsign}</p>
-
-                      ${this.flight.isLive
-                        ? html`
-                            <div class="live-indicator">
-                              ${t('flight.live')}
-                              <div class="pulse"></div>
-                            </div>
-                          `
-                        : nothing}
-                    </div>
-                  `
-                : nothing}
-              ${defined(this.flight.origin) || defined(this.flight.destination)
-                ? html` <div class="flight-locations">
-                    ${this.flight.origin ?? t('origin_unknown')}
-                    <ha-icon icon="mdi:arrow-right"></ha-icon>
-                    ${this.flight.destination ?? t('destination_unknown')}
-                  </div>`
-                : nothing}
-              ${flightInfos.length
-                ? html`
-                    <div class="flight-speed-info-container">
-                      ${flightInfos.map(
-                        ({ label, value }) => html`
-                          <div>
-                            <p class="label">${label}</p>
-                            <p class="value">${value}</p>
-                          </div>
-                        `
-                      )}
-                    </div>
-                  `
-                : nothing}
-            </div>
-
-            ${this.options.showAirlineInfoColumn
-              ? html` <div class="main-content-right">
-                  <div class="airline-container">
-                    ${this.renderAirlineLogo()}
-                    <p>${this.flight.airlineLabel ?? t('airline.unknown')}</p>
-                  </div>
-
-                  ${this.flight.aircraftPhoto && this.options.showAircraftPhoto
+                  ${this.flight.isLive
                     ? html`
-                        <img
-                          src="${this.flight.aircraftPhoto}"
-                          .alt=${this.flight.aircraftModel ?? ''}
-                          class="aircraft-photo"
-                        />
+                        <div class="live-indicator">
+                          ${t('flight.live')}
+                          <div class="pulse"></div>
+                        </div>
                       `
-                    : !!flightInfos.length
-                      ? html`<ha-icon icon="mdi:airplane" class="aircraft-photo"></ha-icon>`
-                      : nothing}
-                  ${this.flight.aircraftModel
-                    ? html` <p class="aircraft-model">${this.flight.aircraftModel}</p> `
                     : nothing}
-                </div>`
-              : nothing}
-          </div>
-
-          ${this.options.showProgressBar && this.flight.isLive && this.flight.arrivalTime
-            ? html` <flight-progress-bar
-                .hass=${this.hass}
-                .departureTime=${this.flight.departureTime}
-                .arrivalTime=${this.flight.arrivalTime}
-                .destination=${this.flight.destination}
-                class="flight-progress"
-              />`
+                </div>
+              `
+            : nothing}
+          ${defined(this.flight.origin) || defined(this.flight.destination)
+            ? html` <div class="flight-locations">
+                ${this.flight.origin ?? t('origin_unknown')}
+                <ha-icon icon="mdi:arrow-right"></ha-icon>
+                ${this.flight.destination ?? t('destination_unknown')}
+              </div>`
+            : nothing}
+          ${flightInfos.length
+            ? html`
+                <div class="flight-speed-info-container">
+                  ${flightInfos.map(
+                    ({ label, value }) => html`
+                      <div>
+                        <p class="label">${label}</p>
+                        <p class="value">${value}</p>
+                      </div>
+                    `
+                  )}
+                </div>
+              `
             : nothing}
         </div>
-      </ha-card>
+
+        ${this.options.showAirlineInfoColumn
+          ? html` <div class="main-content-right">
+              <div class="airline-container">
+                ${this.renderAirlineLogo()}
+                <p>${this.flight.airlineLabel ?? t('airline.unknown')}</p>
+              </div>
+
+              ${this.flight.aircraftPhoto && this.options.showAircraftPhoto
+                ? html`
+                    <img
+                      src="${this.flight.aircraftPhoto}"
+                      .alt=${this.flight.aircraftModel ?? ''}
+                      class="aircraft-photo"
+                    />
+                  `
+                : !!flightInfos.length
+                  ? html`<ha-icon icon="mdi:airplane" class="aircraft-photo"></ha-icon>`
+                  : nothing}
+              ${this.flight.aircraftModel
+                ? html` <p class="aircraft-model">${this.flight.aircraftModel}</p> `
+                : nothing}
+            </div>`
+          : nothing}
+      </div>
+
+      ${this.options.showProgressBar &&
+      this.flight.isLive &&
+      this.flight.departureTime &&
+      this.flight.arrivalTime &&
+      this.flight.destination
+        ? html` <flight-progress-bar
+            .hass=${this.hass}
+            .departureTime=${this.flight.departureTime}
+            .arrivalTime=${this.flight.arrivalTime}
+            .destination=${this.flight.destination}
+            class="flight-progress"
+          ></flight-progress-bar>`
+        : nothing}
     `;
   }
 }

@@ -1,3 +1,4 @@
+import './flight-wrapper';
 import './flight-area-card';
 import './flight-carousel';
 import './flight-progress-bar';
