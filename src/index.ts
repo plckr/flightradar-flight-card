@@ -1,6 +1,4 @@
-import './flight-area-card';
-import './flightradar-flight-card';
-import './flight-progress-bar';
+import './components/flightradar-flight-card';
 
 import { CARD_DESCRIPTION, CARD_NAME, CARD_VERSION, GITHUB_REPOSITORY_URL } from './const';
 import { registerCustomCard } from './utils/register-card';

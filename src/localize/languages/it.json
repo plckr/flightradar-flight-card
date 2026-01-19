@@ -1,11 +1,6 @@
 {
   "no_flights": "Nessun volo da mostrare al momento",
 
-  "title": {
-    "default_area": "Voli nell'area",
-    "default_mosttracked": "Volo più seguito su FlightRadar24"
-  },
-
   "altitude": "Altitudine",
   "ground_speed": "Velocità al suolo",
   "distance": "Distanza",

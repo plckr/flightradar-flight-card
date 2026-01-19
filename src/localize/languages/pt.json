@@ -1,11 +1,6 @@
 {
   "no_flights": "Sem voos para mostrar de momento",
 
-  "title": {
-    "default_area": "Aeronave a sobrevoar a área",
-    "default_mosttracked": "Voo mais procurado no FlightRadar24"
-  },
-
   "altitude": "Altitude",
   "ground_speed": "Velocidade de solo",
   "distance": "Distância",
@@ -50,6 +45,15 @@
     "unit_kts": "Nós (kts)",
     "unit_kmh": "Quilómetros por hora (km/h)",
     "unit_mph": "Milhas por hora (mph)",
-    "unit_mach": "Mach (M)"
+    "unit_mach": "Mach (M)",
+    "carousel_toggle": "Ativar carrossel",
+    "carousel_section": "Carrossel",
+    "carousel_section_description": "Navegar entre múltiplos voos.",
+    "carousel_show_controls": "Mostrar controlos",
+    "carousel_loop": "Loop",
+    "carousel_loop_description": "Ativa o loop infinito.",
+    "carousel_autoplay": "Autoplay",
+    "carousel_autoplay_delay": "Autoplay delay (ms)",
+    "carousel_autoplay_delay_description": "Default {value}ms"
   }
 }

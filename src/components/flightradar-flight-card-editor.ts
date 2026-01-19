@@ -7,10 +7,10 @@ import {
   DEFAULT_CONFIG,
   GITHUB_REPOSITORY,
   GITHUB_REPOSITORY_URL,
-} from './const';
-import { getTFunc } from './localize/localize';
-import { HomeAssistant } from './types/homeassistant';
-import { DEFAULT_UNITS, UnitOptions } from './utils/units';
+} from '../const';
+import { getTFunc } from '../localize/localize';
+import { HomeAssistant } from '../types/homeassistant';
+import { DEFAULT_UNITS, UnitOptions } from '../utils/units';
 
 export const EDITOR_NAME = `${CARD_NAME}-editor`;
 
@@ -23,8 +23,14 @@ export class FlightradarFlightCardEditor extends LitElement {
   private _config!: CardConfig;
 
   static styles = css`
+    .section-bordered {
+      padding: 12px;
+      border-radius: var(--ha-border-radius-md);
+      border: 1px solid var(--outline-color);
+    }
+
     .section {
-      margin-top: var(--ha-space-4);
+      margin-top: var(--ha-space-6);
     }
 
     .section:first-child {
@@ -33,7 +39,31 @@ export class FlightradarFlightCardEditor extends LitElement {
 
     .section-title {
       font-weight: 500;
-      margin-bottom: 8px;
+      margin-bottom: var(--ha-space-2);
+    }
+
+    .section-row {
+      margin-top: var(--ha-space-3);
+    }
+
+    .section-row:first-child {
+      margin-top: 0;
+    }
+
+    .section-row .inline {
+      display: flex;
+      gap: var(--ha-space-2);
+    }
+
+    .section-row .inline > * {
+      flex: 1;
+    }
+
+    .helper-text {
+      color: var(--secondary-text-color);
+      font-size: var(--ha-font-size-s);
+      line-height: 1.1;
+      margin-block: var(--ha-space-2);
     }
 
     ha-formfield {
@@ -58,9 +88,6 @@ export class FlightradarFlightCardEditor extends LitElement {
     .entity-row {
       display: flex;
       gap: 8px;
-      padding: 12px;
-      border-radius: var(--ha-border-radius-md);
-      border: 1px solid var(--outline-color);
     }
     .entity-row-content {
       flex: 1;
@@ -71,23 +98,20 @@ export class FlightradarFlightCardEditor extends LitElement {
       gap: 8px;
     }
     .remove-entity {
-      margin-top: 8px;
+      margin-top: 16px;
     }
 
     .add-entity {
       margin-top: 12px;
     }
 
-    .units-section {
-      margin-top: 16px;
-    }
     .units-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
 
-    .template-textfield {
+    ha-textfield {
       width: 100%;
     }
   `;
@@ -121,7 +145,7 @@ export class FlightradarFlightCardEditor extends LitElement {
           <div class="entities">
             ${entities.map(
               (entity, index) => html`
-                <div class="entity-row">
+                <div class="entity-row section-bordered">
                   <div class="handle">
                     <ha-icon icon="mdi:drag"></ha-icon>
                   </div>
@@ -182,71 +206,172 @@ export class FlightradarFlightCardEditor extends LitElement {
         <p>${t('editor.usage_description')}</p>
       </div>
 
-      <div class="section">
+      <div class="section section-bordered">
         <div class="section-title">${t('editor.appearance_section')}</div>
 
-        <ha-formfield .label=${t('editor.show_flightradar_link')}>
-          <ha-switch
-            .checked=${showFlightradarLink}
-            @change=${(ev: Event) => {
-              const value = (ev.target as HTMLInputElement).checked;
-              this._updateConfig({ ...this._config, show_flightradar_link: value });
-            }}
-          ></ha-switch>
-        </ha-formfield>
+        <div class="section-row">
+          <ha-formfield .label=${t('editor.show_flightradar_link')}>
+            <ha-switch
+              .checked=${showFlightradarLink}
+              @change=${(ev: Event) => {
+                const value = (ev.target as HTMLInputElement).checked;
+                this._updateConfig({ ...this._config, show_flightradar_link: value });
+              }}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
+
+        <div class="section-row">
+          <ha-formfield .label=${t('editor.show_airline_info_column')}>
+            <ha-switch
+              .checked=${showAirlineInfoColumn}
+              @change=${(ev: Event) => {
+                const value = (ev.target as HTMLInputElement).checked;
+                this._updateConfig({ ...this._config, show_airline_info_column: value });
+              }}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
+
+        <div class="section-row inline">
+          <ha-formfield .label=${t('editor.show_airline_logo')}>
+            <ha-switch
+              .checked=${showAirlineLogo}
+              .disabled=${!showAirlineInfoColumn}
+              @change=${(ev: Event) => {
+                const value = (ev.target as HTMLInputElement).checked;
+                this._updateConfig({ ...this._config, show_airline_logo: value });
+              }}
+            ></ha-switch>
+          </ha-formfield>
+
+          <ha-formfield .label=${t('editor.show_aircraft_photo')}>
+            <ha-switch
+              .checked=${showAircraftPhoto}
+              .disabled=${!showAirlineInfoColumn}
+              @change=${(ev: Event) => {
+                const value = (ev.target as HTMLInputElement).checked;
+                this._updateConfig({ ...this._config, show_aircraft_photo: value });
+              }}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
+
+        <div class="section-row">
+          <ha-formfield .label=${t('editor.show_progress_bar')}>
+            <ha-switch
+              .checked=${showProgressBar}
+              @change=${(ev: Event) => {
+                const value = (ev.target as HTMLInputElement).checked;
+                this._updateConfig({ ...this._config, show_progress_bar: value });
+              }}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
       </div>
 
-      <div class="section">
-        <ha-formfield .label=${t('editor.show_airline_info_column')}>
-          <ha-switch
-            .checked=${showAirlineInfoColumn}
-            @change=${(ev: Event) => {
-              const value = (ev.target as HTMLInputElement).checked;
-              this._updateConfig({ ...this._config, show_airline_info_column: value });
+      <div class="section section-bordered">
+        <div class="section-title">${t('editor.carousel_section')}</div>
+        <p class="helper-text">${t('editor.carousel_section_description')}</p>
+
+        <div class="section-row">
+          <ha-formfield .label=${t('editor.carousel_toggle')}>
+            <ha-switch
+              .checked=${this._config.carousel?.enable ?? DEFAULT_CONFIG.carousel.enable}
+              @change=${(ev: Event) => {
+                const value = (ev.target as HTMLInputElement).checked;
+                this._updateConfig({
+                  ...this._config,
+                  carousel: {
+                    ...(this._config.carousel || {}),
+                    enable: value,
+                  },
+                });
+              }}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
+
+        <div class="section-row">
+          <ha-formfield .label=${t('editor.carousel_show_controls')}>
+            <ha-switch
+              .checked=${this._config.carousel?.show_controls ??
+              DEFAULT_CONFIG.carousel.show_controls}
+              @change=${(ev: Event) => {
+                const value = (ev.target as HTMLInputElement).checked;
+                this._updateConfig({
+                  ...this._config,
+                  carousel: {
+                    ...(this._config.carousel || {}),
+                    show_controls: value,
+                  },
+                });
+              }}
+            ></ha-switch>
+          </ha-formfield>
+        </div>
+
+        <div class="section-row">
+          <ha-formfield .label=${t('editor.carousel_loop')}>
+            <ha-switch
+              .checked=${this._config.carousel?.loop ?? DEFAULT_CONFIG.carousel.loop}
+              @change=${(ev: Event) => {
+                const value = (ev.target as HTMLInputElement).checked;
+                this._updateConfig({
+                  ...this._config,
+                  carousel: {
+                    ...(this._config.carousel || {}),
+                    loop: value,
+                  },
+                });
+              }}
+            ></ha-switch>
+          </ha-formfield>
+          <p class="helper-text">${t('editor.carousel_loop_description')}</p>
+        </div>
+
+        <div class="section-row">
+          <ha-formfield .label=${t('editor.carousel_autoplay')}>
+            <ha-switch
+              .checked=${this._config.carousel?.autoplay ?? DEFAULT_CONFIG.carousel.autoplay}
+              @change=${(ev: Event) => {
+                const value = (ev.target as HTMLInputElement).checked;
+                this._updateConfig({
+                  ...this._config,
+                  carousel: {
+                    ...(this._config.carousel || {}),
+                    autoplay: value,
+                  },
+                });
+              }}
+            ></ha-switch>
+          </ha-formfield>
+
+          <ha-textfield
+            type="number"
+            .value=${this._config.carousel?.autoplay_delay}
+            .label=${t('editor.carousel_autoplay_delay')}
+            @input=${(ev: Event) => {
+              this._updateConfig({
+                ...this._config,
+                carousel: {
+                  ...(this._config.carousel || {}),
+                  autoplay_delay: +(ev.target as HTMLInputElement).value,
+                },
+              });
             }}
-          ></ha-switch>
-        </ha-formfield>
+          ></ha-textfield>
+          <p class="helper-text">
+            ${t('editor.carousel_autoplay_delay_description', {
+              value: DEFAULT_CONFIG.carousel.autoplay_delay.toString(),
+            })}
+          </p>
+        </div>
       </div>
 
-      <div class="section">
-        <ha-formfield .label=${t('editor.show_airline_logo')}>
-          <ha-switch
-            .checked=${showAirlineLogo}
-            .disabled=${!showAirlineInfoColumn}
-            @change=${(ev: Event) => {
-              const value = (ev.target as HTMLInputElement).checked;
-              this._updateConfig({ ...this._config, show_airline_logo: value });
-            }}
-          ></ha-switch>
-        </ha-formfield>
-
-        <ha-formfield .label=${t('editor.show_aircraft_photo')}>
-          <ha-switch
-            .checked=${showAircraftPhoto}
-            .disabled=${!showAirlineInfoColumn}
-            @change=${(ev: Event) => {
-              const value = (ev.target as HTMLInputElement).checked;
-              this._updateConfig({ ...this._config, show_aircraft_photo: value });
-            }}
-          ></ha-switch>
-        </ha-formfield>
-      </div>
-
-      <div class="section">
-        <ha-formfield .label=${t('editor.show_progress_bar')}>
-          <ha-switch
-            .checked=${showProgressBar}
-            @change=${(ev: Event) => {
-              const value = (ev.target as HTMLInputElement).checked;
-              this._updateConfig({ ...this._config, show_progress_bar: value });
-            }}
-          ></ha-switch>
-        </ha-formfield>
-      </div>
-
-      <div class="units-section">
+      <div class="section section-bordered">
         <div class="section-title">${t('editor.units_section')}</div>
-        <div class="units-grid">
+        <div class="units-grid section-row">
           <ha-select
             .label=${t('editor.altitude_unit')}
             .value=${units.altitude}
@@ -295,27 +420,26 @@ export class FlightradarFlightCardEditor extends LitElement {
             <mwc-list-item value="M">${t('editor.unit_mach')}</mwc-list-item>
           </ha-select>
         </div>
-
-        <div class="section">
-          <div class="section-title">${t('editor.templating_section')}</div>
-          <ha-textfield
-            class="template-textfield"
-            .value=${this._config.template_airline_logo_url || ''}
-            .label=${t('editor.template_airline_logo_url')}
-            @input=${(ev: Event) => {
-              this._updateConfig({
-                ...this._config,
-                template_airline_logo_url: (ev.target as HTMLInputElement).value,
-              });
-            }}
-          ></ha-textfield>
-        </div>
-
-        <p>
-          ${t('editor.more_info_link')}:
-          <a href=${GITHUB_REPOSITORY_URL} target="_blank">${GITHUB_REPOSITORY}</a>
-        </p>
       </div>
+
+      <div class="section section-bordered">
+        <div class="section-title">${t('editor.templating_section')}</div>
+        <ha-textfield
+          .value=${this._config.template_airline_logo_url || ''}
+          .label=${t('editor.template_airline_logo_url')}
+          @input=${(ev: Event) => {
+            this._updateConfig({
+              ...this._config,
+              template_airline_logo_url: (ev.target as HTMLInputElement).value,
+            });
+          }}
+        ></ha-textfield>
+      </div>
+
+      <p>
+        ${t('editor.more_info_link')}:
+        <a href=${GITHUB_REPOSITORY_URL} target="_blank">${GITHUB_REPOSITORY}</a>
+      </p>
     `;
   }
 

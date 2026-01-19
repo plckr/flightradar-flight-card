@@ -1,11 +1,6 @@
 {
   "no_flights": "No flights to show at the moment",
 
-  "title": {
-    "default_area": "Flight in the area",
-    "default_mosttracked": "Most tracked flight on FlightRadar24"
-  },
-
   "altitude": "Altitude",
   "ground_speed": "Ground speed",
   "distance": "Distance",
@@ -50,6 +45,15 @@
     "unit_kts": "Knots (kts)",
     "unit_kmh": "Kilometers per hour (km/h)",
     "unit_mph": "Miles per hour (mph)",
-    "unit_mach": "Mach (M)"
+    "unit_mach": "Mach (M)",
+    "carousel_toggle": "Enable carousel",
+    "carousel_section": "Carousel",
+    "carousel_section_description": "Navigate between multiple flights.",
+    "carousel_show_controls": "Show controls",
+    "carousel_loop": "Loop",
+    "carousel_loop_description": "Enable infinite loop.",
+    "carousel_autoplay": "Autoplay",
+    "carousel_autoplay_delay": "Autoplay delay (ms)",
+    "carousel_autoplay_delay_description": "Default {value}ms"
   }
 }

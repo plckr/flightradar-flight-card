@@ -1,10 +1,10 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { getTFunc } from './localize/localize';
-import { resetStyles } from './styles';
-import { HomeAssistant } from './types/homeassistant';
-import { formatTimeLeft } from './utils/date';
+import { getTFunc } from '../localize/localize';
+import { resetStyles } from '../styles';
+import { HomeAssistant } from '../types/homeassistant';
+import { formatTimeLeft } from '../utils/date';
 
 @customElement('flight-progress-bar')
 export class FlightProgressBar extends LitElement {

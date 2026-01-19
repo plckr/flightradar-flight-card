@@ -59,6 +59,7 @@ Card will look for a `flights` attribute in the entity provided, in case it does
 | --------------------------- | ------- | -------- | ------- | ---------------------------------------------------------------------- |
 | `entities`                  | array   | Yes      | -       | List of flight sensor entities ([see below](#entity-options))          |
 | `units`                     | object  | No       | -       | Unit display preferences ([see below](#unit-options))                  |
+| `carousel`                  | object  | No       | -       | Carousel behavior options ([see below](#carousel-options))             |
 | `show_flightradar_link`     | boolean | No       | `true`  | Show link to Flightradar24 flight page                                 |
 | `show_airline_info_column`  | boolean | No       | `true`  | Show airline information column                                        |
 | `show_airline_logo`         | boolean | No       | `true`  | Show airline logo                                                      |
@@ -74,6 +75,18 @@ Each entity in the `entities` array supports the following options:
 | ----------- | ------ | -------- | ----------------------------------- |
 | `entity_id` | string | Yes      | The entity ID of your flight sensor |
 | `title`     | string | No       | Custom title for this flight card   |
+
+### <a id="carousel-options">Carousel Options</a>
+
+When multiple flights are available, you can enable a carousel to cycle through them:
+
+| Option           | Type    | Default | Description                                      |
+| ---------------- | ------- | ------- | ------------------------------------------------ |
+| `enable`         | boolean | `false` | Enable carousel mode for multiple flights        |
+| `show_controls`  | boolean | `true`  | Show navigation controls (prev/next buttons)     |
+| `loop`           | boolean | `false` | Loop back to first flight after reaching the end |
+| `autoplay`       | boolean | `false` | Automatically cycle through flights              |
+| `autoplay_delay` | number  | `5000`  | Delay between slides in milliseconds             |
 
 ### <a id="unit-options">Unit Options</a>
 
@@ -104,6 +117,12 @@ units:
   altitude: ft
   distance: km
   ground_speed: kts
+carousel:
+  enable: true
+  show_controls: true
+  loop: true
+  autoplay: true
+  autoplay_delay: 5000
 show_flightradar_link: true
 show_airline_info_column: true
 show_airline_logo: true

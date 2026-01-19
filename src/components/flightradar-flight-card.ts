@@ -1,17 +1,22 @@
-import { LitElement, css, html } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import './flight-area-card';
+import './flight-carousel';
+import './flight-wrapper';
 
-import { CARD_NAME, CardConfig, validateConfig } from './const';
-import { FlightData } from './flight-area-card';
+import { LitElement, PropertyValues, css, html } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+import * as v from 'valibot';
+
+import { CARD_NAME, CardConfig, validateConfig } from '../const';
+import { getTFunc } from '../localize/localize';
+import { resetStyles } from '../styles';
+import { HomeAssistant } from '../types/homeassistant';
+import { computeAirlineIcao, getAirlineName } from '../utils/airline-icao';
+import { hasConfigChanged, hasEntityChanged } from '../utils/has-changed';
+import { FRAreaFlight, FRMostTrackedFlight, parseFlight } from '../utils/schemas';
+import { parseAirlineLogoUrl } from '../utils/templating/airline-logo';
+import { defined } from '../utils/type-guards';
+import { AreaCardOptions, FlightData } from './flight-area-card';
 import { EDITOR_NAME } from './flightradar-flight-card-editor';
-import { getTFunc } from './localize/localize';
-import { resetStyles } from './styles';
-import { ChangedProps, HomeAssistant } from './types/homeassistant';
-import { computeAirlineIcao, getAirlineName } from './utils/airline-icao';
-import { hasConfigChanged, hasEntityChanged } from './utils/has-changed';
-import { FRAreaFlight, FRMostTrackedFlight, parseFlight } from './utils/schemas';
-import { parseAirlineLogoUrl } from './utils/templating/airline-logo';
-import { defined } from './utils/type-guards';
 
 @customElement(CARD_NAME)
 export class FlightradarFlightCard extends LitElement {
@@ -63,7 +68,7 @@ export class FlightradarFlightCard extends LitElement {
     return document.createElement(EDITOR_NAME);
   }
 
-  protected shouldUpdate(changedProps: ChangedProps): boolean {
+  protected shouldUpdate(changedProps: PropertyValues<this>): boolean {
     if (!this._config) {
       return false;
     }
@@ -86,63 +91,94 @@ export class FlightradarFlightCard extends LitElement {
 
     const { t } = getTFunc(this.hass.locale.language);
 
-    const entries = this._config.entities
-      .map((entity) => {
-        const stateObj = this.hass.states[entity.entity_id];
-        if (!stateObj) {
-          console.error(`Entity not found: ${entity.entity_id}`);
-          return undefined;
-        }
+    const entities: {
+      title?: string;
+      flights: { options: AreaCardOptions; flightData: FlightData }[];
+    }[] = [];
 
-        const data = stateObj.attributes.flights[0];
+    for (const entity of this._config.entities) {
+      const stateObj = this.hass.states[entity.entity_id];
+      if (!stateObj) {
+        console.error(`Entity not found: ${entity.entity_id}`);
+        continue;
+      }
 
-        return {
+      const stateFlights = v.parse(
+        v.fallback(v.array(v.unknown()), [undefined]),
+        stateObj?.attributes?.flights
+      );
+
+      const entityFlights = stateFlights
+        .map(parseFlight)
+        .filter((flight) => flight._type !== 'unknown')
+        .map((flight) => {
+          const flightData = getFlightCardData(flight, {
+            customTitle: entity.title,
+            locale: this.hass.locale.language,
+          });
+
+          const customAirlineLogoUrl =
+            flightData.airlineIcao && defined(this._config.template_airline_logo_url)
+              ? parseAirlineLogoUrl(this._config.template_airline_logo_url, {
+                  airlineIcao: flightData.airlineIcao,
+                })
+              : undefined;
+
+          const options = {
+            units: this._config.units,
+            showFlightradarLink: this._config.show_flightradar_link,
+            showAirlineInfoColumn: this._config.show_airline_info_column,
+            showAirlineLogo: this._config.show_airline_logo,
+            showAircraftPhoto: this._config.show_aircraft_photo,
+            showProgressBar: this._config.show_progress_bar,
+            customAirlineLogoUrl,
+          };
+
+          return { options, flightData };
+        });
+
+      if (entityFlights.length) {
+        entities.push({
           title: entity.title,
-          flight: parseFlight(data),
-        };
-      })
-      .filter(defined)
-      .sort((a, b) => {
-        // Put not passed schema objects at the end
-        if (a.flight._type === 'unknown') return 1;
-        if (b.flight._type === 'unknown') return -1;
-        return 0;
-      });
+          flights: entityFlights,
+        });
+      }
+    }
 
-    const { flight: f, title: cardTitle } = entries[0];
-
-    if (f._type === 'unknown' || !entries.length) {
+    if (!entities.length) {
       return html`<ha-card>
         <ha-icon icon="mdi:airplane"></ha-icon>
         <span>${t('no_flights')}</span>
       </ha-card>`;
     }
 
-    const flightData = getFlightCardData(f, {
-      customTitle: cardTitle,
-      locale: this.hass.locale.language,
-    });
+    const selectedEntity = entities[0];
 
-    const customAirlineLogoUrl =
-      flightData.airlineIcao && defined(this._config.template_airline_logo_url)
-        ? parseAirlineLogoUrl(this._config.template_airline_logo_url, {
-            airlineIcao: flightData.airlineIcao,
-          })
-        : undefined;
+    if (selectedEntity.flights.length > 1 && this._config.carousel.enable) {
+      return html`
+        <flight-carousel
+          .cardTitle=${selectedEntity.title}
+          .hass=${this.hass}
+          .flights=${selectedEntity.flights}
+          .emblaOptions=${{
+            loop: this._config.carousel.loop,
+            autoplay: this._config.carousel.autoplay,
+            autoplayDelay: this._config.carousel.autoplay_delay,
+            showControls: this._config.carousel.show_controls,
+          }}
+        ></flight-carousel>
+      `;
+    }
 
-    return html`<flight-area-card
-      .hass=${this.hass}
-      .flight=${flightData}
-      .options=${{
-        units: this._config.units,
-        showFlightradarLink: this._config.show_flightradar_link,
-        showAirlineInfoColumn: this._config.show_airline_info_column,
-        showAirlineLogo: this._config.show_airline_logo,
-        showAircraftPhoto: this._config.show_aircraft_photo,
-        showProgressBar: this._config.show_progress_bar,
-        customAirlineLogoUrl,
-      }}
-    ></flight-area-card>`;
+    const selectedFlight = selectedEntity.flights[0];
+
+    return html`<flight-wrapper .cardTitle=${selectedEntity.title}>
+      <flight-area-card
+        .hass=${this.hass}
+        .flight=${selectedFlight.flightData}
+        .options=${selectedFlight.options}
+      ></flight-area-card>
+    </flight-wrapper>`;
   }
 }
 
@@ -161,7 +197,6 @@ function getFlightCardData(
 
       return {
         id: flight.id,
-        title: options.customTitle || t('title.default_area'),
         flightNumber: flight.flight_number,
         callsign: flight.callsign,
         airlineIcao:
@@ -212,7 +247,6 @@ function getFlightCardData(
 
       return {
         id: flight.id,
-        title: options.customTitle || t('title.default_mosttracked'),
         flightNumber: flight.flight_number,
         callsign: flight.callsign,
         airlineIcao,
