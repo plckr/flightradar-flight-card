@@ -4,6 +4,7 @@ import './flight-wrapper';
 
 import { LitElement, PropertyValues, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import * as v from 'valibot';
 
 import { CARD_NAME, CardConfig, validateConfig } from '../const';
 import { getTFunc } from '../localize/localize';
@@ -102,7 +103,12 @@ export class FlightradarFlightCard extends LitElement {
         continue;
       }
 
-      const entityFlights = (stateObj.attributes.flights as unknown[])
+      const stateFlights = v.parse(
+        v.fallback(v.array(v.unknown()), [undefined]),
+        stateObj?.attributes?.flights
+      );
+
+      const entityFlights = stateFlights
         .map(parseFlight)
         .filter((flight) => flight._type !== 'unknown')
         .map((flight) => {
