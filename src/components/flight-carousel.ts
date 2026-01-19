@@ -1,5 +1,6 @@
 import EmblaCarousel, { EmblaCarouselType } from 'embla-carousel';
-import { LitElement, css, html } from 'lit';
+import Autoplay from 'embla-carousel-autoplay';
+import { LitElement, PropertyValues, css, html, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
@@ -17,6 +18,14 @@ export class FlightCarousel extends LitElement {
 
   @property({ type: Array })
   public flights: { options: AreaCardOptions; flightData: FlightData }[] = [];
+
+  @property({ attribute: false })
+  public emblaOptions!: {
+    loop: boolean;
+    autoplay: boolean;
+    autoplayDelay: number;
+    showControls: boolean;
+  };
 
   @state()
   private _selectedIndex = 0;
@@ -84,6 +93,16 @@ export class FlightCarousel extends LitElement {
     `,
   ];
 
+  protected shouldUpdate(changedProps: PropertyValues<this>): boolean {
+    if (changedProps.has('emblaOptions') && this._embla) {
+      this._embla.reInit({ loop: this.emblaOptions.loop }, [
+        Autoplay({ active: this.emblaOptions.autoplay, delay: this.emblaOptions.autoplayDelay }),
+      ]);
+    }
+
+    return true;
+  }
+
   protected firstUpdated(): void {
     this._initCarousel();
   }
@@ -94,9 +113,9 @@ export class FlightCarousel extends LitElement {
   }
 
   private _initCarousel(): void {
-    this._embla = EmblaCarousel(this._viewport, {
-      loop: false,
-    });
+    this._embla = EmblaCarousel(this._viewport, { loop: this.emblaOptions.loop }, [
+      Autoplay({ active: this.emblaOptions.autoplay, delay: this.emblaOptions.autoplayDelay }),
+    ]);
 
     this._embla.on('select', () => {
       this._selectedIndex = this._embla?.selectedScrollSnap() ?? 0;
@@ -110,21 +129,29 @@ export class FlightCarousel extends LitElement {
     }
   }
 
+  private _renderControls() {
+    if (!this.emblaOptions.showControls) return nothing;
+
+    return html`
+      <div class="carousel-nav" slot="top-right">
+        <div class="carousel-controls">
+          <button class="carousel-btn" @click=${() => this._embla?.scrollPrev()}>
+            <ha-icon icon="mdi:chevron-left"></ha-icon>
+          </button>
+          <button class="carousel-btn" @click=${() => this._embla?.scrollNext()}>
+            <ha-icon icon="mdi:chevron-right"></ha-icon>
+          </button>
+        </div>
+
+        <p class="carousel-counter">${this._selectedIndex + 1} / ${this.flights.length}</p>
+      </div>
+    `;
+  }
+
   protected render() {
     return html`
       <flight-wrapper .cardTitle=${this.cardTitle}>
-        <div class="carousel-nav" slot="top-right">
-          <div class="carousel-controls">
-            <button class="carousel-btn" @click=${() => this._embla?.scrollPrev()}>
-              <ha-icon icon="mdi:chevron-left"></ha-icon>
-            </button>
-            <button class="carousel-btn" @click=${() => this._embla?.scrollNext()}>
-              <ha-icon icon="mdi:chevron-right"></ha-icon>
-            </button>
-          </div>
-
-          <p class="carousel-counter">${this._selectedIndex + 1} / ${this.flights.length}</p>
-        </div>
+        ${this._renderControls()}
 
         <div class="carousel">
           <div class="container">

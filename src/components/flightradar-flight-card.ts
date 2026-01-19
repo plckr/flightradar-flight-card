@@ -2,13 +2,13 @@ import './flight-area-card';
 import './flight-carousel';
 import './flight-wrapper';
 
-import { LitElement, css, html } from 'lit';
+import { LitElement, PropertyValues, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { CARD_NAME, CardConfig, validateConfig } from '../const';
 import { getTFunc } from '../localize/localize';
 import { resetStyles } from '../styles';
-import { ChangedProps, HomeAssistant } from '../types/homeassistant';
+import { HomeAssistant } from '../types/homeassistant';
 import { computeAirlineIcao, getAirlineName } from '../utils/airline-icao';
 import { hasConfigChanged, hasEntityChanged } from '../utils/has-changed';
 import { FRAreaFlight, FRMostTrackedFlight, parseFlight } from '../utils/schemas';
@@ -67,7 +67,7 @@ export class FlightradarFlightCard extends LitElement {
     return document.createElement(EDITOR_NAME);
   }
 
-  protected shouldUpdate(changedProps: ChangedProps): boolean {
+  protected shouldUpdate(changedProps: PropertyValues<this>): boolean {
     if (!this._config) {
       return false;
     }
@@ -93,7 +93,6 @@ export class FlightradarFlightCard extends LitElement {
     const entities: {
       title?: string;
       flights: { options: AreaCardOptions; flightData: FlightData }[];
-      carousel: boolean;
     }[] = [];
 
     for (const entity of this._config.entities) {
@@ -135,7 +134,6 @@ export class FlightradarFlightCard extends LitElement {
       if (entityFlights.length) {
         entities.push({
           title: entity.title,
-          carousel: entity.carousel ?? false,
           flights: entityFlights,
         });
       }
@@ -150,12 +148,18 @@ export class FlightradarFlightCard extends LitElement {
 
     const selectedEntity = entities[0];
 
-    if (selectedEntity.flights.length > 1 && selectedEntity.carousel) {
+    if (selectedEntity.flights.length > 1 && this._config.carousel.enable) {
       return html`
         <flight-carousel
           .cardTitle=${selectedEntity.title}
           .hass=${this.hass}
           .flights=${selectedEntity.flights}
+          .emblaOptions=${{
+            loop: this._config.carousel.loop,
+            autoplay: this._config.carousel.autoplay,
+            autoplayDelay: this._config.carousel.autoplay_delay,
+            showControls: this._config.carousel.show_controls,
+          }}
         ></flight-carousel>
       `;
     }
