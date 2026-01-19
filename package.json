@@ -1,6 +1,6 @@
 {
   "name": "flightradar-flight-card",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "A custom Home Assistant card for displaying Flightradar flight information",
   "main": "dist/flightradar-flight-card.js",
   "type": "module",
