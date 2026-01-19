@@ -47,6 +47,7 @@ export class FlightCarousel extends LitElement {
 
       .container {
         display: flex;
+        align-items: center;
         margin-left: calc(var(--ha-space-4) * -1);
       }
 

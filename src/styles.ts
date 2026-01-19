@@ -24,20 +24,6 @@ export const cardStyles = css`
     }
   }
 
-  ha-card {
-    padding: var(--ha-space-4);
-    color: var(--primary-text-color);
-    height: 100%;
-  }
-
-  .title {
-    font-size: var(--ha-font-size-s);
-    opacity: 0.7;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-
   .main-content {
     display: flex;
     justify-content: space-between;

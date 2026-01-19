@@ -14,7 +14,7 @@ export class FlightWrapper extends LitElement {
       ha-card {
         padding: var(--ha-space-4);
         color: var(--primary-text-color);
-        height: 100%;
+        min-height: 100%;
       }
 
       .header {
