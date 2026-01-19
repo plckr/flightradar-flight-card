@@ -1,3 +1,5 @@
+import './flight-wrapper';
+
 import EmblaCarousel, { EmblaCarouselType } from 'embla-carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import { LitElement, PropertyValues, css, html, nothing } from 'lit';
