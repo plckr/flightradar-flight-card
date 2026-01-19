@@ -100,6 +100,13 @@ export class FlightCarousel extends LitElement {
       ]);
     }
 
+    if (changedProps.has('flights')) {
+      const invalidSelectedIndex = this._selectedIndex + 1 > this.flights.length;
+      if (invalidSelectedIndex) {
+        this._embla?.scrollTo(0, true);
+      }
+    }
+
     return true;
   }
 
