@@ -163,7 +163,7 @@ export class FlightradarFlightCardEditor extends LitElement {
                           },
                         }}
                         .value=${entity.entity_id}
-                        @required=${true}
+                        ?required=${true}
                         @value-changed=${(ev: CustomEvent) => {
                           this._entityChanged(index, ev.detail.value);
                         }}
@@ -267,6 +267,88 @@ export class FlightradarFlightCardEditor extends LitElement {
               }}
             ></ha-switch>
           </ha-formfield>
+        </div>
+
+        <div class="section section-bordered">
+          <div class="section-title">${t('editor.colors_section')}</div>
+          <p class="helper-text">${t('editor.colors_section_description')}</p>
+
+          <ha-textfield
+            .value=${this._config.colors?.primary || ''}
+            .label=${t('editor.colors_primary')}
+            @input=${(ev: Event) => {
+              this._updateConfig({
+                ...this._config,
+                colors: {
+                  ...(this._config.colors || {}),
+                  primary: (ev.target as HTMLInputElement).value,
+                },
+              });
+            }}
+          ></ha-textfield>
+          <p class="helper-text">Default: <code>${DEFAULT_CONFIG.colors.primary}</code>.</p>
+
+          <ha-textfield
+            .value=${this._config.colors?.secondary || ''}
+            .label=${t('editor.colors_secondary')}
+            @input=${(ev: Event) => {
+              this._updateConfig({
+                ...this._config,
+                colors: {
+                  ...(this._config.colors || {}),
+                  secondary: (ev.target as HTMLInputElement).value,
+                },
+              });
+            }}
+          ></ha-textfield>
+          <p class="helper-text">Default: <code>${DEFAULT_CONFIG.colors.secondary}</code>.</p>
+
+          <ha-textfield
+            .value=${this._config.colors?.accent || ''}
+            .label=${t('editor.colors_accent')}
+            @input=${(ev: Event) => {
+              this._updateConfig({
+                ...this._config,
+                colors: {
+                  ...(this._config.colors || {}),
+                  accent: (ev.target as HTMLInputElement).value,
+                },
+              });
+            }}
+          ></ha-textfield>
+          <p class="helper-text">Default: <code>${DEFAULT_CONFIG.colors.accent}</code>.</p>
+
+          <ha-textfield
+            .value=${this._config.colors?.accent_light || ''}
+            .label=${t('editor.colors_accent_light')}
+            @input=${(ev: Event) => {
+              this._updateConfig({
+                ...this._config,
+                colors: {
+                  ...(this._config.colors || {}),
+                  accent_light: (ev.target as HTMLInputElement).value,
+                },
+              });
+            }}
+          ></ha-textfield>
+          <p class="helper-text">Default: <code>${DEFAULT_CONFIG.colors.accent_light}</code>.</p>
+
+          <ha-textfield
+            .value=${this._config.colors?.progress_bar_light || ''}
+            .label=${t('editor.colors_progress_bar_light')}
+            @input=${(ev: Event) => {
+              this._updateConfig({
+                ...this._config,
+                colors: {
+                  ...(this._config.colors || {}),
+                  progress_bar_light: (ev.target as HTMLInputElement).value,
+                },
+              });
+            }}
+          ></ha-textfield>
+          <p class="helper-text">
+            Default: <code>${DEFAULT_CONFIG.colors.progress_bar_light}</code>.
+          </p>
         </div>
       </div>
 
