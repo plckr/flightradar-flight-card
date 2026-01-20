@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# Script to download and install the latest release of home-assistant-flightradar24
+# Script to download and install a release of home-assistant-flightradar24
 # into .hass_dev/custom_components/flightradar24/
+#
+# Usage: ./update-flightradar24-integration.sh [version]
+#   version: Optional. Specific version tag to install (e.g., v2.1.0)
+#            If not provided, installs the latest release.
 
 set -e
 
@@ -9,13 +13,25 @@ REPO="AlexandrErohin/home-assistant-flightradar24"
 TARGET_DIR=".hass_dev/custom_components/flightradar24"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+VERSION="${1:-}"
 
 cd "$PROJECT_ROOT"
 
-echo "Fetching latest release info from GitHub..."
+if [ -n "$VERSION" ]; then
+    echo "Fetching release info for version $VERSION from GitHub..."
+    RELEASE_INFO=$(curl -s "https://api.github.com/repos/${REPO}/releases/tags/${VERSION}")
+    
+    # Check if the release was found
+    if echo "$RELEASE_INFO" | grep -q '"message": "Not Found"'; then
+        echo "Error: Version $VERSION not found"
+        exit 1
+    fi
+else
+    echo "Fetching latest release info from GitHub..."
+    RELEASE_INFO=$(curl -s "https://api.github.com/repos/${REPO}/releases/latest")
+fi
 
-# Get the latest release download URL for the zip asset
-RELEASE_INFO=$(curl -s "https://api.github.com/repos/${REPO}/releases/latest")
+# Get the release download URL for the zip asset
 TAG_NAME=$(echo "$RELEASE_INFO" | grep -o '"tag_name": *"[^"]*"' | head -1 | cut -d'"' -f4)
 ZIPBALL_URL=$(echo "$RELEASE_INFO" | grep -o '"zipball_url": *"[^"]*"' | head -1 | cut -d'"' -f4)
 
