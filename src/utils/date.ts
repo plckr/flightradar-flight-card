@@ -23,3 +23,17 @@ export function formatTimeLeft(seconds: number, locale: string): string {
     unitDisplay: 'short',
   }).format(minutes);
 }
+
+export function toSeconds({
+  days = 0,
+  hours = 0,
+  minutes = 0,
+  seconds = 0,
+}: {
+  days?: number;
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
+}): number {
+  return days * 86400 + hours * 3600 + minutes * 60 + seconds;
+}
