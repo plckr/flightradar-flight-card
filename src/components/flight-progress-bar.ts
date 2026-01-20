@@ -4,7 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { getTFunc } from '../localize/localize';
 import { resetStyles } from '../styles';
 import { HomeAssistant } from '../types/homeassistant';
-import { formatTimeLeft } from '../utils/date';
+import { formatTimeLeft, toSeconds } from '../utils/date';
 
 @customElement('flight-progress-bar')
 export class FlightProgressBar extends LitElement {
@@ -80,9 +80,13 @@ export class FlightProgressBar extends LitElement {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(calc(-50% - 0.5px), -50%) rotate(45deg);
+        transform: translate(-50%, -50%);
         --mdc-icon-size: var(--ha-space-4);
         color: var(--accent-color);
+      }
+
+      .bar-icon ha-icon[icon='mdi:airplane'] {
+        transform: translate(calc(-50% - 0.5px), -50%) rotate(45deg);
       }
 
       .text {
@@ -97,8 +101,20 @@ export class FlightProgressBar extends LitElement {
     const { t } = getTFunc(this.hass.locale.language);
 
     const nowSeconds = this._now.getTime() / 1000;
-    const timeLeft = formatTimeLeft(this.arrivalTime - nowSeconds, this.hass.locale.language);
-    const percent = (nowSeconds - this.departureTime) / (this.arrivalTime - this.departureTime);
+
+    const secondsLeft = this.arrivalTime - nowSeconds;
+    const secondsSinceDeparture = nowSeconds - this.departureTime;
+    const totalSeconds = this.arrivalTime - this.departureTime;
+    const percent = secondsSinceDeparture / totalSeconds;
+
+    const timeLeft = formatTimeLeft(secondsLeft, this.hass.locale.language);
+
+    let icon = 'mdi:airplane';
+    if (secondsSinceDeparture < toSeconds({ minutes: 30 }) && percent < 0.15) {
+      icon = 'mdi:airplane-takeoff';
+    } else if (secondsLeft < toSeconds({ minutes: 30 }) && percent > 0.85) {
+      icon = 'mdi:airplane-landing';
+    }
 
     return html`
       <div
@@ -110,7 +126,7 @@ export class FlightProgressBar extends LitElement {
         style="--progress-percent: ${Math.round(percent * 100)};"
       >
         <div class="bar-icon">
-          <ha-icon icon="mdi:airplane" />
+          <ha-icon icon=${icon}></ha-icon>
         </div>
       </div>
 
