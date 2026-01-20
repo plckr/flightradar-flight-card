@@ -47,7 +47,7 @@ export const cardStyles = css`
 
   .callsign-info > p {
     font-size: 15px;
-    opacity: 0.8;
+    color: var(--flight-card-secondary-color);
   }
 
   .callsign-info .live-indicator {
@@ -86,7 +86,7 @@ export const cardStyles = css`
 
   .flight-speed-info-container .label {
     font-size: var(--ha-font-size-xs, 10px);
-    opacity: 0.6;
+    color: var(--flight-card-secondary-color);
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
@@ -105,6 +105,8 @@ export const cardStyles = css`
 
     align-self: center;
     text-align: center;
+
+    color: var(--flight-card-secondary-color);
   }
 
   .main-content-right .airline-container {
@@ -124,7 +126,6 @@ export const cardStyles = css`
   .main-content-right .airline-container p {
     font-size: var(--ha-font-size-s);
     line-height: var(--ha-line-height-condensed, 1.2);
-    opacity: 0.7;
   }
 
   .main-content-right .aircraft-photo {
@@ -138,7 +139,6 @@ export const cardStyles = css`
   .main-content-right .aircraft-model {
     font-size: var(--ha-font-size-s);
     line-height: var(--ha-line-height-condensed, 1.2);
-    opacity: 0.7;
   }
 
   .flight-progress {

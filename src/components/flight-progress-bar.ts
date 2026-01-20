@@ -92,7 +92,7 @@ export class FlightProgressBar extends LitElement {
       .text {
         margin-top: 6px;
         text-align: right;
-        opacity: 0.6;
+        color: var(--flight-card-secondary-color);
       }
     `,
   ];
