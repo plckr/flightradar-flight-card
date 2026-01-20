@@ -38,6 +38,8 @@ export const DEFAULT_CONFIG = {
   },
 };
 
+const nonEmptyString = v.pipe(v.string(), v.minLength(1));
+
 const configSchema = v.object({
   entities: v.array(
     v.object({
@@ -75,11 +77,11 @@ const configSchema = v.object({
   ),
   colors: v.fallback(
     v.object({
-      primary: v.fallback(v.string(), DEFAULT_CONFIG.colors.primary),
-      secondary: v.fallback(v.string(), DEFAULT_CONFIG.colors.secondary),
-      accent: v.fallback(v.string(), DEFAULT_CONFIG.colors.accent),
-      accent_light: v.fallback(v.string(), DEFAULT_CONFIG.colors.accent_light),
-      progress_bar_light: v.fallback(v.string(), DEFAULT_CONFIG.colors.progress_bar_light),
+      primary: v.fallback(nonEmptyString, DEFAULT_CONFIG.colors.primary),
+      secondary: v.fallback(nonEmptyString, DEFAULT_CONFIG.colors.secondary),
+      accent: v.fallback(nonEmptyString, DEFAULT_CONFIG.colors.accent),
+      accent_light: v.fallback(nonEmptyString, DEFAULT_CONFIG.colors.accent_light),
+      progress_bar_light: v.fallback(nonEmptyString, DEFAULT_CONFIG.colors.progress_bar_light),
     }),
     DEFAULT_CONFIG.colors
   ),
