@@ -65,6 +65,7 @@ Card will look for a `flights` attribute in the entity provided, in case it does
 | `show_airline_logo`         | boolean | No       | `true`  | Show airline logo                                                      |
 | `show_aircraft_photo`       | boolean | No       | `true`  | Show aircraft photo                                                    |
 | `show_progress_bar`         | boolean | No       | `true`  | Show flight progress bar                                               |
+| `colors`                    | object  | No       | -       | Color customization options ([see below](#color-options))              |
 | `template_airline_logo_url` | string  | No       | -       | Custom airline logo URL template ([see Templating below](#templating)) |
 
 ### <a id="entity-options">Entity Options</a>
@@ -104,6 +105,20 @@ You can customize the display units for altitude, distance, and ground speed:
 - **Distance**: `km` (Kilometers), `NM` (Nautical Miles)
 - **Ground Speed**: `kts` (Knots), `kmh` (Kilometers per hour), `mph` (Miles per hour), `M` (Mach)
 
+### <a id="color-options">Color Options</a>
+
+You can customize the colors used throughout the card:
+
+| Option               | Type   | Default                                  | Description                            |
+| -------------------- | ------ | ---------------------------------------- | -------------------------------------- |
+| `primary`            | string | `var(--primary-text-color)`              | Primary text color                     |
+| `secondary`          | string | `rgba(var(--rgb-primary-text-color), 0.7)` | Secondary text color                   |
+| `accent`             | string | `var(--accent-color)`                    | Accent color for highlights            |
+| `accent_light`       | string | `var(--state-active-color)`              | Light accent color                     |
+| `progress_bar_light` | string | `var(--secondary-background-color)`      | Progress bar background color          |
+
+All color options accept any valid CSS color value (hex, rgb, rgba, hsl, CSS variables, etc.).
+
 ### Example Configuration
 
 ```yaml
@@ -123,6 +138,12 @@ carousel:
   loop: true
   autoplay: true
   autoplay_delay: 5000
+colors:
+  primary: var(--primary-text-color)
+  secondary: rgba(var(--rgb-primary-text-color), 0.7)
+  accent: var(--accent-color)
+  accent_light: var(--state-active-color)
+  progress_bar_light: var(--secondary-background-color)
 show_flightradar_link: true
 show_airline_info_column: true
 show_airline_logo: true

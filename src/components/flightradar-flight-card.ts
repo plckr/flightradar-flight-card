@@ -34,6 +34,7 @@ export class FlightradarFlightCard extends LitElement {
         display: flex;
         align-items: center;
         gap: 12px;
+        color: var(--flight-card-primary-color);
       }
     `,
   ];
@@ -80,6 +81,27 @@ export class FlightradarFlightCard extends LitElement {
         changedProps,
         this._config.entities.map((entity) => entity.entity_id)
       )
+    );
+  }
+
+  protected firstUpdated() {
+    this._setStyles();
+  }
+
+  protected updated(changedProperties: PropertyValues) {
+    if (changedProperties.has('_config')) {
+      this._setStyles();
+    }
+  }
+
+  private _setStyles() {
+    this.style.setProperty('--flight-card-primary-color', this._config.colors.primary);
+    this.style.setProperty('--flight-card-secondary-color', this._config.colors.secondary);
+    this.style.setProperty('--flight-card-accent-color', this._config.colors.accent);
+    this.style.setProperty('--flight-card-accent-color-light', this._config.colors.accent_light);
+    this.style.setProperty(
+      '--flight-card-progress-bar-light-color',
+      this._config.colors.progress_bar_light
     );
   }
 

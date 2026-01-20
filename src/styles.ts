@@ -36,7 +36,7 @@ export const cardStyles = css`
     font-size: 26px;
     line-height: 1.15;
     font-weight: var(--ha-font-weight-bold, 600);
-    color: var(--primary-text-color);
+    color: var(--flight-card-primary-color);
   }
 
   .callsign-info {
@@ -47,7 +47,7 @@ export const cardStyles = css`
 
   .callsign-info > p {
     font-size: 15px;
-    opacity: 0.8;
+    color: var(--flight-card-secondary-color);
   }
 
   .callsign-info .live-indicator {
@@ -57,7 +57,7 @@ export const cardStyles = css`
     font-size: var(--ha-font-size-xs, 10px);
     padding: 2px 6px;
     color: white;
-    background: var(--state-active-color);
+    background: var(--flight-card-accent-color-light);
     border-radius: 999px;
   }
 
@@ -86,7 +86,7 @@ export const cardStyles = css`
 
   .flight-speed-info-container .label {
     font-size: var(--ha-font-size-xs, 10px);
-    opacity: 0.6;
+    color: var(--flight-card-secondary-color);
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
@@ -105,6 +105,8 @@ export const cardStyles = css`
 
     align-self: center;
     text-align: center;
+
+    color: var(--flight-card-secondary-color);
   }
 
   .main-content-right .airline-container {
@@ -118,27 +120,25 @@ export const cardStyles = css`
     max-width: 70px;
     max-height: 20px;
     object-fit: contain;
-    filter: drop-shadow(0 0 2px var(--secondary-text-color));
+    filter: drop-shadow(0 0 2px var(--flight-card-secondary-color));
   }
 
   .main-content-right .airline-container p {
     font-size: var(--ha-font-size-s);
     line-height: var(--ha-line-height-condensed, 1.2);
-    opacity: 0.7;
   }
 
   .main-content-right .aircraft-photo {
     border-radius: 8px;
     max-width: 120px;
     height: auto;
-    color: rgba(var(--rgb-primary-text-color), 0.7);
+    color: var(--flight-card-secondary-color);
     --mdc-icon-size: 60px;
   }
 
   .main-content-right .aircraft-model {
     font-size: var(--ha-font-size-s);
     line-height: var(--ha-line-height-condensed, 1.2);
-    opacity: 0.7;
   }
 
   .flight-progress {

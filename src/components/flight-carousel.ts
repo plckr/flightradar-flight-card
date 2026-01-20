@@ -74,7 +74,7 @@ export class FlightCarousel extends LitElement {
       }
 
       .carousel-btn {
-        opacity: 0.7;
+        color: var(--flight-card-secondary-color);
         appearance: none;
         background-color: transparent;
         touch-action: manipulation;

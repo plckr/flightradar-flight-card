@@ -29,7 +29,16 @@ export const DEFAULT_CONFIG = {
   show_airline_logo: true,
   show_aircraft_photo: true,
   show_progress_bar: true,
+  colors: {
+    primary: 'var(--primary-text-color)',
+    secondary: 'rgba(var(--rgb-primary-text-color), 0.7)',
+    accent: 'var(--accent-color)',
+    accent_light: 'var(--state-active-color)',
+    progress_bar_light: 'var(--secondary-background-color)',
+  },
 };
+
+const nonEmptyString = v.pipe(v.string(), v.minLength(1));
 
 const configSchema = v.object({
   entities: v.array(
@@ -65,6 +74,16 @@ const configSchema = v.object({
       autoplay_delay: v.fallback(v.number(), DEFAULT_CONFIG.carousel.autoplay_delay),
     }),
     DEFAULT_CONFIG.carousel
+  ),
+  colors: v.fallback(
+    v.object({
+      primary: v.fallback(nonEmptyString, DEFAULT_CONFIG.colors.primary),
+      secondary: v.fallback(nonEmptyString, DEFAULT_CONFIG.colors.secondary),
+      accent: v.fallback(nonEmptyString, DEFAULT_CONFIG.colors.accent),
+      accent_light: v.fallback(nonEmptyString, DEFAULT_CONFIG.colors.accent_light),
+      progress_bar_light: v.fallback(nonEmptyString, DEFAULT_CONFIG.colors.progress_bar_light),
+    }),
+    DEFAULT_CONFIG.colors
   ),
   show_flightradar_link: v.fallback(v.boolean(), DEFAULT_CONFIG.show_flightradar_link),
   show_airline_info_column: v.fallback(v.boolean(), DEFAULT_CONFIG.show_airline_info_column),

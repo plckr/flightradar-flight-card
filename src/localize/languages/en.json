@@ -54,6 +54,13 @@
     "carousel_loop_description": "Enable infinite loop.",
     "carousel_autoplay": "Autoplay",
     "carousel_autoplay_delay": "Autoplay delay (ms)",
-    "carousel_autoplay_delay_description": "Default {value}ms"
+    "carousel_autoplay_delay_description": "Default {value}ms",
+    "colors_section": "Colors",
+    "colors_section_description": "Configure the colors of the card.",
+    "colors_primary": "Primary color",
+    "colors_secondary": "Secondary color",
+    "colors_accent": "Accent color",
+    "colors_accent_light": "Accent light color",
+    "colors_progress_bar_light": "Progress bar light color"
   }
 }

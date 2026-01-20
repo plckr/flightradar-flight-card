@@ -80,7 +80,7 @@ export class FlightradarFlightCard extends LitElement {
       href=${url.toString()}
       rel="noopener noreferrer"
       target="_blank"
-      style="color:var(--primary-text-color);"
+      style="color:var(--flight-card-primary-color);"
     >
       ${label}
       <ha-icon
