@@ -13,7 +13,7 @@ export class FlightWrapper extends LitElement {
     css`
       ha-card {
         padding: var(--ha-space-4);
-        color: var(--primary-text-color);
+        color: var(--flight-card-primary-color);
         min-height: 100%;
       }
 
@@ -22,7 +22,7 @@ export class FlightWrapper extends LitElement {
         align-items: center;
         justify-content: space-between;
         gap: var(--ha-space-3);
-        color: rgba(var(--rgb-primary-text-color), 0.7);
+        color: var(--flight-card-secondary-color);
       }
 
       .header .title {

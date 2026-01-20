@@ -53,13 +53,13 @@ export class FlightProgressBar extends LitElement {
     css`
       .bar {
         position: relative;
-        background: var(--state-active-color);
+        background: var(--flight-card-accent-color-light);
         background: linear-gradient(
           90deg,
-          var(--state-active-color) 0%,
-          var(--state-active-color) calc(var(--progress-percent) * 1%),
-          var(--secondary-background-color) calc(var(--progress-percent) * 1%),
-          var(--secondary-background-color) 100%
+          var(--flight-card-accent-color-light) 0%,
+          var(--flight-card-accent-color-light) calc(var(--progress-percent) * 1%),
+          var(--flight-card-progress-bar-light-color) calc(var(--progress-percent) * 1%),
+          var(--flight-card-progress-bar-light-color) 100%
         );
         height: 4px;
         border-radius: 999px;
@@ -82,7 +82,7 @@ export class FlightProgressBar extends LitElement {
         left: 50%;
         transform: translate(-50%, -50%);
         --mdc-icon-size: var(--ha-space-4);
-        color: var(--accent-color);
+        color: var(--flight-card-accent-color);
       }
 
       .bar-icon ha-icon[icon='mdi:airplane'] {

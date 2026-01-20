@@ -36,7 +36,7 @@ export const cardStyles = css`
     font-size: 26px;
     line-height: 1.15;
     font-weight: var(--ha-font-weight-bold, 600);
-    color: var(--primary-text-color);
+    color: var(--flight-card-primary-color);
   }
 
   .callsign-info {
@@ -57,7 +57,7 @@ export const cardStyles = css`
     font-size: var(--ha-font-size-xs, 10px);
     padding: 2px 6px;
     color: white;
-    background: var(--state-active-color);
+    background: var(--flight-card-accent-color-light);
     border-radius: 999px;
   }
 
@@ -118,7 +118,7 @@ export const cardStyles = css`
     max-width: 70px;
     max-height: 20px;
     object-fit: contain;
-    filter: drop-shadow(0 0 2px var(--secondary-text-color));
+    filter: drop-shadow(0 0 2px var(--flight-card-secondary-color));
   }
 
   .main-content-right .airline-container p {
@@ -131,7 +131,7 @@ export const cardStyles = css`
     border-radius: 8px;
     max-width: 120px;
     height: auto;
-    color: rgba(var(--rgb-primary-text-color), 0.7);
+    color: var(--flight-card-secondary-color);
     --mdc-icon-size: 60px;
   }
 
