@@ -17,7 +17,8 @@
     "format": "prettier --write ./src",
     "format:check": "prettier --check src/**/*.ts",
     "check-types": "tsc --noEmit",
-    "validate": "npm run format:check && npm run check-types",
+    "validate:lang": "bash scripts/validate-i18n.sh",
+    "validate": "npm run format:check && npm run validate:lang && npm run check-types",
     "release": "release-it"
   },
   "keywords": [
