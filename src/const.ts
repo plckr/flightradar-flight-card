@@ -31,7 +31,7 @@ export const DEFAULT_CONFIG = {
   show_progress_bar: true,
   colors: {
     primary: 'var(--primary-text-color)',
-    secondary: 'rgba(var(--rgb-primary-text-color), 0.7)',
+    secondary: 'var(--secondary-text-color)',
     accent: 'var(--accent-color)',
     accent_light: 'var(--state-active-color)',
     progress_bar_light: 'var(--secondary-background-color)',
