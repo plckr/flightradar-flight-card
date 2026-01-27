@@ -1,0 +1,66 @@
+{
+  "no_flights": "Aucun vol à afficher pour le moment",
+
+  "altitude": "Altitude",
+  "ground_speed": "Vitesse au sol",
+  "distance": "Distance",
+
+  "airline": {
+    "private": "Propriétaire privé",
+    "unknown": "Inconnue"
+  },
+
+  "origin_unknown": "Inconnue",
+  "destination_unknown": "Inconnue",
+
+  "flight": {
+    "live": "En direct",
+    "time_remaining": "Temps restant : {time} avant d’arriver à {destination}"
+  },
+
+  "editor": {
+    "optional_field": "Optionnel",
+    "title": "Titre",
+    "remove_entity_button": "Supprimer",
+    "add_entity_button": "Ajouter une entité",
+    "usage_description": "Les entités supplémentaires seront utilisées par défaut si aucun vol n’est trouvé avec les entités précédentes.",
+    "more_info_link": "Plus d’informations sur",
+    "appearance_section": "Apparence et mise en page",
+    "show_flightradar_link": "Afficher le lien Flightradar24",
+    "show_airline_info_column": "Afficher les informations de la compagnie",
+    "show_airline_logo": "Afficher le logo de la compagnie",
+    "show_aircraft_photo": "Afficher la photo de l’avion",
+    "show_progress_bar": "Afficher la barre de progression",
+    "units_section": "Unités d’affichage",
+    "templating_section": "Modèles",
+    "template_airline_logo_url": "Modèle d’URL du logo de la compagnie",
+    "altitude_unit": "Altitude",
+    "distance_unit": "Distance",
+    "ground_speed_unit": "Vitesse au sol",
+    "unit_ft": "Pieds (ft)",
+    "unit_fl": "Niveau de vol (FL)",
+    "unit_m": "Mètres (m)",
+    "unit_km": "Kilomètres (km)",
+    "unit_nm": "Milles nautiques (NM)",
+    "unit_kts": "Noeuds (kts)",
+    "unit_kmh": "Kilomètres par heure (km/h)",
+    "unit_mph": "Miles par heure (mph)",
+    "unit_mach": "Mach (M)",
+    "carousel_toggle": "Activer le carrousel",
+    "carousel_section": "Carrousel",
+    "carousel_section_description": "Naviguer entre plusieurs vols.",
+    "carousel_show_controls": "Afficher les contrôles",
+    "carousel_loop": "En boucle",
+    "carousel_loop_description": "Activer la boucle infinie.",
+    "carousel_autoplay": "Lecture automatique",
+    "carousel_autoplay_delay": "Délai de lecture automatique (ms)",
+    "carousel_autoplay_delay_description": "Valeur par défaut : {value} ms",
+    "colors_section": "Couleurs",
+    "colors_section_description": "Configurer les couleurs de la carte.",
+    "colors_primary": "Couleur principale",
+    "colors_secondary": "Couleur secondaire",
+    "colors_accent": "Couleur d’accentuation",
+    "colors_accent_light": "Couleur d’accentuation claire",
+    "colors_progress_bar_light": "Couleur de la barre de progression"
+  }
+}
