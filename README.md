@@ -112,7 +112,7 @@ You can customize the colors used throughout the card:
 | Option               | Type   | Default                                  | Description                            |
 | -------------------- | ------ | ---------------------------------------- | -------------------------------------- |
 | `primary`            | string | `var(--primary-text-color)`              | Primary text color                     |
-| `secondary`          | string | `rgba(var(--rgb-primary-text-color), 0.7)` | Secondary text color                   |
+| `secondary`          | string | `var(--secondary-text-color)`            | Secondary text color                   |
 | `accent`             | string | `var(--accent-color)`                    | Accent color for highlights            |
 | `accent_light`       | string | `var(--state-active-color)`              | Light accent color                     |
 | `progress_bar_light` | string | `var(--secondary-background-color)`      | Progress bar background color          |
