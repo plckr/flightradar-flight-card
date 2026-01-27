@@ -33,8 +33,10 @@ export class FlightradarFlightCard extends LitElement {
         padding: 16px;
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 12px;
         color: var(--flight-card-primary-color);
+        height: 100%;
       }
     `,
   ];
