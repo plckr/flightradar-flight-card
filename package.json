@@ -49,6 +49,7 @@
     "@rollup/plugin-typescript": "^12.3.0",
     "@rollup/plugin-virtual": "^3.0.2",
     "@trivago/prettier-plugin-sort-imports": "^6.0.0",
+    "@types/node": "^25.0.10",
     "globals": "^16.5.0",
     "prettier": "^3.7.4",
     "release-it": "^19.1.0",
