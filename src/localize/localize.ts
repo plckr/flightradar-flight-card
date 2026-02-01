@@ -10,6 +10,7 @@ const languages: Record<string, DeepObject> = {
   fr: (await import('./languages/fr.json')).default,
   it: (await import('./languages/it.json')).default,
   pt: (await import('./languages/pt.json')).default,
+  es: (await import('./languages/es.json')).default,
 };
 
 type DotPrefix<T extends string, U extends string> = `${T}.${U}`;
