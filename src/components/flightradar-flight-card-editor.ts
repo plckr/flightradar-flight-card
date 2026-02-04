@@ -138,8 +138,7 @@ export class FlightradarFlightCardEditor extends LitElement {
     const showAircraftPhoto =
       this._config.show_aircraft_photo ?? DEFAULT_CONFIG.show_aircraft_photo;
     const showProgressBar = this._config.show_progress_bar ?? DEFAULT_CONFIG.show_progress_bar;
-    const showCountryFlags =
-      this._config.show_country_flags ?? DEFAULT_CONFIG.show_country_flags;
+    const showCountryFlags = this._config.show_country_flags ?? DEFAULT_CONFIG.show_country_flags;
 
     return html`
       <div class="section">
