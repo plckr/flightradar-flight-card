@@ -138,6 +138,8 @@ export class FlightradarFlightCardEditor extends LitElement {
     const showAircraftPhoto =
       this._config.show_aircraft_photo ?? DEFAULT_CONFIG.show_aircraft_photo;
     const showProgressBar = this._config.show_progress_bar ?? DEFAULT_CONFIG.show_progress_bar;
+    const showCountryFlags =
+      this._config.show_country_flags ?? DEFAULT_CONFIG.show_country_flags;
 
     return html`
       <div class="section">
@@ -208,6 +210,25 @@ export class FlightradarFlightCardEditor extends LitElement {
 
       <div class="section section-bordered">
         <div class="section-title">${t('editor.appearance_section')}</div>
+
+        <div class="section-row">
+          <ha-select
+            .label=${t('editor.show_country_flags')}
+            .value=${showCountryFlags === false ? 'false' : showCountryFlags}
+            @selected=${(ev: CustomEvent) => {
+              const value = (ev.target as HTMLSelectElement).value;
+              this._updateConfig({
+                ...this._config,
+                show_country_flags: value === 'false' ? false : (value as 'image' | 'emoji'),
+              });
+            }}
+            @closed=${(ev: Event) => ev.stopPropagation()}
+          >
+            <mwc-list-item value="false">${t('editor.show_country_flags_off')}</mwc-list-item>
+            <mwc-list-item value="image">${t('editor.show_country_flags_image')}</mwc-list-item>
+            <mwc-list-item value="emoji">${t('editor.show_country_flags_emoji')}</mwc-list-item>
+          </ha-select>
+        </div>
 
         <div class="section-row">
           <ha-formfield .label=${t('editor.show_flightradar_link')}>
