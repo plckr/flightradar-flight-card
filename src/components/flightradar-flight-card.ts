@@ -148,8 +148,9 @@ export class FlightradarFlightCard extends LitElement {
                 })
               : undefined;
 
-          const options = {
+          const options: AreaCardOptions = {
             units: this._config.units,
+            showCountryFlags: this._config.show_country_flags,
             showFlightradarLink: this._config.show_flightradar_link,
             showAirlineInfoColumn: this._config.show_airline_info_column,
             showAirlineLogo: this._config.show_airline_logo,
@@ -242,8 +243,10 @@ function getFlightCardData(
         aircraftPhoto: flight.aircraft_photo_small,
         aircraftCode: flight.aircraft_code,
         aircraftModel: flight.aircraft_model,
-        origin: flight.airport_origin_city,
-        destination: flight.airport_destination_city,
+        originCountryCode: flight.airport_origin_country_code,
+        originCity: flight.airport_origin_city,
+        destinationCountryCode: flight.airport_destination_country_code,
+        destinationCity: flight.airport_destination_city,
         distance,
         altitude: flight.altitude,
         groundSpeed: flight.ground_speed,
@@ -279,8 +282,8 @@ function getFlightCardData(
         aircraftPhoto: null,
         aircraftCode: flight.aircraft_code,
         aircraftModel: flight.aircraft_model,
-        origin: flight.airport_origin_city,
-        destination: flight.airport_destination_city,
+        originCity: flight.airport_origin_city,
+        destinationCity: flight.airport_destination_city,
         isLive: true,
       };
     }

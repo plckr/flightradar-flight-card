@@ -24,6 +24,7 @@ export const DEFAULT_CONFIG = {
     autoplay_delay: 5000,
   },
   units: DEFAULT_UNITS,
+  show_country_flags: false as const,
   show_flightradar_link: true,
   show_airline_info_column: true,
   show_airline_logo: true,
@@ -84,6 +85,18 @@ const configSchema = v.object({
       progress_bar_light: v.fallback(nonEmptyString, DEFAULT_CONFIG.colors.progress_bar_light),
     }),
     DEFAULT_CONFIG.colors
+  ),
+  show_country_flags: v.fallback(
+    v.union([
+      v.literal('image'),
+      v.literal('emoji'),
+      v.pipe(
+        v.literal('false'),
+        v.transform(() => false as const)
+      ),
+      v.literal(false),
+    ]),
+    DEFAULT_CONFIG.show_country_flags
   ),
   show_flightradar_link: v.fallback(v.boolean(), DEFAULT_CONFIG.show_flightradar_link),
   show_airline_info_column: v.fallback(v.boolean(), DEFAULT_CONFIG.show_airline_info_column),

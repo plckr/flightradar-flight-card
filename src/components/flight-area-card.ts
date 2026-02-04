@@ -7,6 +7,7 @@ import { getTFunc } from '../localize/localize';
 import { cardStyles, resetStyles } from '../styles';
 import { HomeAssistant } from '../types/homeassistant';
 import { isValidAirlineLogo } from '../utils/airline-icao';
+import { getCountryFlagEmoji, getCountryFlagUrl } from '../utils/country-flag';
 import { getFlightLabel } from '../utils/flight';
 import { defined } from '../utils/type-guards';
 import { UnitOptions } from '../utils/units';
@@ -22,10 +23,12 @@ export type FlightData = {
   flightNumber: string | null;
   callsign: string | null;
   airlineLabel: string | null;
+  originCountryCode?: string | null;
   /** Origin airport */
-  origin: string | null;
+  originCity: string | null;
+  destinationCountryCode?: string | null;
   /** Destination airport */
-  destination: string | null;
+  destinationCity: string | null;
   /** Distance to tracked area
    * @unit kilometers
    */
@@ -48,6 +51,7 @@ export type FlightData = {
 export type AreaCardOptions = {
   units: UnitOptions;
   showFlightradarLink: boolean;
+  showCountryFlags: 'image' | 'emoji' | false;
   showAirlineInfoColumn: boolean;
   showAirlineLogo: boolean;
   showAircraftPhoto: boolean;
@@ -68,6 +72,16 @@ export class FlightradarFlightCard extends LitElement {
   public options!: AreaCardOptions;
 
   static styles = [resetStyles, cardStyles];
+
+  protected renderCountryFlag(countryCode?: string | null) {
+    if (!countryCode || !this.options.showCountryFlags) return nothing;
+
+    if (this.options.showCountryFlags === 'image') {
+      return html`<img width="16" height="16" src="${getCountryFlagUrl(countryCode, 16)}" />`;
+    }
+
+    return getCountryFlagEmoji(countryCode);
+  }
 
   protected renderFlightTitle(options: { renderAnchor: boolean }) {
     const { label, url } = getFlightLabel(this.flight);
@@ -154,11 +168,17 @@ export class FlightradarFlightCard extends LitElement {
                 </div>
               `
             : nothing}
-          ${defined(this.flight.origin) || defined(this.flight.destination)
+          ${defined(this.flight.originCity) || defined(this.flight.destinationCity)
             ? html` <div class="flight-locations">
-                ${this.flight.origin ?? t('origin_unknown')}
+                <p>
+                  ${this.renderCountryFlag(this.flight.originCountryCode)}
+                  ${this.flight.originCity ?? t('origin_unknown')}
+                </p>
                 <ha-icon icon="mdi:arrow-right"></ha-icon>
-                ${this.flight.destination ?? t('destination_unknown')}
+                <p>
+                  ${this.renderCountryFlag(this.flight.destinationCountryCode)}
+                  ${this.flight.destinationCity ?? t('destination_unknown')}
+                </p>
               </div>`
             : nothing}
           ${flightInfos.length
@@ -206,12 +226,12 @@ export class FlightradarFlightCard extends LitElement {
       this.flight.isLive &&
       this.flight.departureTime &&
       this.flight.arrivalTime &&
-      this.flight.destination
+      this.flight.destinationCity
         ? html` <flight-progress-bar
             .hass=${this.hass}
             .departureTime=${this.flight.departureTime}
             .arrivalTime=${this.flight.arrivalTime}
-            .destination=${this.flight.destination}
+            .destination=${this.flight.destinationCity}
             class="flight-progress"
           ></flight-progress-bar>`
         : nothing}

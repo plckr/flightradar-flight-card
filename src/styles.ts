@@ -70,6 +70,9 @@ export const cardStyles = css`
   }
 
   .flight-locations {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     margin-top: 8px;
     font-size: 17px;
     opacity: 0.9;
