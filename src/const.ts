@@ -87,7 +87,15 @@ const configSchema = v.object({
     DEFAULT_CONFIG.colors
   ),
   show_country_flags: v.fallback(
-    v.union([v.literal('image'), v.literal('emoji'), v.literal(false)]),
+    v.union([
+      v.literal('image'),
+      v.literal('emoji'),
+      v.pipe(
+        v.literal('false'),
+        v.transform(() => false as const)
+      ),
+      v.literal(false),
+    ]),
     DEFAULT_CONFIG.show_country_flags
   ),
   show_flightradar_link: v.fallback(v.boolean(), DEFAULT_CONFIG.show_flightradar_link),
