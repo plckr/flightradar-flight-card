@@ -77,7 +77,12 @@ export class FlightradarFlightCard extends LitElement {
     if (!countryCode || !this.options.showCountryFlags) return nothing;
 
     if (this.options.showCountryFlags === 'image') {
-      return html`<img width="16" height="16" src="${getCountryFlagUrl(countryCode, 16)}" />`;
+      return html`<img
+        class="country-flag"
+        width="16"
+        height="16"
+        src="${getCountryFlagUrl(countryCode, 16)}"
+      />`;
     }
 
     return getCountryFlagEmoji(countryCode);

@@ -79,6 +79,10 @@ export const cardStyles = css`
     --mdc-icon-size: 14px;
   }
 
+  .flight-locations .country-flag {
+    vertical-align: middle;
+  }
+
   .flight-speed-info-container {
     margin-top: 12px;
     display: flex;
