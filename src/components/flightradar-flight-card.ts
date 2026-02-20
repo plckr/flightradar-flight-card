@@ -139,6 +139,7 @@ export class FlightradarFlightCard extends LitElement {
           const flightData = getFlightCardData(flight, {
             customTitle: entity.title,
             locale: this.hass.locale.language,
+            showDistance: this._config.show_distance,
           });
 
           const customAirlineLogoUrl =
@@ -212,13 +213,19 @@ function getFlightCardData(
   options: {
     customTitle?: string;
     locale: string;
+    showDistance: false | 'closest' | 'current';
   }
 ): FlightData {
   const { t } = getTFunc(options.locale);
 
   switch (flight._type) {
     case 'area': {
-      const distance = flight.closest_distance ?? flight.distance;
+      let distance: number | undefined = undefined;
+      if (options.showDistance === 'closest') {
+        distance = flight.closest_distance;
+      } else if (options.showDistance === 'current') {
+        distance = flight.distance;
+      }
 
       return {
         id: flight.id,

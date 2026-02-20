@@ -65,6 +65,7 @@ Card will look for a `flights` attribute in the entity provided, in case it does
 | `show_airline_logo`         | boolean | No       | `true`  | Show airline logo                                                      |
 | `show_aircraft_photo`       | boolean | No       | `true`  | Show aircraft photo                                                    |
 | `show_progress_bar`         | boolean | No       | `true`  | Show flight progress bar                                               |
+| `show_distance`             | string  | No       | `closest` | Which distance to show: `off`, `closest` (closest distance to area), or `current` (current distance) |
 | `show_country_flags`        | string  | No       | `false` | Show country flags: `false` (off), `image`, or `emoji`                 |
 | `colors`                    | object  | No       | -       | Color customization options ([see below](#color-options))              |
 | `template_airline_logo_url` | string  | No       | -       | Custom airline logo URL template ([see Templating below](#templating)) |
@@ -150,6 +151,7 @@ show_airline_info_column: true
 show_airline_logo: true
 show_aircraft_photo: true
 show_progress_bar: true
+show_distance: closest  # or 'off' or 'current'
 show_country_flags: false  # or 'image' or 'emoji'
 ```
 

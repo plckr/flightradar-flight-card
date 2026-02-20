@@ -30,6 +30,7 @@ export const DEFAULT_CONFIG = {
   show_airline_logo: true,
   show_aircraft_photo: true,
   show_progress_bar: true,
+  show_distance: 'closest' as const,
   colors: {
     primary: 'var(--primary-text-color)',
     secondary: 'var(--secondary-text-color)',
@@ -103,6 +104,22 @@ const configSchema = v.object({
   show_airline_logo: v.fallback(v.boolean(), DEFAULT_CONFIG.show_airline_logo),
   show_aircraft_photo: v.fallback(v.boolean(), DEFAULT_CONFIG.show_aircraft_photo),
   show_progress_bar: v.fallback(v.boolean(), DEFAULT_CONFIG.show_progress_bar),
+  show_distance: v.fallback(
+    v.union([
+      v.literal(false),
+      v.pipe(
+        v.literal('false'),
+        v.transform(() => false as const)
+      ),
+      v.pipe(
+        v.literal('off'),
+        v.transform(() => false as const)
+      ),
+      v.literal('closest'),
+      v.literal('current'),
+    ]),
+    DEFAULT_CONFIG.show_distance
+  ),
   template_airline_logo_url: v.optional(v.string()),
 });
 
