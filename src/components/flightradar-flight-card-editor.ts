@@ -138,6 +138,7 @@ export class FlightradarFlightCardEditor extends LitElement {
     const showAircraftPhoto =
       this._config.show_aircraft_photo ?? DEFAULT_CONFIG.show_aircraft_photo;
     const showProgressBar = this._config.show_progress_bar ?? DEFAULT_CONFIG.show_progress_bar;
+    const showDistance = this._config.show_distance ?? DEFAULT_CONFIG.show_distance;
     const showCountryFlags = this._config.show_country_flags ?? DEFAULT_CONFIG.show_country_flags;
 
     return html`
@@ -287,6 +288,25 @@ export class FlightradarFlightCardEditor extends LitElement {
               }}
             ></ha-switch>
           </ha-formfield>
+        </div>
+
+        <div class="section-row">
+          <ha-select
+            .label=${t('editor.show_distance')}
+            .value=${showDistance}
+            @selected=${(ev: CustomEvent) => {
+              const value = (ev.target as HTMLSelectElement).value as 'off' | 'closest' | 'current';
+              this._updateConfig({
+                ...this._config,
+                show_distance: value === 'off' ? false : value,
+              });
+            }}
+            @closed=${(ev: Event) => ev.stopPropagation()}
+          >
+            <mwc-list-item value="off">${t('editor.show_distance_off')}</mwc-list-item>
+            <mwc-list-item value="closest">${t('editor.show_distance_closest')}</mwc-list-item>
+            <mwc-list-item value="current">${t('editor.show_distance_current')}</mwc-list-item>
+          </ha-select>
         </div>
 
         <div class="section section-bordered">
