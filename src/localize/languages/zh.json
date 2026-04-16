@@ -1,0 +1,74 @@
+{
+  "no_flights": "目前暂无航班信息",
+
+  "altitude": "高度",
+  "ground_speed": "地面速度",
+  "distance": "距离",
+
+  "airline": {
+    "private": "私人所有",
+    "unknown": "未知"
+  },
+
+  "origin_unknown": "未知",
+  "destination_unknown": "未知",
+
+  "flight": {
+    "live": "实况",
+    "time_remaining": "剩余{time}到达{destination}"
+  },
+
+  "editor": {
+    "optional_field": "可选",
+    "title": "标题",
+    "remove_entity_button": "移除",
+    "add_entity_button": "添加实体",
+    "usage_description": "如果之前的实体中没有找到航班，则将添加更多实体作为备用方案。",
+    "more_info_link": "更多信息",
+    "appearance_section": "外观和布局",
+    "show_flightradar_link": "显示Flightradar24链接",
+    "show_airline_info_column": "显示航司信息栏",
+    "show_airline_logo": "显示航司标志",
+    "show_aircraft_photo": "显示飞机照片",
+    "show_progress_bar": "显示进度条",
+    "show_distance": "显示距离",
+    "show_distance_off": "关闭",
+    "show_distance_closest": "最近距离",
+    "show_distance_current": "当前距离",
+    "show_country_flags": "显示国旗",
+    "show_country_flags_off": "关闭",
+    "show_country_flags_image": "图像",
+    "show_country_flags_emoji": "Emoji表情符号",
+    "units_section": "显示单位",
+    "templating_section": "模板",
+    "template_airline_logo_url": "航司标志网址模板",
+    "altitude_unit": "高度",
+    "distance_unit": "距离",
+    "ground_speed_unit": "地面速度",
+    "unit_ft": "英尺(ft)",
+    "unit_fl": "飞行高度层(FL)",
+    "unit_m": "米(m)",
+    "unit_km": "千米(km)",
+    "unit_nm": "海里(NM)",
+    "unit_kts": "飞行节(kts)",
+    "unit_kmh": "千米每小时(km/h)",
+    "unit_mph": "英里每小时(mph)",
+    "unit_mach": "马赫(M)",
+    "carousel_toggle": "启用轮播图",
+    "carousel_section": "轮播图",
+    "carousel_section_description": "在多个航班之间导航。",
+    "carousel_show_controls": "显示控制",
+    "carousel_loop": "循环",
+    "carousel_loop_description": "启用无限循环。",
+    "carousel_autoplay": "自动播放",
+    "carousel_autoplay_delay": "自动播放延迟(毫秒)",
+    "carousel_autoplay_delay_description": "默认{value}毫秒",
+    "colors_section": "颜色",
+    "colors_section_description": "配置卡片的颜色。",
+    "colors_primary": "主要颜色",
+    "colors_secondary": "次要颜色",
+    "colors_accent": "强调色",
+    "colors_accent_light": "明亮强调色",
+    "colors_progress_bar_light": "进度条明亮颜色"
+  }
+}
