@@ -193,6 +193,8 @@ entities:
 
 ### Tail Airline Logos
 
+> **Note:** Airhex no longer provides logos without authorization — a paid account is required to use this feature.
+
 <img src="https://airhex.com/images/photos/airline-tail-logos.png" alt="Airhex Tail Logos" width="48%" />
 
 If you prefer different airline logos, you can use [Airhex](https://airhex.com/api/logos/) tail logos by setting the `template_airline_logo_url` option:
