@@ -1,0 +1,74 @@
+{
+  "no_flights": "Gerade keine Flüge in der Nähe",
+
+  "altitude": "Höhe",
+  "ground_speed": "Geschwindigkeit",
+  "distance": "Entfernung",
+
+  "airline": {
+    "private": "Privat",
+    "unknown": "Unbekannt"
+  },
+
+  "origin_unknown": "Unbekannt",
+  "destination_unknown": "Unbekannt",
+
+  "flight": {
+    "live": "Live",
+    "time_remaining": "Noch {time} bis {destination}"
+  },
+
+  "editor": {
+    "optional_field": "Optional",
+    "title": "Titel",
+    "remove_entity_button": "Entfernen",
+    "add_entity_button": "Entität hinzufügen",
+    "usage_description": "Weitere Entitäten dienen als Rückfall, falls bei den vorherigen Entitäten keine Flüge gefunden werden.",
+    "more_info_link": "Mehr Infos auf",
+    "appearance_section": "Aussehen & Layout",
+    "show_flightradar_link": "Flightradar24-Link anzeigen",
+    "show_airline_info_column": "Spalte mit Airline-Infos anzeigen",
+    "show_airline_logo": "Airline-Logo anzeigen",
+    "show_aircraft_photo": "Flugzeugfoto anzeigen",
+    "show_progress_bar": "Fortschrittsbalken anzeigen",
+    "show_distance": "Entfernung anzeigen",
+    "show_distance_off": "Aus",
+    "show_distance_closest": "Geringste Entfernung",
+    "show_distance_current": "Aktuelle Entfernung",
+    "show_country_flags": "Länderflaggen anzeigen",
+    "show_country_flags_off": "Aus",
+    "show_country_flags_image": "Bild",
+    "show_country_flags_emoji": "Emoji",
+    "units_section": "Einheiten",
+    "templating_section": "Vorlagen",
+    "template_airline_logo_url": "URL-Vorlage für Airline-Logo",
+    "altitude_unit": "Höhe",
+    "distance_unit": "Entfernung",
+    "ground_speed_unit": "Geschwindigkeit",
+    "unit_ft": "Fuß (ft)",
+    "unit_fl": "Flugfläche (FL)",
+    "unit_m": "Meter (m)",
+    "unit_km": "Kilometer (km)",
+    "unit_nm": "Seemeilen (NM)",
+    "unit_kts": "Knoten (kts)",
+    "unit_kmh": "Kilometer pro Stunde (km/h)",
+    "unit_mph": "Meilen pro Stunde (mph)",
+    "unit_mach": "Mach (M)",
+    "carousel_toggle": "Karussell aktivieren",
+    "carousel_section": "Karussell",
+    "carousel_section_description": "Zwischen mehreren Flügen blättern.",
+    "carousel_show_controls": "Steuerelemente anzeigen",
+    "carousel_loop": "Endlos",
+    "carousel_loop_description": "Endlos durchblättern.",
+    "carousel_autoplay": "Automatisch weiterblättern",
+    "carousel_autoplay_delay": "Verzögerung beim Weiterblättern (ms)",
+    "carousel_autoplay_delay_description": "Standard {value} ms",
+    "colors_section": "Farben",
+    "colors_section_description": "Farben der Karte festlegen.",
+    "colors_primary": "Primärfarbe",
+    "colors_secondary": "Sekundärfarbe",
+    "colors_accent": "Akzentfarbe",
+    "colors_accent_light": "Helle Akzentfarbe",
+    "colors_progress_bar_light": "Helle Farbe des Fortschrittsbalkens"
+  }
+}
