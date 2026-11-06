@@ -220,7 +220,7 @@ function getFlightCardData(
 
   switch (flight._type) {
     case 'area': {
-      let distance: number | undefined = undefined;
+      let distance: number | null | undefined = undefined;
       if (options.showDistance === 'closest') {
         distance = flight.closest_distance;
       } else if (options.showDistance === 'current') {

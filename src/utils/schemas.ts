@@ -1,7 +1,7 @@
 import * as v from 'valibot';
 
 function fallbackNull<T extends v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>>(schema: T) {
-  return v.fallback(schema, null);
+  return v.fallback(v.nullable(schema), null);
 }
 
 const callsignSchema = fallbackNull(

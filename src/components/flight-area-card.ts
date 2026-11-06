@@ -32,14 +32,14 @@ export type FlightData = {
   /** Distance to tracked area
    * @unit kilometers
    */
-  distance?: number;
+  distance?: number | null;
   /** Barometric pressure altitude above mean sea level (AMSL)
    * @unit feet
    */
-  altitude?: number;
+  altitude?: number | null;
   /** Speed relative to the ground
    * @unit knots */
-  groundSpeed?: number;
+  groundSpeed?: number | null;
   /** Whether the flight is currently in the air */
   isLive: boolean;
   /** Departure time in seconds */
@@ -144,7 +144,7 @@ export class FlightradarFlightCard extends LitElement {
           (v) => formatGroundSpeed(v, units.ground_speed),
         ],
         [t('distance'), this.flight.distance, (v) => formatDistance(v, units.distance)],
-      ] satisfies Array<[string, number | undefined, ((v: number) => number | string)?]>
+      ] satisfies Array<[string, number | null | undefined, ((v: number) => number | string)?]>
     ).flatMap(([label, value, formatter]) => {
       if (defined(value)) {
         return { label, value: formatter?.(value) ?? value };
