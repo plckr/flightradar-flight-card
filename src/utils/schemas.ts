@@ -42,8 +42,8 @@ export const areaFlightSchema = v.object({
   aircraft_photo_small: fallbackNull(v.string()),
   aircraft_photo_medium: fallbackNull(v.string()),
   aircraft_photo_large: fallbackNull(v.string()),
-  aircraft_model: v.string(),
-  aircraft_code: v.string(),
+  aircraft_model: fallbackNull(v.string()),
+  aircraft_code: fallbackNull(v.string()),
   airline: fallbackNull(v.string()),
   airline_short: fallbackNull(v.string()),
   airline_iata: fallbackNull(v.string()),
@@ -76,16 +76,23 @@ export const areaFlightSchema = v.object({
   time_real_arrival: fallbackNull(v.number()),
   time_estimated_departure: fallbackNull(v.number()),
   time_estimated_arrival: fallbackNull(v.number()),
-  latitude: v.number(),
-  longitude: v.number(),
-  altitude: v.number(),
-  heading: v.number(),
-  ground_speed: v.number(),
-  squawk: v.string(),
-  vertical_speed: v.number(),
-  distance: v.number(),
-  closest_distance: v.optional(v.number()),
-  on_ground: v.nullable(v.number()),
+  /**
+   * The FlightRadar24 integration substitutes the literal string "N/A" for any
+   * live telemetry field it cannot resolve, which happens whenever the aircraft
+   * is outside ADS-B/MLAT coverage (mid-ocean being the common case). A strict
+   * v.number() rejects that, which makes the whole flight fall through the union
+   * in parseFlight() to { _type: 'unknown' } and get filtered out of the card.
+   */
+  latitude: fallbackNull(v.number()),
+  longitude: fallbackNull(v.number()),
+  altitude: fallbackNull(v.number()),
+  heading: fallbackNull(v.number()),
+  ground_speed: fallbackNull(v.number()),
+  squawk: fallbackNull(v.string()),
+  vertical_speed: fallbackNull(v.number()),
+  distance: fallbackNull(v.number()),
+  closest_distance: fallbackNull(v.number()),
+  on_ground: fallbackNull(v.number()),
   /** Additional tracked doesn't have this property */
   tracked_by_device: v.optional(v.string()),
 });
