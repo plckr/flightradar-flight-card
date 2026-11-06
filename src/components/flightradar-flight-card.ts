@@ -180,31 +180,47 @@ export class FlightradarFlightCard extends LitElement {
 
     const selectedEntity = entities[0];
 
-    if (selectedEntity.flights.length > 1 && this._config.carousel.enable) {
-      return html`
-        <flight-carousel
-          .cardTitle=${selectedEntity.title}
-          .hass=${this.hass}
-          .flights=${selectedEntity.flights}
-          .emblaOptions=${{
-            loop: this._config.carousel.loop,
-            autoplay: this._config.carousel.autoplay,
-            autoplayDelay: this._config.carousel.autoplay_delay,
-            showControls: this._config.carousel.show_controls,
-          }}
-        ></flight-carousel>
-      `;
-    }
+if (selectedEntity.flights.length > 1 && this._config.carousel.enable) {
+  return html`
+    <flight-carousel
+      .cardTitle=${selectedEntity.title}
+      .hass=${this.hass}
+      .flights=${selectedEntity.flights}
+      .emblaOptions=${{
+        loop: this._config.carousel.loop,
+        autoplay: this._config.carousel.autoplay,
+        autoplayDelay: this._config.carousel.autoplay_delay,
+        showControls: this._config.carousel.show_controls,
+      }}
+    ></flight-carousel>
+  `;
+}
 
-    const selectedFlight = selectedEntity.flights[0];
+if (selectedEntity.flights.length > 1) {
+  return html`
+    <flight-wrapper .cardTitle=${selectedEntity.title}>
+      ${selectedEntity.flights.map(
+        (flight) => html`
+          <flight-area-card
+            .hass=${this.hass}
+            .flight=${flight.flightData}
+            .options=${flight.options}
+          ></flight-area-card>
+        `
+      )}
+    </flight-wrapper>
+  `;
+}
 
-    return html`<flight-wrapper .cardTitle=${selectedEntity.title}>
-      <flight-area-card
-        .hass=${this.hass}
-        .flight=${selectedFlight.flightData}
-        .options=${selectedFlight.options}
-      ></flight-area-card>
-    </flight-wrapper>`;
+const selectedFlight = selectedEntity.flights[0];
+
+return html`<flight-wrapper .cardTitle=${selectedEntity.title}>
+  <flight-area-card
+    .hass=${this.hass}
+    .flight=${selectedFlight.flightData}
+    .options=${selectedFlight.options}
+  ></flight-area-card>
+</flight-wrapper>`;
   }
 }
 
