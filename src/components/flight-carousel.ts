@@ -113,8 +113,13 @@ export class FlightCarousel extends LitElement {
     return true;
   }
 
-  protected firstUpdated(): void {
-    this._initCarousel();
+  connectedCallback(): void {
+    super.connectedCallback();
+    void this.updateComplete.then(() => {
+      if (this.isConnected && !this._embla) {
+        this._initCarousel();
+      }
+    });
   }
 
   disconnectedCallback(): void {
@@ -123,9 +128,12 @@ export class FlightCarousel extends LitElement {
   }
 
   private _initCarousel(): void {
-    this._embla = EmblaCarousel(this._viewport, { loop: this.emblaOptions.loop }, [
-      Autoplay({ active: this.emblaOptions.autoplay, delay: this.emblaOptions.autoplayDelay }),
-    ]);
+    this._embla = EmblaCarousel(
+      this._viewport,
+      { loop: this.emblaOptions.loop, startIndex: this._selectedIndex },
+      [Autoplay({ active: this.emblaOptions.autoplay, delay: this.emblaOptions.autoplayDelay })]
+    );
+    this._selectedIndex = this._embla.selectedScrollSnap();
 
     this._embla.on('select', () => {
       this._selectedIndex = this._embla?.selectedScrollSnap() ?? 0;
